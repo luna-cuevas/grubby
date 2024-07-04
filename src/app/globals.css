@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Add or adjust this in your global stylesheet */
+.underline-animation::after {
+  content: "";
+  display: flex;
+  width: 0;
+  height: 2px; /* Adjust the thickness of the underline */
+  background: currentColor; /* Use the text color for the underline */
+  transition: width 0.3s ease-in-out;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.underline-animation:hover::after {
+  width: 100%;
+}
