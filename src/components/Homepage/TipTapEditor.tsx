@@ -25,15 +25,32 @@ const Tiptap = () => {
     return null;
   }
 
+  const wordCount = editor.storage.characterCount.words();
+
   const percentage = editor
     ? Math.round((100 / limit) * editor.storage.characterCount.words())
     : 0;
+
+  const handlePasteText = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      editor.commands.setContent(text);
+    } catch (err) {
+      console.error("Failed to read clipboard contents: ", err);
+    }
+  };
+
+  const handleSampleText = () => {
+    editor.commands.setContent(
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    );
+  };
 
   return (
     <div className="h-full relative group overflow-y-scroll flex flex-col">
       <button
         className={`absolute hidden ${
-          editor.storage.characterCount.characters() > 0 && "group-hover:block"
+          editor.storage.characterCount.words() > 0 && "group-hover:block"
         } top-4 lg:top-0 right-4 lg:right-0 text-black cursor-pointer z-10`}
         onClick={() => {
           editor.commands.clearContent();
@@ -52,17 +69,68 @@ const Tiptap = () => {
         </svg>
       </button>
       <EditorContent
+        key="1"
         contentEditable={editor.storage.characterCount.words() < limit}
-        className="text-black h-full focus:outline-none"
+        className="text-black h-full focus:outline-none overflow-y-scroll"
         editor={editor}
       />
-      <div className="flex flex-col lg:flex-row lg:justify-between">
+
+      <div
+        className={`
+      ${wordCount > 0 ? "hidden" : "block"}
+        absolute left-0 right-0 m-auto top-0 bottom-0 z-[3] w-[300px] h-fit  space-y-3 font-semibold md:w-[250px]`}>
         <div
-          className={`flex items-center text-black my-2 gap-2 ${
-            editor.storage.characterCount.characters() === limit
+          onClick={handleSampleText}
+          className="text-blue-600 hover:bg-blue-600 flex items-center justify-center gap-2 rounded-lg bg-[#F4F5F9] px-4 py-3 transition-all hover:cursor-pointer hover:text-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="size-6">
+            <path
+              fillRule="evenodd"
+              d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z"
+              clipRule="evenodd"
+            />
+            <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
+          </svg>
+          <span>Try A Sample</span>
+        </div>
+        <div
+          onClick={handlePasteText}
+          className="text-blue-600 hover:bg-blue-600 flex items-center justify-center gap-2 rounded-lg bg-[#F4F5F9] px-4 py-3 transition-all hover:cursor-pointer hover:text-white">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="size-6">
+            <path
+              fillRule="evenodd"
+              d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z"
+              clipRule="evenodd"
+            />
+            <path
+              fillRule="evenodd"
+              d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375ZM6 12a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V12Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 15a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V15Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 18a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V18Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75Z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span>Paste Text</span>
+        </div>
+      </div>
+
+      <div
+        className={`flex flex-col lg:flex-row ${
+          wordCount == 0 ? "lg:justify-end" : "justify-between"
+        }`}>
+        <div
+          className={` items-center text-black my-2 gap-2 ${
+            editor.storage.characterCount.words() === limit
               ? "character-count--warning"
               : ""
-          }`}>
+          }
+            ${wordCount == 0 ? "hidden" : "flex"}
+          `}>
           <svg height="15" width="15" viewBox="0 0 20 20">
             <circle r="10" cx="10" cy="10" fill="#e9ecef" />
             <circle
@@ -77,7 +145,6 @@ const Tiptap = () => {
             />
             <circle r="6" cx="10" cy="10" fill="white" />
           </svg>
-          {/* {editor.storage.characterCount.characters()} / {limit} characters */}
           {`${editor.storage.characterCount.words()} / ${limit} `} words
         </div>
         <div className="flex items-center gap-x-4 self-end w-full lg:w-fit md:justify-between lg:gap-x-3">

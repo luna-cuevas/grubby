@@ -19,11 +19,11 @@ export default function Home() {
           className="mx-auto "
         />
       </div>
-      <div className="z-10 h-full text-white relative bg-[#00014b] px-4 pb-[109px] pt-[128px] md:pb-16 md:pt-20 2xl:pt-[100px]">
-        <h1 className="text-4xl font-bold text-center hero_gradient text-transparent">
+      <div className="z-10 h-full text-white relative  px-4 pb-[109px] pt-[128px] md:pb-16 md:pt-20 2xl:pt-[80px]">
+        <h2 className="text-4xl font-extrabold text-center hero_gradient text-transparent">
           Grubby AI Detection
-        </h1>
-        <p className="text-center">
+        </h2>
+        <p className="mb-12 mt-3 text-center text-white sm:text-base md:mb-8">
           Make your AI text 100% undetectable with BypassAI - your trusted AI
           detection remover to create plagiarism-free, human-like text.
         </p>

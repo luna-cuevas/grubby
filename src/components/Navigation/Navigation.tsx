@@ -85,7 +85,7 @@ export const Navigation = (props: Props) => {
           state.showMobileMenu || state.isScrolled
             ? "bg-white"
             : "bg-transparent"
-        }  backdrop-blur-0  z-50 h-16 lg:h-auto sticky top-0   transition-background-color duration-700   w-screen items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
+        }  backdrop-blur-0 z-50 h-16 lg:h-auto sticky top-0   transition-background-color duration-700   w-screen items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
         <Link
           href="/"
           className={`${

@@ -17,8 +17,8 @@ type Props = {
 
 const Results = (props: Props) => {
   const [copied, setCopied] = useState(false); // Set copied status to false
-  const editor = useEditor({
-    extensions: [StarterKit, CharacterCount],
+  const ResultsEditor = useEditor({
+    extensions: [StarterKit, CharacterCount.configure()],
     content: props.results.text,
     autofocus: false,
     editable: false,
@@ -29,7 +29,7 @@ const Results = (props: Props) => {
     setTimeout(() => setCopied(false), 2000); // Reset the copied status after 2 seconds
   };
 
-  if (!editor) {
+  if (!ResultsEditor) {
     return null;
   }
 
@@ -40,13 +40,14 @@ const Results = (props: Props) => {
   ) : props.results.text !== "" ? (
     <div className="h-full flex flex-col p-4">
       <EditorContent
+        key="2"
         className="text-gray-800 h-full focus:outline-none"
-        editor={editor}
+        editor={ResultsEditor}
       />
       <div className="flex items-center justify-between">
         <div
           className={`character-count flex items-center text-black my-2 gap-2`}>
-          {`${editor.storage.characterCount.words()}`} words
+          {`${ResultsEditor.storage.characterCount.words()}`} words
         </div>
         <div className="flex items-center gap-2">
           <ToolTip content={<div className="w-fit text-black">Retry</div>}>
@@ -66,7 +67,7 @@ const Results = (props: Props) => {
             </button>
           </ToolTip>
 
-          <CopyToClipboard text={editor.getText()} onCopy={handleCopy}>
+          <CopyToClipboard text={ResultsEditor.getText()} onCopy={handleCopy}>
             <button
               type="button"
               className="copy-button  text-white py-1 rounded">
