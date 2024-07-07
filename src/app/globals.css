@@ -18,3 +18,23 @@
 .underline-animation:hover::after {
   width: 100%;
 }
+
+.hero_gradient {
+  background: linear-gradient(
+    90deg,
+    #c9ff42 0.02%,
+    #2effff 36.48%,
+    #ffdf6c 67.03%,
+    #d940ff 99.74%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.tiptap p.is-editor-empty:first-child::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
