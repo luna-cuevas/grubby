@@ -11,14 +11,7 @@ export default function Home() {
   const loading = false;
   return (
     <main className=" min-h-screen ">
-      <div className="absolute -z-10 top-0 w-screen h-screen">
-        <Image
-          src="https://cdn.bypassai.ai/web-cdn/bypass/public/apple/images/banner.jpg"
-          alt="Grubby.ai logo"
-          fill
-          className="mx-auto "
-        />
-      </div>
+      <div className="absolute -z-10 top-0 w-screen h-screen bg-gradient-to-r from-[#48629b] to-[#622d91]"></div>
       <div className="z-10 h-full text-white relative  px-4 pb-[109px] pt-[128px] md:pb-16 md:pt-20 2xl:pt-[80px]">
         <h2 className="text-4xl font-extrabold text-center hero_gradient text-transparent">
           Grubby AI Detection
