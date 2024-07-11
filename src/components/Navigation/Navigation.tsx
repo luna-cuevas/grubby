@@ -38,8 +38,9 @@ export const Navigation = (props: Props) => {
   const handleAuthChange = async (event: any, session: any) => {
     console.log("event", event);
     if (
-      (event === "SIGNED_IN" || event === "INITIAL_SESSION") &&
-      session !== null
+      event === "SIGNED_IN" ||
+      event === "INITIAL_SESSION" ||
+      event === "USER_UPDATED"
     ) {
       setState({ ...state, user: session.user, session, isSignInOpen: false });
     } else if (event === "SIGNED_OUT") {
@@ -81,11 +82,13 @@ export const Navigation = (props: Props) => {
         blurred={false}
         variant="filled"
         fullWidth={true}
-        className={` ${
-          state.showMobileMenu || state.isScrolled
-            ? "bg-white"
-            : "bg-transparent"
-        }  backdrop-blur-0 z-50 h-16 lg:h-auto sticky top-0   transition-background-color duration-700   w-screen items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
+        className={` 
+          ${(path == "/sign-up" || path == "/login") && "hidden"}
+          ${
+            state.showMobileMenu || state.isScrolled
+              ? "bg-white"
+              : "bg-transparent"
+          }  backdrop-blur-0 z-50 h-16 lg:h-auto sticky top-0   transition-background-color duration-700   w-screen items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
         <Link
           href="/"
           className={`${

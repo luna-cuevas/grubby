@@ -75,89 +75,78 @@ function ProfileMenu() {
     <Menu
       open={isMenuOpen}
       allowHover={state.session != null}
-      handler={setIsMenuOpen}
+      handler={!state.session ? undefined : setIsMenuOpen}
       placement="bottom-end">
       <MenuHandler>
         {state.session == null ? (
           <div className="lg:flex hidden items-center gap-3 text-sm font-bold">
-            <Button
-              variant="filled"
+            <Link
+              href="/log-in"
               className={`hover:bg-blue-600 hover:border-blue-600 h-8 rounded border-2 bg-transparent shadow-none ${
                 state.isScrolled
                   ? "border-blue-600 text-blue-600 hover:text-white"
                   : "border-white text-white "
-              } border-opacity-60  px-5 py-[5px]`}
-              onClick={() => {
-                setState({ ...state, isSignInOpen: true });
-              }}>
-              Sign In
-            </Button>
-            <Button
-              variant="filled"
-              className="bg-blue-600 hover:bg-blue-800  h-8 rounded px-5 py-[5px] text-white"
-              onClick={() => {
-                setState({ ...state, isSignInOpen: true });
-              }}>
+              } border-opacity-60  px-5 py-[5px]`}>
+              Login
+            </Link>
+            <Link
+              href="/sign-up"
+              className="bg-blue-600 hover:bg-blue-800  h-8 rounded px-5 py-[5px] text-white">
               Start for free
-            </Button>
+            </Link>
           </div>
         ) : state.user?.user_metadata.avatar_url ? (
           <Avatar
             variant="circular"
             size="sm"
             alt={state.user?.user_metadata.full_name || "Profile Picture"}
-            className="p-0 w-[25px] h-auto"
+            className="p-0 w-[25px] h-auto cursor-pointer"
             src={state.user?.user_metadata.avatar_url}
           />
         ) : (
-          <EllipsisHorizontalCircleIcon className="w-6 h-6" />
+          <UserCircleIcon
+            className={`${
+              state.showMobileMenu || state.isScrolled
+                ? "text-black font-bold"
+                : "text-white"
+            } h-6 w-6 cursor-pointer`}
+          />
         )}
       </MenuHandler>
       <MenuList
         className={`p-1 hidden lg:flex lg:flex-col border-none ${
           state.darkMode ? "bg-cypress-green" : "bg-white"
         }`}>
-        {state.session == null ? (
-          <div className="p-4 flex w-full h-full justify-center">
-            <Button
-              variant="filled"
-              className={`w-ful hover:shadow-none shadow-none hover:scale-110 text-black bg-gray-300 group-hover:bg-gray-800 dark:group-hover:bg-white dark:bg-gray-300`}
-              onClick={() => {
-                setState({ ...state, isSignInOpen: true });
-              }}>
-              Sign In
-            </Button>
-          </div>
-        ) : (
-          profileMenuItems.map(({ label, icon }, key) => {
-            const isLastItem = key === profileMenuItems.length - 1;
-            return (
-              <MenuItem
-                key={label}
-                onClick={label === "Sign Out" ? handleSignOut : closeMenu}
-                className={`flex items-center gap-2 rounded ${
-                  isLastItem
-                    ? "hover:bg-red-500 hover:bg-opacity-80 focus:bg-opacity-80 active:bg-opacity-80 focus:bg-red-500 active:bg-red-500"
-                    : "hover:bg-opacity-80 active:bg-cypress-green-light focus:bg-cypress-green-light hover:bg-cypress-green-light"
-                }`}>
-                {React.createElement(icon, {
-                  className: `h-4 w-4 ${
-                    state.darkMode ? "text-white" : "text-black"
-                  }`,
-                  strokeWidth: 2,
-                })}
-                <Typography
-                  as="span"
-                  variant="small"
-                  className={`font-bold ${
-                    state.darkMode ? "text-white" : "text-black"
+        {state.session == null
+          ? null
+          : profileMenuItems.map(({ label, icon }, key) => {
+              const isLastItem = key === profileMenuItems.length - 1;
+              return (
+                <MenuItem
+                  key={label}
+                  onClick={label === "Sign Out" ? handleSignOut : closeMenu}
+                  className={`flex items-center gap-2 rounded ${
+                    isLastItem
+                      ? "hover:bg-red-500 hover:bg-opacity-80 focus:bg-opacity-80 active:bg-opacity-80 focus:bg-red-500 active:bg-red-500"
+                      : "hover:bg-opacity-80 active:bg-gray-300 focus:bg-gray-300 hover:bg-gray-300"
                   }`}>
-                  {label}
-                </Typography>
-              </MenuItem>
-            );
-          })
-        )}
+                  {React.createElement(icon, {
+                    className: `h-4 w-4 ${
+                      state.darkMode ? "text-white" : "text-black"
+                    }`,
+                    strokeWidth: 2,
+                  })}
+                  <Typography
+                    as="span"
+                    variant="small"
+                    className={`font-bold ${
+                      state.darkMode ? "text-white" : "text-black"
+                    }`}>
+                    {label}
+                  </Typography>
+                </MenuItem>
+              );
+            })}
       </MenuList>
 
       {state.session == null ? (

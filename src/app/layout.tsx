@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/Navigation/Navigation";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -24,6 +26,17 @@ export default function RootLayout({
       <body className={`${openSans.className} relative`}>
         <Navigation />
         {children}
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          closeOnClick={true}
+          rtl={false}
+          pauseOnFocusLoss={true}
+          draggable={true}
+          pauseOnHover={true}
+        />
       </body>
     </html>
   );
