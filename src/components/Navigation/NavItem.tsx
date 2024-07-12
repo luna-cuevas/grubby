@@ -58,7 +58,9 @@ const NavItem = ({ label, url }: { label: string; url?: string }) => {
             state.showMobileMenu || state.isScrolled
               ? "text-black font-bold"
               : "text-white"
-          }  relative flex `}>
+          }  
+              ${path != "/" && "!text-black"}
+            relative flex `}>
           {label}
         </li>
       </MenuItem>

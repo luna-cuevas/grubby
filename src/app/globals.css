@@ -22,10 +22,10 @@
 .hero_gradient {
   background: linear-gradient(
     90deg,
-    #cc61ea 0.02%,
+    #c835f1 0.02%,
     #75ebeb 36.48%,
-    #b1ff6c 67.03%,
-    #7b0de9 99.74%
+    #8fea92 67.03%,
+    #3673ff 99.74%
   );
   -webkit-background-clip: text;
   background-clip: text;

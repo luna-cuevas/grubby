@@ -27,6 +27,10 @@ export const Navigation = (props: Props) => {
   }, []);
 
   useEffect(() => {
+    setState({ ...state, showMobileMenu: false });
+  }, [path]);
+
+  useEffect(() => {
     const { data: authListener } =
       supabase.auth.onAuthStateChange(handleAuthChange);
 
@@ -37,13 +41,18 @@ export const Navigation = (props: Props) => {
 
   const handleAuthChange = async (event: any, session: any) => {
     console.log("event", event);
+
     if (
-      (event === "SIGNED_IN" || event === "INITIAL_SESSION") &&
-      session !== null
+      (event === "SIGNED_IN" ||
+        event === "INITIAL_SESSION" ||
+        event === "USER_UPDATED") &&
+      session
     ) {
       setState({ ...state, user: session.user, session, isSignInOpen: false });
+      toast.success("Signed in successfully");
     } else if (event === "SIGNED_OUT") {
       setState({ ...state, user: null, session: null, isSignInOpen: false });
+      toast.success("Signed out");
     } else {
       setState({ ...state, user: null });
     }
@@ -68,6 +77,7 @@ export const Navigation = (props: Props) => {
       console.log("window.scrollY", window.scrollY);
       setState({
         ...state,
+        showMobileMenu: false,
         isScrolled: window.scrollY > 0,
       });
     };
@@ -81,16 +91,20 @@ export const Navigation = (props: Props) => {
         blurred={false}
         variant="filled"
         fullWidth={true}
-        className={` ${
-          state.showMobileMenu || state.isScrolled
-            ? "bg-white"
-            : "bg-transparent"
-        }  backdrop-blur-0 z-50 h-16 lg:h-auto sticky top-0   transition-background-color duration-700   w-screen items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
+        className={` 
+          ${(path == "/sign-up" || path == "/login") && "hidden"}
+          ${
+            state.showMobileMenu || state.isScrolled
+              ? "bg-white"
+              : "bg-transparent"
+          }  backdrop-blur-0 z-50 h-16 lg:h-auto sticky top-0   transition-background-color duration-700   w-screen items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
         <Link
           href="/"
           className={`${
             state.showMobileMenu || state.isScrolled ? "text-black" : ""
-          } z-[1000] items-center justify-center lg:hidden h-full sm:max-w-[250px] max-w-[180px] absolute left-10 font-bold  flex m-auto top-0 bottom-0`}>
+          } 
+            ${path != "/" && "!text-black"}
+           z-[1000] items-center justify-center lg:hidden h-full sm:max-w-[250px] max-w-[180px] absolute left-10 font-bold  flex m-auto top-0 bottom-0`}>
           {/* <Image
             src="/cypress-logo-with-text.svg"
             alt="Cypress Logo"
@@ -116,7 +130,9 @@ export const Navigation = (props: Props) => {
                   state.showMobileMenu || state.isScrolled
                     ? "text-black"
                     : "text-white"
-                } h-6 w-6  dark:text-white group-hover:text-black dark:group-hover:text-white`}
+                } 
+                    ${path != "/" && "!text-black"}
+                    h-6 w-6  dark:text-white group-hover:text-black dark:group-hover:text-white`}
               />
             </IconButton>
           </div>
