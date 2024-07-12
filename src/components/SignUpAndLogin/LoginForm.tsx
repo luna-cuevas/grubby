@@ -64,7 +64,7 @@ const LoginForm = (props: Props) => {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email address"
           id="email"
-          className="w-full p-4 rounded-lg"
+          className="w-full p-4 rounded-lg border border-gray-200"
           type="text"
           value={email}
         />
@@ -75,7 +75,7 @@ const LoginForm = (props: Props) => {
           placeholder="Password"
           id="password"
           type="password"
-          className="w-full p-4 rounded-lg"
+          className="w-full p-4 rounded-lg border border-gray-200"
         />
         <Link
           className="text-blue-600 hover:text-blue-300 mb-6 inline-block text-sm hover:underline"

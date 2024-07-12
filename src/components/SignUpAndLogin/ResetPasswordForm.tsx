@@ -77,7 +77,7 @@ const ResetPasswordForm = (props: Props) => {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             id="email"
-            className="h-12 rounded-[40px] px-6 border w-full"
+            className="p-4 w-full rounded-lg border border-gray-200"
             type="text"
             value={email}
           />
