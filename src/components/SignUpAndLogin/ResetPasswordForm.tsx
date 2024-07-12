@@ -70,8 +70,8 @@ const ResetPasswordForm = (props: Props) => {
             Forgot password?
           </h1>
           <p className="text-display-secondary mb-8 text-center font-gray-800">
-            Enter the email address you used when you joined and we'll send you
-            instructions to reset your password.
+            Enter the email address you used when you joined and we&apos;ll send
+            you instructions to reset your password.
           </p>
           <input
             onChange={(e) => setEmail(e.target.value)}

@@ -158,7 +158,7 @@ const SignUpForm = (props: Props) => {
                     value={otpCode || ""}
                   />
                   <p className="text-one-text-secondary text-center text-sm mb-3 mt-6">
-                    Didn't get the code?&nbsp;
+                    Didn&apos;t get the code?&nbsp;
                     <button
                       type="button"
                       onClick={() => sendOTP()}
