@@ -60,6 +60,7 @@ const NavList = ({}: {}) => {
           href="/"
           className={`
             ${state.isScrolled ? "text-black" : "text-white"}
+            ${path != "/" && "!text-black"}
           relative hidden lg:block my-auto  text-xl`}>
           {/* <Image
             src="/cypress-logo-with-text.svg"

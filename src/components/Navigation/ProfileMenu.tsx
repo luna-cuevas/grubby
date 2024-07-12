@@ -24,6 +24,7 @@ import { globalStateAtom } from "@/context/atoms";
 import { useSupabase } from "@/lib/supabase";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 type Props = {};
 
@@ -81,12 +82,18 @@ function ProfileMenu() {
         {state.session == null ? (
           <div className="lg:flex hidden items-center gap-3 text-sm font-bold">
             <Link
-              href="/log-in"
+              href="/login"
               className={`hover:bg-blue-600 hover:border-blue-600 h-8 rounded border-2 bg-transparent shadow-none ${
                 state.isScrolled
                   ? "border-blue-600 text-blue-600 hover:text-white"
                   : "border-white text-white "
-              } border-opacity-60  px-5 py-[5px]`}>
+              } 
+                  ${
+                    path != "/" &&
+                    "!text-blue-600 !border-blue-600 hover:!text-white"
+                  }
+               
+               border-opacity-60  px-5 py-[5px]`}>
               Login
             </Link>
             <Link
@@ -96,11 +103,11 @@ function ProfileMenu() {
             </Link>
           </div>
         ) : state.user?.user_metadata.avatar_url ? (
-          <Avatar
-            variant="circular"
-            size="sm"
+          <Image
+            width={30}
+            height={30}
             alt={state.user?.user_metadata.full_name || "Profile Picture"}
-            className="p-0 w-[25px] h-auto cursor-pointer"
+            className="p-0  h-auto cursor-pointer rounded-full"
             src={state.user?.user_metadata.avatar_url}
           />
         ) : (
@@ -151,16 +158,16 @@ function ProfileMenu() {
 
       {state.session == null ? (
         <div className="mt-2 flex w-full items-center mx-auto gap-3 px-4 lg:hidden font-bold">
-          <a
+          <Link
             className="hover:bg-blue-600 w-1/2 hover:border-blue-300 text-blue-600 border-blue-600  text-primary h-[44px] rounded border px-5 py-[10px] text-center hover:text-white"
-            href="/log-in">
+            href="/login">
             Log In
-          </a>
-          <a
+          </Link>
+          <Link
             className="bg-blue-600 hover:bg-blue-800 w-1/2 rounded px-5 py-[10px] text-center text-white"
             href="/sign-up">
             Start for Free
-          </a>
+          </Link>
         </div>
       ) : (
         <Accordion
