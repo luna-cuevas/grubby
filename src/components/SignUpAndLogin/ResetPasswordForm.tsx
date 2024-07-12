@@ -13,10 +13,13 @@ const ResetPasswordForm = (props: Props) => {
   const params = useSearchParams();
   const emailParam = params.get("email");
   const router = useRouter();
+  const isDev = process.env.NODE_ENV === "development";
 
   const sendPasswordResetEmail = async (email: string) => {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `http://localhost:3000/reset-password`,
+      redirectTo: isDev
+        ? "http://localhost:3000/reset-password"
+        : "https://grubby.vercel.app/reset-password",
     });
 
     if (error) {
