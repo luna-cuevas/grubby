@@ -74,7 +74,6 @@ export const Navigation = (props: Props) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      console.log("window.scrollY", window.scrollY);
       setState({
         ...state,
         showMobileMenu: false,
