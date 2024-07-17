@@ -2,9 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import CheckoutCard from "./CheckoutCard";
-
-interface Plan {
+import { useSearchParams } from "next/navigation";
+import { stripe } from "@/lib/stripe";
+import { useAtom } from "jotai";
+import { globalStateAtom } from "@/context/atoms";
+import { useSupabase } from "@/lib/supabase";
+interface Plans {
   id: string;
+  words: string;
+
+  order: number;
   name: string;
   description: string;
   prices: {
@@ -15,32 +22,106 @@ interface Plan {
   }[];
 }
 
-const SubscriptionPlans: React.FC = () => {
-  const [plans, setPlans] = useState<Plan[]>([]);
-  const [loading, setLoading] = useState(true);
+type Props = {
+  plans: Plans[];
+};
+
+const SubscriptionPlans = (props: Props) => {
+  const plans = props.plans;
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
+  const updatedSub = searchParams.get("updated");
+  const supabase = useSupabase();
+
+  const [state, setState] = useAtom(globalStateAtom);
   const [isMonthly, setIsMonthly] = useState(true);
-
-  useEffect(() => {
-    const fetchPlans = async () => {
-      const response = await fetch("/api/getPlans");
-      const data = await response.json();
-      console.log(data);
-      setPlans(data.plans);
-      setLoading(false);
-    };
-
-    fetchPlans();
-  }, []);
-
   const filteredPlans = plans.filter((plan) =>
     plan.prices.some(
       (price) => price.frequency === (isMonthly ? "month" : "year")
     )
   );
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    if (updatedSub) {
+      const updateSubscription = async () => {
+        const retrieveSub = await stripe.subscriptions.search({
+          query: `status:"active" AND metadata["userId"]:"${state.user.id}"`,
+        });
+
+        const updateSub = retrieveSub.data[0];
+
+        const retrievePrice = await stripe.prices.retrieve(
+          updateSub.items.data[0].price.id,
+          {
+            expand: ["product"],
+          }
+        );
+        // @ts-ignore
+        const productName = retrievePrice.product.name;
+
+        const { data, error } = await supabase.from("profiles").update({
+          subscription_id: updateSub.id,
+          subscription_plan: productName,
+          // @ts-ignore
+          wordsLeft: retrievePrice.product.metadata.wordsPerMonth,
+          priceId: updateSub.items.data[0].price.id,
+        });
+
+        if (error) {
+          console.error("Error updating profile:", error.message);
+        } else {
+          console.log("Profile updated successfully:", data);
+        }
+      };
+      updateSubscription();
+    }
+  }, [updatedSub]);
+
+  useEffect(() => {
+    if (sessionId) {
+      const updateSubscription = async () => {
+        const retrieveCheckout = await stripe.checkout.sessions.retrieve(
+          sessionId
+        );
+
+        const subscription = retrieveCheckout.subscription;
+
+        const retrieveSubscription = await stripe.subscriptions.retrieve(
+          subscription as string
+        );
+
+        const priceId = retrieveSubscription.items.data[0].price.id;
+
+        const retrievePrice = await stripe.prices.retrieve(priceId, {
+          expand: ["product"],
+        });
+
+        // @ts-ignore
+        const productName = retrievePrice.product.name;
+
+        console.log("retrievePrice", retrievePrice);
+
+        const { data, error } = await supabase
+          .from("profiles")
+          .update({
+            subscription_plan: productName,
+            // @ts-ignore
+            wordsLeft: retrievePrice.product.metadata.wordsPerMonth,
+            priceId,
+            subscription_id: subscription,
+          })
+          .eq("id", state.user.id);
+
+        if (error) {
+          console.error("Error updating profile:", error.message);
+        } else {
+          console.log("Profile updated successfully:", data);
+        }
+      };
+
+      updateSubscription();
+    }
+  }, [sessionId]);
 
   return (
     <div className="flex flex-col w-full max-w-[1200px] mx-auto">
@@ -80,7 +161,7 @@ const SubscriptionPlans: React.FC = () => {
           </div>
         </button>
       </div>
-      <div className="flex pt-16 lg:flex-row flex-wrap px-4 justify-center gap-4 mt-4 ">
+      <div className="flex py-4 lg:pt-16 lg:flex-row flex-wrap px-4 justify-center gap-4 mt-4 ">
         {filteredPlans.map((plan) => (
           <CheckoutCard key={plan.id} plan={plan} />
         ))}

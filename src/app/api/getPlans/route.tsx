@@ -1,9 +1,5 @@
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: "2024-06-20",
-});
+import { stripe } from "@/lib/stripe";
 
 export async function GET() {
   try {
@@ -15,7 +11,7 @@ export async function GET() {
       limit: 100,
     });
 
-    const plans = products.data.map((product) => {
+    let plans = products.data.map((product) => {
       const productPrices = prices.data.filter(
         (price) => price.product === product.id
       );
@@ -23,14 +19,37 @@ export async function GET() {
         id: product.id,
         name: product.name,
         description: product.description,
+        words: product.metadata?.wordsPerMonth || 0,
+
         prices: productPrices.map((price) => ({
           id: price.id,
           frequency: price.recurring?.interval,
           currency: price.currency,
           unit_amount: price.unit_amount,
         })),
+        order: 0,
       };
     });
+
+    // Assign order based on plan name
+    plans = plans.map((plan) => {
+      switch (plan.name) {
+        case "Basic":
+          plan.order = 1;
+          break;
+        case "Unlimited":
+          plan.order = 2;
+          break;
+        case "Pro":
+          plan.order = 3;
+          break;
+        default:
+          plan.order = 4; // Any other plan gets a default order that puts it after the specified ones
+      }
+      return plan;
+    });
+
+    plans.sort((a, b) => a.order - b.order);
 
     return NextResponse.json({ plans });
   } catch (error: any) {

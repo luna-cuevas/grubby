@@ -49,7 +49,6 @@ export const Navigation = (props: Props) => {
       session
     ) {
       setState({ ...state, user: session.user, session, isSignInOpen: false });
-      toast.success("Signed in successfully");
     } else if (event === "SIGNED_OUT") {
       setState({ ...state, user: null, session: null, isSignInOpen: false });
       toast.success("Signed out");
@@ -74,15 +73,19 @@ export const Navigation = (props: Props) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setState({
-        ...state,
-        showMobileMenu: false,
+      setState((prev) => ({
+        ...prev,
         isScrolled: window.scrollY > 0,
-      });
+      }));
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (!isLoaded)
+    return (
+      <nav className="h-16  sticky top-0 w-screen items-center rounded-none shadow-none drop-shadow-none max-w-none py-4 p-0"></nav>
+    );
 
   return (
     isLoaded && (
@@ -91,7 +94,10 @@ export const Navigation = (props: Props) => {
         variant="filled"
         fullWidth={true}
         className={` 
-          ${(path == "/sign-up" || path == "/login") && "hidden"}
+          ${
+            (path == "/sign-up" || path == "/login" || path == "callback") &&
+            "hidden"
+          }
           ${
             state.showMobileMenu || state.isScrolled
               ? "bg-white"

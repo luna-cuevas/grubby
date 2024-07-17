@@ -2,12 +2,18 @@
 
 import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
+import { useAtom } from "jotai";
+import { globalStateAtom } from "@/context/atoms";
+import { useRouter } from "next/navigation";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
 );
 
 const CheckoutButton: React.FC<{ priceId: string }> = ({ priceId }) => {
+  const [state, setState] = useAtom(globalStateAtom);
+  const router = useRouter();
+
   const handleClick = async () => {
     const response = await fetch("/api/createCheckout", {
       method: "POST",
@@ -16,18 +22,22 @@ const CheckoutButton: React.FC<{ priceId: string }> = ({ priceId }) => {
       },
       body: JSON.stringify({
         priceId,
-        successUrl: `${window.location.origin}/payment-confirmation`,
-        cancelUrl: `${window.location.origin}/checkout`,
+        userId: state.user.id,
+        successUrl: `${window.location.origin}/pricing`,
+        cancelUrl: `${window.location.origin}/pricing`,
       }),
     });
 
     const data = await response.json();
 
+    console.log("data", data);
+
+    const stripe = await stripePromise;
+
     if (data.sessionId) {
-      const stripe = await stripePromise;
       stripe?.redirectToCheckout({ sessionId: data.sessionId });
-    } else {
-      console.error("Failed to create checkout session:", data.error);
+    } else if (data.url) {
+      router.push(data.url);
     }
   };
 
