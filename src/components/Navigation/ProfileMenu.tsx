@@ -17,6 +17,7 @@ import {
   ChevronDownIcon,
   LifebuoyIcon,
   PowerIcon,
+  BookOpenIcon,
 } from "@heroicons/react/24/solid";
 // import { trajanLight, trajanRegular } from "@/lib/fonts";
 import { useAtom } from "jotai";
@@ -33,7 +34,12 @@ const profileMenuItems = [
   {
     label: "My Profile",
     icon: UserCircleIcon,
-    url: "/profile",
+    url: "/account",
+  },
+  {
+    label: "History",
+    icon: BookOpenIcon,
+    url: "/history",
   },
   {
     label: "Help",
@@ -128,7 +134,7 @@ function ProfileMenu() {
         }`}>
         {state.session == null
           ? null
-          : profileMenuItems.map(({ label, icon }, key) => {
+          : profileMenuItems.map(({ label, icon, url }, key) => {
               const isLastItem = key === profileMenuItems.length - 1;
               return (
                 <MenuItem
@@ -145,14 +151,13 @@ function ProfileMenu() {
                     }`,
                     strokeWidth: 2,
                   })}
-                  <Typography
-                    as="span"
-                    variant="small"
+                  <Link
+                    href={label === "Sign Out" ? "" : url || ""}
                     className={`font-bold ${
                       state.darkMode ? "text-white" : "text-black"
                     }`}>
                     {label}
-                  </Typography>
+                  </Link>
                 </MenuItem>
               );
             })}
@@ -204,21 +209,12 @@ function ProfileMenu() {
           <AccordionBody className="w-full pt-[9px] pb-2">
             <ul className={`flex flex-col  w-full gap-2 px-auto my-1 `}>
               {profileMenuItems &&
-                profileMenuItems.map(({ label, url }) => (
-                  <MenuItem
-                    key={label}
-                    className="flex px-2 rounded-none hover:bg-opacity-80  active:bg-cypress-green-light focus:bg-cypress-green-light hover:bg-cypress-green-light justify-center lg:justify-left items-center ">
-                    {label == "Sign Out" ? (
-                      <li
-                        className={`${
-                          path == "/"
-                            ? "lg:text-white text-black"
-                            : "text-black"
-                        }  underline-animation relative group-hover:text-black dark:group-hover:text-white dark:text-gray-200 flex uppercase text-xs box-content`}>
-                        {label}
-                      </li>
-                    ) : (
-                      <Link href={url || "/"}>
+                profileMenuItems.map(
+                  ({ label, url }: { label: string; url?: string }) => (
+                    <MenuItem
+                      key={label}
+                      className="flex px-2 rounded-none hover:bg-opacity-80  active:bg-cypress-green-light focus:bg-cypress-green-light hover:bg-cypress-green-light justify-center lg:justify-left items-center ">
+                      {label == "Sign Out" ? (
                         <li
                           className={`${
                             path == "/"
@@ -227,10 +223,21 @@ function ProfileMenu() {
                           }  underline-animation relative group-hover:text-black dark:group-hover:text-white dark:text-gray-200 flex uppercase text-xs box-content`}>
                           {label}
                         </li>
-                      </Link>
-                    )}
-                  </MenuItem>
-                ))}
+                      ) : (
+                        <Link href={url || ""}>
+                          <li
+                            className={`${
+                              path == "/"
+                                ? "lg:text-white text-black"
+                                : "text-black"
+                            }  underline-animation relative group-hover:text-black dark:group-hover:text-white dark:text-gray-200 flex uppercase text-xs box-content`}>
+                            {label}
+                          </li>
+                        </Link>
+                      )}
+                    </MenuItem>
+                  )
+                )}
             </ul>
           </AccordionBody>
         </Accordion>

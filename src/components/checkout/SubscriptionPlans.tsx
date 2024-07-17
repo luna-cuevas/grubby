@@ -91,7 +91,7 @@ const SubscriptionPlans = (props: Props) => {
           subscription_id: updateSub.id,
           subscription_plan: productName,
           // @ts-ignore
-          wordsLeft: retrievePrice.product.metadata.wordsPerMonth,
+          wordsMax: retrievePrice.product.metadata.wordsPerMonth,
           priceId: updateSub.items.data[0].price.id,
         });
 
@@ -134,7 +134,7 @@ const SubscriptionPlans = (props: Props) => {
           .update({
             subscription_plan: productName,
             // @ts-ignore
-            wordsLeft: retrievePrice.product.metadata.wordsPerMonth,
+            wordsMax: retrievePrice.product.metadata.wordsPerMonth,
             priceId,
             subscription_id: subscription,
           })

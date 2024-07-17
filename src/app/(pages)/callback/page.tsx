@@ -41,7 +41,7 @@ const Page = async (props: Props) => {
           email: session.user.email,
           subscription_plan: "free",
           wordCount: 0,
-          wordsLeft: 100,
+          wordsMax: 100,
         });
 
       if (insertError) {
