@@ -15,6 +15,10 @@ const CheckoutButton: React.FC<{ priceId: string }> = ({ priceId }) => {
   const router = useRouter();
 
   const handleClick = async () => {
+    if (!state.user) {
+      router.push("/login");
+      return;
+    }
     const response = await fetch("/api/createCheckout", {
       method: "POST",
       headers: {
