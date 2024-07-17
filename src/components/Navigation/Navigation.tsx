@@ -64,7 +64,11 @@ export const Navigation = (props: Props) => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 960) {
-        setState({ ...state, showMobileMenu: false });
+        setState((prev) => ({
+          ...prev,
+          showMobileMenu: false,
+          isScrolled: window.scrollY > 0,
+        }));
       }
     };
     window.addEventListener("resize", handleResize);

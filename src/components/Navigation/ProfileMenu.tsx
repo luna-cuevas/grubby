@@ -116,7 +116,9 @@ function ProfileMenu() {
               state.showMobileMenu || state.isScrolled
                 ? "text-black font-bold"
                 : "text-white"
-            } h-6 w-6 cursor-pointer`}
+            } 
+              ${path != "/" && "!text-black"}
+                h-6 w-6 cursor-pointer`}
           />
         )}
       </MenuHandler>
