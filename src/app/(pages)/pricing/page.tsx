@@ -28,7 +28,14 @@ const FAQs = [
 
 const fetchPlans = async () => {
   const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-  const response = await fetch(`${baseURL}/api/getPlans`, {});
+  const response = await fetch(`${baseURL}/api/getPlans`, {
+    next: { revalidate: 60 }, // Adjust cache settings if needed
+  });
+
+  if (!response.ok) {
+    throw new Error(`Error fetching plans: ${response.statusText}`);
+  }
+
   const data = await response.json();
   return data.plans;
 };
