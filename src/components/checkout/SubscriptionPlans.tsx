@@ -23,11 +23,12 @@ interface Plans {
 }
 
 type Props = {
-  plans: Plans[];
+  plans?: Plans[];
 };
 
 const SubscriptionPlans = (props: Props) => {
-  const plans = props.plans;
+  const [plans, setPlans] = useState<Plans[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const updatedSub = searchParams.get("updated");
@@ -35,11 +36,38 @@ const SubscriptionPlans = (props: Props) => {
 
   const [state, setState] = useAtom(globalStateAtom);
   const [isMonthly, setIsMonthly] = useState(true);
-  const filteredPlans = plans.filter((plan) =>
-    plan.prices.some(
-      (price) => price.frequency === (isMonthly ? "month" : "year")
-    )
-  );
+  const filteredPlans =
+    plans &&
+    plans.filter((plan) =>
+      plan.prices.some(
+        (price) => price.frequency === (isMonthly ? "month" : "year")
+      )
+    );
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
+      const response = await fetch(`${baseURL}/api/getPlans`, {
+        next: { revalidate: 60 }, // Adjust cache settings if needed
+      });
+
+      if (!response.ok) {
+        console.error("Error fetching plans:", response.statusText);
+      }
+
+      const data = await response.json();
+      return data.plans;
+    };
+
+    fetchPlans()
+      .then((data) => {
+        setPlans(data);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.error("Error fetching plans:", error.message);
+      });
+  }, []);
 
   useEffect(() => {
     if (updatedSub) {
@@ -122,6 +150,23 @@ const SubscriptionPlans = (props: Props) => {
       updateSubscription();
     }
   }, [sessionId]);
+
+  if (!isLoaded) {
+    return (
+      <div className="flex items-center text-blue-600 justify-center h-[75vh]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          className="animate-spin size-8">
+          <circle cx={12} cy={12} r={10} />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l3 3" />
+        </svg>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full max-w-[1200px] mx-auto">

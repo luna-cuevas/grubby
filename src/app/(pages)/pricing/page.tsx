@@ -26,29 +26,13 @@ const FAQs = [
   },
 ];
 
-const fetchPlans = async () => {
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-  const response = await fetch(`${baseURL}/api/getPlans`, {
-    next: { revalidate: 60 }, // Adjust cache settings if needed
-  });
-
-  if (!response.ok) {
-    throw new Error(`Error fetching plans: ${response.statusText}`);
-  }
-
-  const data = await response.json();
-  return data.plans;
-};
-
 const CheckoutPage = async () => {
-  const plans = await fetchPlans();
-
   return (
     <div className="flex flex-col pt-10 gap-8 bg-[#EBEAFB] min-h-screen">
       <h1 className="w-fit mx-auto text-3xl font-bold text-center">
         Bypass AI Detection Effectively at <br /> Affordable Prices
       </h1>
-      <SubscriptionPlans plans={plans} />
+      <SubscriptionPlans />
 
       <div className="bg-white flex flex-col py-6 justify-center">
         <h2 className="font-bold text-2xl w-fit mx-auto">FAQs</h2>
