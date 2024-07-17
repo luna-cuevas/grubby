@@ -63,15 +63,35 @@ const SignUpForm = (props: Props) => {
     if (error) {
       toast.error(error.message);
     } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data: userData, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) {
+        console.error("Error signing in:", error.message);
         toast.error(error.message);
       } else {
-        router.push("/");
+        const { data, error } = await supabase
+          .from("profiles")
+          .insert({
+            id: userData.session.user.id,
+            name: email,
+            email: email,
+            subscription_plan: "free",
+            wordCount: 0,
+            wordsLeft: 100,
+          })
+          .select();
+
+        if (error) {
+          console.error("Error creating profile:", error.message);
+          toast.error(error.message);
+        } else {
+          console.log("Profile created successfully:", data);
+          toast.success("Signed in successfully");
+          router.push("/");
+        }
       }
     }
   };
@@ -79,6 +99,9 @@ const SignUpForm = (props: Props) => {
   const signUpWithGoogle = async () => {
     supabase.auth.signInWithOAuth({
       provider: "google",
+      options: {
+        redirectTo: "http://localhost:3000/callback",
+      },
     });
   };
 

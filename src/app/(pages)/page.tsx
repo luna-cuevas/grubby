@@ -1,7 +1,42 @@
+import { FAQAccordions } from "@/components/FAQ/FAQAccordions";
 import ModeSelect from "@/components/Homepage/ModeSelect";
 import Results from "@/components/Homepage/Results";
 import Tiptap from "@/components/Homepage/TipTapEditor";
 import Image from "next/image";
+
+const FAQs = [
+  {
+    question: "What is an AI detection remover?",
+    answer:
+      "AI detection remover or AI bypasser is an undetectable AI writing tool designed to help users bypass AI detectors by producing AI content with 100% human scores.",
+  },
+  {
+    question: "Why is it important to bypass AI detection?",
+    answer:
+      "It's important for you to know how to bypass AI detection for various reasons.\n\nIf you're a student, you may want to make sure your works can pass the stringent, oftentimes inaccurate AI checkers and you can adhere to your school and university guidelines.\n\nIf you're an online content creator, blogger or SEO marketer, your content being able to bypass AI detectors means it's less likely to get penalized by Google, and more to get indexed and rank high.\n\nIf you're an advertiser, a good AI detection remover like GrubbyAI helps your content read more natural and avoid being flagged as spam.",
+  },
+  {
+    question: "How to make AI text undetectable?",
+    answer:
+      "To make AI-generated text undetectable, you can try techniques like adding data or updated facts to your content, making the tone more casual or humorous, or using AI detection bypass tools like GrubbyAI to humanize AI text.",
+  },
+  {
+    question:
+      "What is GrubbyAI? How to bypass AI detectors with this AI humanizer?",
+    answer:
+      "GrubbyAI is an AI detection remover that can humanize AI text and make it truly undetectable by AI detectors. To use it, all you need to do is let the tool rewrite your AI-generated content and you will get text that can easily bypass AI detection.",
+  },
+  {
+    question: "What languages does GrubbyAI support?",
+    answer:
+      "GrubbyAI can not only humanize AI text in English, but also supports humanization of more than 30 languages. So you can freely create undetectable AI writing with GrubbyAI to reach a global audience.",
+  },
+  {
+    question: "Is it free to use GrubbyAI to bypass AI detectors?",
+    answer:
+      "GrubbyAI offers every new user free words to humanize AI text. And you need to subscribe to our paid plans to unlock more words and features. Check out our pricing page for more details.",
+  },
+];
 
 export default function Home() {
   const results = {
@@ -12,7 +47,7 @@ export default function Home() {
   return (
     <main className=" min-h-screen ">
       <div className="absolute -z-10 top-0 w-screen h-screen bg-gradient-to-r from-[#48629b] to-[#622d91]"></div>
-      <div className="z-10 h-full text-white relative  px-4 pb-[109px] pt-[128px] md:pb-16 md:pt-20 2xl:pt-[80px]">
+      <div className="z-10 h-full text-white relative min-h-screen px-4 pb-[109px] pt-[128px] md:pb-16 md:pt-20 2xl:pt-[80px]">
         <h2 className="text-4xl w-fit mx-auto font-extrabold text-center hero_gradient text-transparent">
           Grubby AI Detection
         </h2>
@@ -57,6 +92,12 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="bg-white flex flex-col py-6 justify-center">
+        <h2 className="font-bold text-2xl w-fit mx-auto">FAQs</h2>
+        <div className="w-1/2 mx-auto">
+          <FAQAccordions faqs={FAQs} />
         </div>
       </div>
     </main>
