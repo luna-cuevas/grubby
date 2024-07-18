@@ -17,7 +17,10 @@ export async function POST(request: Request) {
       .select("*");
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json(
+        { error: `Cannot set history: ${error.message}` },
+        { status: 500 }
+      );
     } else {
       const { error: rpcError, data: rcpData } = await supabase.rpc(
         "increment_word_count",
@@ -28,7 +31,10 @@ export async function POST(request: Request) {
       );
 
       if (rpcError) {
-        return NextResponse.json({ error: rpcError.message }, { status: 500 });
+        return NextResponse.json(
+          { error: `Cannot increment: ${rpcError.message}` },
+          { status: 500 }
+        );
       }
 
       const { error: wordCountError, data: wordCountData } = await supabase
@@ -39,7 +45,7 @@ export async function POST(request: Request) {
 
       if (wordCountError) {
         return NextResponse.json(
-          { error: wordCountError.message },
+          { error: `Cannot get word count: ${wordCountError.message}` },
           { status: 500 }
         );
       }
@@ -56,6 +62,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ data });
     }
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json(
+      { error: `Error with connection: ${error.message}` },
+      { status: 500 }
+    );
   }
 }

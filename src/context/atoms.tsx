@@ -79,6 +79,6 @@ const initialState: State = {
 
 // Create an atom with local storage persistence for the entire application state
 export const globalStateAtom = atomWithLocalStorage(
-  "GrubbyAppGlobalState-v4",
+  "GrubbyAppGlobalState-v5",
   initialState
 );
