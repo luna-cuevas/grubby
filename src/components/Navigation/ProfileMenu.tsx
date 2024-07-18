@@ -85,9 +85,9 @@ function ProfileMenu() {
       allowHover={state.session != null}
       handler={!state.session ? undefined : setIsMenuOpen}
       placement="bottom-end">
-      <MenuHandler className={`hidden lg:flex  cursor-pointer`}>
+      <MenuHandler>
         {state.session == null ? (
-          <div className=" items-center gap-3 text-sm font-bold">
+          <div className="lg:flex hidden items-center gap-6 text-sm font-bold">
             <Link
               href="/login"
               className={`hover:bg-blue-600 hover:border-blue-600 h-8 rounded border-2 bg-transparent shadow-none ${
@@ -114,7 +114,7 @@ function ProfileMenu() {
             variant="circular"
             size="xs"
             alt={state.user?.user_metadata.full_name || "Profile Picture"}
-            className="p-0 w-[10px] h-auto"
+            className="p-0  h-auto hidden lg:block"
             src={state.user?.user_metadata.avatar_url}
           />
         ) : (
@@ -125,7 +125,7 @@ function ProfileMenu() {
                 : "text-white"
             } 
               ${path != "/" && "!text-black"}
-                h-6 w-6 cursor-pointer`}
+                h-6 w-6 cursor-pointer hidden lg:block`}
           />
         )}
       </MenuHandler>
