@@ -37,14 +37,14 @@ const stepsVer1: HumanizeStep[] = [
   },
   {
     ftModel: "ed-rand-mix-kelly",
-    controlLengthTries: 2,
+    controlLengthTries: 1,
     controlLengthAllowance: 35,
     frequencyPenalty: 0.07,
     systemPrompt: FTSystemPrompts["ed-rand-mix-kelly"],
   },
   {
     ftModel: "ed-rand-mix-kelly",
-    controlLengthTries: 2,
+    controlLengthTries: 1,
     controlLengthAllowance: 35,
     frequencyPenalty: 0.03,
     systemPrompt: FTSystemPrompts["ed-rand-mix-kelly"],

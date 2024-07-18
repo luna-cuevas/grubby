@@ -43,8 +43,8 @@ function isAiStepFineTuned(step: AiStepBase): step is AiStepFineTuned {
 async function processWithVerificationRaw(
   request: ChatCompletionCreateParamsNonStreaming,
   verificationCallback: (data: ChatCompletion) => boolean,
-  retriesVerification = 2,
-  delay = 20000
+  retriesVerification = 1,
+  delay = 2000 // 2 seconds
 ): Promise<ChatCompletion | null> {
   for (let i = 0; i < retriesVerification; i++) {
     const response = await fetch("/api/openAI", {
