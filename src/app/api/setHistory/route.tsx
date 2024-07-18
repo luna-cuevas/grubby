@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { useSupabaseWithServiceRole } from "@/lib/supabase";
 
 export async function POST(request: Request) {
-  const { result, userId, message, words } = await request.json();
+  const { result, userId, message, words, wordMax } = await request.json();
   const supabase = useSupabaseWithServiceRole();
 
   try {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         response: result,
         words: words,
       })
-      .select();
+      .select("*");
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -29,6 +29,28 @@ export async function POST(request: Request) {
 
       if (rpcError) {
         return NextResponse.json({ error: rpcError.message }, { status: 500 });
+      }
+
+      const { error: wordCountError, data: wordCountData } = await supabase
+        .from("profiles")
+        .select("wordCount")
+        .eq("id", userId)
+        .single();
+
+      if (wordCountError) {
+        return NextResponse.json(
+          { error: wordCountError.message },
+          { status: 500 }
+        );
+      }
+
+      if (wordCountData.wordCount > wordMax) {
+        return NextResponse.json(
+          {
+            error: "You have exceeded your word limit!",
+          },
+          { status: 402 }
+        );
       }
 
       return NextResponse.json({ data });

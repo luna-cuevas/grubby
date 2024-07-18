@@ -37,14 +37,14 @@ const stepsVer1: HumanizeStep[] = [
   },
   {
     ftModel: "ed-rand-mix-kelly",
-    controlLengthTries: 1,
+    controlLengthTries: 2,
     controlLengthAllowance: 35,
     frequencyPenalty: 0.07,
     systemPrompt: FTSystemPrompts["ed-rand-mix-kelly"],
   },
   {
     ftModel: "ed-rand-mix-kelly",
-    controlLengthTries: 1,
+    controlLengthTries: 2,
     controlLengthAllowance: 35,
     frequencyPenalty: 0.03,
     systemPrompt: FTSystemPrompts["ed-rand-mix-kelly"],
@@ -127,12 +127,13 @@ async function humanizePart(
     if (step.useTextBefore && textBeforePart.length > 10) {
       systemPrompt += `\n\n Please ensure your version connects with the text before, so it has different intro words and you're not talking about same thing again.
 
-PART OF THE TEXT BEFORE CURRENT PART:
+                      PART OF THE TEXT BEFORE CURRENT PART:
 
-${textBeforePart}
+                      ${textBeforePart}
 
-PLEASE DON'T INCLUDE PREVIOUS PARTS IN YOUR RESPONSE.`;
+                      PLEASE DON'T INCLUDE PREVIOUS PARTS IN YOUR RESPONSE.`;
     }
+
     const messages: ChatCompletionMessageParam[] = [
       { role: "system", content: systemPrompt },
       { role: "user", content: currentText },

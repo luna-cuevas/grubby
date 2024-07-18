@@ -43,7 +43,7 @@ function isAiStepFineTuned(step: AiStepBase): step is AiStepFineTuned {
 async function processWithVerificationRaw(
   request: ChatCompletionCreateParamsNonStreaming,
   verificationCallback: (data: ChatCompletion) => boolean,
-  retriesVerification = 1,
+  retriesVerification: number,
   delay = 2000 // 2 seconds
 ): Promise<ChatCompletion | null> {
   for (let i = 0; i < retriesVerification; i++) {

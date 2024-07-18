@@ -42,11 +42,6 @@ const FAQs = [
 export default async function Home() {
   const shortTest = `Economically, globalization has enabled countries to tap into larger markets, leading to increased trade and investment. Companies can source materials and labor from wherever they are most cost-effective, which ultimately lowers prices and increases the variety of products available to consumers. For some nations, it has catalyzed growth and development, creating jobs and lifting millions out of poverty. On the other hand, it has also led to significant challenges, such as the erosion of local industries unable to compete with international corporations and the exploitation of labor in developing countries.`;
 
-  const results = {
-    text: "",
-    mode: "Simple",
-  };
-  const loading = false;
   return (
     <main className=" min-h-screen ">
       <div className="absolute  -z-10 top-0 w-screen h-screen bg-gradient-to-r from-[#48629b] to-[#622d91]"></div>
@@ -68,7 +63,7 @@ export default async function Home() {
                     <ModeSelect />
                   </div>
                 </div>
-                <div className="relative flex h-[500px] flex-col bg-white pb-4 md:rounded-b-none 2xl:h-[410px]">
+                <div className="relative flex h-[500px] overflow-y-auto flex-col bg-white pb-4 md:rounded-b-none 2xl:h-[410px]">
                   <div className="group relative flex-1 px-4 pt-4">
                     <div className="w-full h-full">
                       <Tiptap />
@@ -89,7 +84,7 @@ export default async function Home() {
                 </div>
                 <div className="relative h-[500px] bg-[#f4f5f9] md:rounded-none 2xl:h-[410px]">
                   <div className="h-full w-full">
-                    <Results results={results} loading={loading} />
+                    <Results />
                   </div>
                 </div>
               </div>

@@ -69,6 +69,11 @@ function ProfileMenu() {
       ...state,
       session: null,
       user: null,
+      openAIFetch: {
+        result: {},
+        isLoading: false,
+        message: "",
+      },
     });
 
     console.log("Signed out successfully");

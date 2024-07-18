@@ -34,8 +34,6 @@ const CheckoutButton: React.FC<{ priceId: string }> = ({ priceId }) => {
 
     const data = await response.json();
 
-    console.log("data", data);
-
     const stripe = await stripePromise;
 
     if (data.sessionId) {

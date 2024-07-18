@@ -4,6 +4,7 @@ import { Navigation } from "@/components/Navigation/Navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { openSans } from "@/fonts/openSans";
+import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
 
 export const metadata: Metadata = {
   title: "Grubby.ai",
@@ -31,6 +32,7 @@ export default function RootLayout({
           draggable={true}
           pauseOnHover={true}
         />
+        <NeedToUpgrade />
       </body>
     </html>
   );

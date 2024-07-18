@@ -12,12 +12,11 @@ import { Spinner } from "@material-tailwind/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
-const limit = 100;
-
 const Tiptap = () => {
   const [content, setContent] = useState("");
   const [state, setState] = useAtom(globalStateAtom);
-  const [isLoading, setIsLoading] = useState(false);
+  const [inputLimit, setInputLimit] = useState(0);
+  const [wordMax, setWordMax] = useState(0);
   const searchParams = useSearchParams();
   const messageId = searchParams.get("id");
   const router = useRouter();
@@ -31,9 +30,43 @@ const Tiptap = () => {
     ],
     content: state.openAIFetch.message || "",
     onUpdate: ({ editor }) => {
-      setContent(editor.getHTML());
+      const words = editor
+        .getText()
+        .trim()
+        .split(/\s+/)
+        .filter((word) => word).length;
+      if (words > inputLimit) {
+        toast.error(`Word limit exceeded! Limit: ${inputLimit} words.`);
+        editor.commands.undo();
+      } else {
+        setContent(editor.getHTML());
+      }
     },
   });
+
+  const fetchWordLimit = async () => {
+    const response = await fetch(`/api/getWordCount`, {
+      method: "POST",
+      body: JSON.stringify({
+        id: state.user.id,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Error fetching word limit:", response.statusText);
+    }
+
+    const data = await response.json();
+    console.log(data.inputMax, data.wordsMax);
+    setInputLimit(data.inputMax);
+    setWordMax(data.wordsMax);
+  };
+
+  useEffect(() => {
+    if (state.user) {
+      fetchWordLimit();
+    }
+  }, [state.user]);
 
   const fetchMessage = async () => {
     const response = await fetch(`/api/getHistory`, {
@@ -81,7 +114,7 @@ const Tiptap = () => {
   const wordCount = editor.storage.characterCount.words();
 
   const percentage = editor
-    ? Math.round((100 / limit) * editor.storage.characterCount.words())
+    ? Math.round((100 / inputLimit) * editor.storage.characterCount.words())
     : 0;
 
   const handlePasteText = async () => {
@@ -136,7 +169,7 @@ const Tiptap = () => {
               result.text.split(" ").filter((word) => word !== "").length,
           },
         }));
-        await fetch("/api/setHistory", {
+        const setHistory = await fetch("/api/setHistory", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -146,8 +179,24 @@ const Tiptap = () => {
             userId: state.user.id,
             message: state.openAIFetch.message || content,
             words: result.text.split(" ").filter((word) => word !== "").length,
+            wordMax: wordMax,
           }),
         });
+
+        const setHistoryJson = await setHistory.json();
+
+        console.log("setHistoryJson", setHistoryJson);
+
+        if (
+          setHistoryJson.status === 402 ||
+          setHistoryJson.error === "You have exceeded your word limit!"
+        ) {
+          setState((prev) => ({
+            ...prev,
+            wordLimitReached: true,
+          }));
+          console.error("Error setting history:", setHistoryJson.error);
+        }
       }
     } catch (e) {
       console.error(e);
@@ -185,7 +234,6 @@ const Tiptap = () => {
       </button>
       <EditorContent
         key="1"
-        contentEditable={editor.storage.characterCount.words() < limit}
         className="text-black h-full focus:outline-none overflow-y-scroll"
         editor={editor}
       />
@@ -240,7 +288,7 @@ const Tiptap = () => {
         }`}>
         <div
           className={` items-center text-black my-2 gap-2 ${
-            editor.storage.characterCount.words() === limit
+            editor.storage.characterCount.words() === inputLimit
               ? "character-count--warning"
               : ""
           }
@@ -260,7 +308,7 @@ const Tiptap = () => {
             />
             <circle r="6" cx="10" cy="10" fill="white" />
           </svg>
-          {`${editor.storage.characterCount.words()} / ${limit} `} words
+          {`${editor.storage.characterCount.words()} / ${inputLimit} `} words
         </div>
         <div className="flex items-center gap-x-4 self-end w-full lg:w-fit md:justify-between lg:gap-x-3">
           <button

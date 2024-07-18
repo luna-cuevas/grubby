@@ -81,6 +81,7 @@ const SignUpForm = (props: Props) => {
             subscription_plan: "free",
             wordCount: 0,
             wordsMax: 100,
+            inputMax: 100,
           })
           .select();
 

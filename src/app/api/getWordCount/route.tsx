@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from("profiles")
-      .select("wordCount, wordsMax")
+      .select("wordCount, wordsMax, inputMax")
       .eq("id", id);
 
     if (error) {
@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       wordsMax: data[0].wordsMax,
       wordCount: data[0].wordCount,
+      inputMax: data[0].inputMax,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

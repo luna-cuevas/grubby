@@ -92,6 +92,8 @@ const SubscriptionPlans = (props: Props) => {
           subscription_plan: productName,
           // @ts-ignore
           wordsMax: retrievePrice.product.metadata.wordsPerMonth,
+          // @ts-ignore
+          inputMax: retrievePrice.product.metadata.inputMax,
           priceId: updateSub.items.data[0].price.id,
         });
 
@@ -127,14 +129,14 @@ const SubscriptionPlans = (props: Props) => {
         // @ts-ignore
         const productName = retrievePrice.product.name;
 
-        console.log("retrievePrice", retrievePrice);
-
         const { data, error } = await supabase
           .from("profiles")
           .update({
             subscription_plan: productName,
             // @ts-ignore
             wordsMax: retrievePrice.product.metadata.wordsPerMonth,
+            // @ts-ignore
+            inputMax: retrievePrice.product.metadata.inputMax,
             priceId,
             subscription_id: subscription,
           })

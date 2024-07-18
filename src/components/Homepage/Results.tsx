@@ -12,13 +12,7 @@ import { humanizerAPI } from "@/utils/humanize";
 import { Spinner } from "@material-tailwind/react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-type Props = {
-  results: {
-    text: string;
-    mode: string;
-  };
-  loading: boolean;
-};
+type Props = {};
 
 const Results = (props: Props) => {
   const [copied, setCopied] = useState(false);
