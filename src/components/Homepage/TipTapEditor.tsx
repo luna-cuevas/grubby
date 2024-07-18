@@ -9,7 +9,8 @@ import { humanizerAPI } from "@/utils/humanize";
 import { useAtom } from "jotai";
 import { globalStateAtom } from "@/context/atoms";
 import { Spinner } from "@material-tailwind/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 const limit = 100;
 
@@ -19,6 +20,7 @@ const Tiptap = () => {
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const messageId = searchParams.get("id");
+  const router = useRouter();
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -95,9 +97,21 @@ const Tiptap = () => {
     editor.commands.setContent(
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
     );
+    setContent(
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    );
   };
 
   async function humanizeSampleUsage() {
+    if (!state.session) {
+      router.push("/sign-up");
+      return;
+    }
+
+    if (content.length === 0) {
+      toast.error("Please write something before humanizing.");
+      return;
+    }
     try {
       setState((prev) => ({
         ...prev,
