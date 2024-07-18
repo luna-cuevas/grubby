@@ -17,6 +17,7 @@ const Tiptap = () => {
   const [state, setState] = useAtom(globalStateAtom);
   const [inputLimit, setInputLimit] = useState(0);
   const [wordMax, setWordMax] = useState(0);
+  const [totalWordCount, setTotalWordCount] = useState(0);
   const searchParams = useSearchParams();
   const messageId = searchParams.get("id");
   const router = useRouter();
@@ -59,6 +60,7 @@ const Tiptap = () => {
     const data = await response.json();
     setInputLimit(data.inputMax);
     setWordMax(data.wordsMax);
+    setTotalWordCount(data.wordCount);
   };
 
   useEffect(() => {
@@ -139,7 +141,7 @@ const Tiptap = () => {
       router.push("/sign-up");
       return;
     }
-    if (state.wordLimitReached) {
+    if (wordCount > wordMax) {
       setState((prev) => ({
         ...prev,
         limitReachPopup: true,
@@ -315,7 +317,10 @@ const Tiptap = () => {
             />
             <circle r="6" cx="10" cy="10" fill="white" />
           </svg>
-          {`${editor.storage.characterCount.words()} / ${inputLimit} `} words
+          {`${editor.storage.characterCount.words()} / ${
+            inputLimit > 10000 ? "unlimited" : inputLimit
+          } `}{" "}
+          words
         </div>
         <div className="flex items-center gap-x-4 self-end w-full lg:w-fit md:justify-between lg:gap-x-3">
           <button
