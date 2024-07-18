@@ -1,10 +1,10 @@
 import {
   ChatCompletion,
+  ChatCompletionCreateParamsNonStreaming,
   ChatCompletionMessageParam,
   ChatModel,
 } from "openai/resources/index";
 import { FTModelMap, FTModelShort } from "./FTModelTypes";
-import { ChatCompletionCreateParamsNonStreaming } from "openai/src/resources/index.js";
 
 export interface AiStepBase {
   frequencyPenalty?: number;
