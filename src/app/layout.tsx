@@ -1,15 +1,9 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { Navigation } from "@/components/Navigation/Navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const openSans = Open_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  style: "normal",
-});
+import { openSans } from "@/fonts/openSans";
 
 export const metadata: Metadata = {
   title: "Grubby.ai",

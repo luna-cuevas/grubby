@@ -1,11 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import CharacterCount from "@tiptap/extension-character-count";
-import { CopyToClipboard } from "react-copy-to-clipboard"; // Import CopyToClipboard
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ToolTip } from "./ToolTip";
+import { useAtom } from "jotai";
+import { globalStateAtom } from "@/context/atoms";
+import { humanizerAPI } from "@/utils/humanize";
+import { Spinner } from "@material-tailwind/react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 type Props = {
   results: {
@@ -16,28 +21,99 @@ type Props = {
 };
 
 const Results = (props: Props) => {
-  const [copied, setCopied] = useState(false); // Set copied status to false
+  const [copied, setCopied] = useState(false);
+  const [state, setState] = useAtom(globalStateAtom);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const messageId = searchParams.get("id");
+
   const ResultsEditor = useEditor({
     extensions: [StarterKit, CharacterCount.configure()],
-    content: props.results.text,
+    content: state.openAIFetch.result ? state.openAIFetch.result.text : "",
     autofocus: false,
     editable: false,
   });
 
   const handleCopy = () => {
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000); // Reset the copied status after 2 seconds
+    setTimeout(() => setCopied(false), 2000);
   };
+
+  useEffect(() => {
+    if (ResultsEditor && state.openAIFetch.result.text) {
+      ResultsEditor.commands.setContent(state.openAIFetch.result.text);
+    }
+  }, [state.openAIFetch]);
 
   if (!ResultsEditor) {
     return null;
   }
 
-  return props.loading ? (
-    <div>
-      <h2>Loading...</h2>
-    </div>
-  ) : props.results.text !== "" ? (
+  const handleRetry = async () => {
+    try {
+      // Clear the search parameter
+      const newSearchParams = new URLSearchParams(searchParams.toString());
+      newSearchParams.delete("id");
+      router.replace(`?${newSearchParams.toString()}`);
+
+      // Set loading state
+      setState((prev) => ({
+        ...prev,
+        openAIFetch: {
+          ...prev.openAIFetch,
+          isLoading: true,
+        },
+      }));
+
+      const result = await humanizerAPI(state.openAIFetch.message, "ver1");
+
+      if (result && result.text) {
+        setState((prev) => ({
+          ...prev,
+          openAIFetch: {
+            ...prev.openAIFetch,
+            isLoading: false,
+            result: result,
+            wordCount:
+              prev.openAIFetch.wordCount +
+              result.text.split(" ").filter((word) => word !== "").length,
+          },
+        }));
+
+        await fetch("/api/setHistory", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            result: result.text,
+            userId: state.user.id,
+            message: state.openAIFetch.message,
+            words: result.text.split(" ").filter((word) => word !== "").length,
+          }),
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      setState((prev) => ({
+        ...prev,
+        openAIFetch: {
+          ...prev.openAIFetch,
+          isLoading: false,
+        },
+      }));
+    }
+  };
+
+  if (state.openAIFetch.isLoading) {
+    return (
+      <div className="w-fit h-full items-center flex mx-auto">
+        <Spinner className="h-12 w-12" color="blue" />
+      </div>
+    );
+  }
+
+  return ResultsEditor.getText() !== "" ? (
     <div className="h-full flex flex-col p-4">
       <EditorContent
         key="2"
@@ -51,7 +127,10 @@ const Results = (props: Props) => {
         </div>
         <div className="flex items-center gap-2">
           <ToolTip content={<div className="w-fit text-black">Retry</div>}>
-            <button className="text-white py-1 rounded">
+            <button
+              type="button"
+              onClick={handleRetry}
+              className="text-white py-1 rounded">
               <svg
                 type="button"
                 xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +176,7 @@ const Results = (props: Props) => {
                     />
                     <path
                       fillRule="evenodd"
-                      d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375Zm9.586 4.594a.75.75 0 0 0-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 0 0-1.06 1.06l1.5 1.5a.75.75 0 0 0 1.116-.062l3-3.75Z"
+                      d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375ZM6 12a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V12Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 15a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V15Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 18a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V18Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75Z"
                       clipRule="evenodd"
                     />
                   </svg>

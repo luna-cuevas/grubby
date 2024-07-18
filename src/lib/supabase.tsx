@@ -20,3 +20,22 @@ export const useSupabase = () => {
   }
   return supabaseClient;
 };
+
+export const useSupabaseWithServiceRole = () => {
+  if (!supabaseClient) {
+    supabaseClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL as string,
+      process.env.SUPABASE_SERVICE_ROLE as string,
+      {
+        auth: {
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+        },
+        realtime: {
+          heartbeatIntervalMs: 5000,
+        },
+      }
+    );
+  }
+  return supabaseClient;
+};

@@ -8,6 +8,17 @@ type State = {
   isScrolled: boolean;
   darkMode: boolean;
   firstVisit: boolean;
+  openAIFetch: {
+    isLoading: boolean;
+    message: string;
+    result: {
+      priceInput?: number;
+      priceOutput?: number;
+      priceTotal?: number;
+      text: string;
+    };
+    wordCount: number;
+  };
 };
 
 // A helper function to work with localStorage and JSON serialization for the entire application state
@@ -49,6 +60,17 @@ const initialState: State = {
   isScrolled: false,
   darkMode: false,
   firstVisit: true,
+  openAIFetch: {
+    isLoading: false,
+    message: "",
+    result: {
+      priceInput: 0,
+      priceOutput: 0,
+      priceTotal: 0,
+      text: "",
+    },
+    wordCount: 0,
+  },
 };
 
 // Create an atom with local storage persistence for the entire application state

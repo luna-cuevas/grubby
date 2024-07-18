@@ -26,6 +26,7 @@ import { useSupabase } from "@/lib/supabase";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { openSans } from "@/fonts/openSans";
 
 type Props = {};
 
@@ -84,7 +85,7 @@ function ProfileMenu() {
       allowHover={state.session != null}
       handler={!state.session ? undefined : setIsMenuOpen}
       placement="bottom-end">
-      <MenuHandler>
+      <MenuHandler className={`hidden`}>
         {state.session == null ? (
           <div className="lg:flex hidden items-center gap-3 text-sm font-bold">
             <Link
@@ -153,7 +154,7 @@ function ProfileMenu() {
                   })}
                   <Link
                     href={label === "Sign Out" ? "" : url || ""}
-                    className={`font-bold ${
+                    className={`font-bold w-full ${
                       state.darkMode ? "text-white" : "text-black"
                     }`}>
                     {label}
@@ -188,19 +189,26 @@ function ProfileMenu() {
           {" "}
           <AccordionHeader
             onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-            className="hover:bg-opacity-80 items-center focus:bg-cypress-green-light pt-[9px] pb-2 px-2 active:bg-cypress-green-light hover:bg-cypress-green-light mx-auto w-full lg:py-[0.35rem] lg:hidden flex justify-center flex-grow  ml-2 border-none">
+            className="hover:bg-opacity-80 items-center focus:bg-cypress-green-light pt-[9px] pb-2 px-2 active:bg-cypress-green-light hover:bg-cypress-green-light mx-auto w-full lg:py-[0.35rem] lg:hidden flex justify-left flex-grow border-none">
             <li
               className={`${
                 path == "/" ? "lg:text-white text-black" : "text-black"
-              }  relative group-hover:text-black dark:group-hover:text-white dark:text-gray-200 flex gap-1 font-bold uppercase text-sm box-content`}>
+              }  relative group-hover:text-black dark:group-hover:text-white dark:text-gray-200 flex gap-1 font-bold  text-sm box-content`}>
               {state.user?.user_metadata.avatar_url ? (
-                <Avatar
-                  variant="circular"
-                  size="sm"
-                  alt={state.user?.user_metadata.full_name || "Profile Picture"}
-                  className="p-0 w-[25px] h-auto"
-                  src={state.user?.user_metadata.avatar_url}
-                />
+                <div className="flex gap-4">
+                  <p className={`font-bold text-base ${openSans.className}`}>
+                    Profile
+                  </p>
+                  <Avatar
+                    variant="circular"
+                    size="sm"
+                    alt={
+                      state.user?.user_metadata.full_name || "Profile Picture"
+                    }
+                    className="p-0 w-[25px] h-auto"
+                    src={state.user?.user_metadata.avatar_url}
+                  />
+                </div>
               ) : (
                 <EllipsisHorizontalCircleIcon className="w-6 h-6" />
               )}
@@ -213,7 +221,7 @@ function ProfileMenu() {
                   ({ label, url }: { label: string; url?: string }) => (
                     <MenuItem
                       key={label}
-                      className="flex px-2 rounded-none hover:bg-opacity-80  active:bg-cypress-green-light focus:bg-cypress-green-light hover:bg-cypress-green-light justify-center lg:justify-left items-center ">
+                      className="flex px-2 rounded-none hover:bg-opacity-80  active:bg-cypress-green-light focus:bg-cypress-green-light hover:bg-cypress-green-light justify-left lg:justify-left items-center ">
                       {label == "Sign Out" ? (
                         <li
                           className={`${

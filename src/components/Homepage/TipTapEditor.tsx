@@ -4,12 +4,21 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import CharacterCount from "@tiptap/extension-character-count";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { humanizerAPI } from "@/utils/humanize";
+import { useAtom } from "jotai";
+import { globalStateAtom } from "@/context/atoms";
+import { Spinner } from "@material-tailwind/react";
+import { useSearchParams } from "next/navigation";
 
 const limit = 100;
 
 const Tiptap = () => {
-  // const [content, setContent] = useState("");
+  const [content, setContent] = useState("");
+  const [state, setState] = useAtom(globalStateAtom);
+  const [isLoading, setIsLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const messageId = searchParams.get("id");
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -18,11 +27,53 @@ const Tiptap = () => {
       }),
       CharacterCount,
     ],
-    content: ``,
+    content: state.openAIFetch.message || "",
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML());
+    },
   });
 
-  if (!editor) {
-    return null;
+  const fetchMessage = async () => {
+    const response = await fetch(`/api/getHistory`, {
+      method: "POST",
+      body: JSON.stringify({
+        userId: state.user.id,
+        messageId: messageId,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error("Error fetching history:", response.statusText);
+    }
+
+    const data = await response.json();
+    editor && editor.commands.setContent(data[0].message);
+
+    setState((prev) => ({
+      ...prev,
+      openAIFetch: {
+        ...prev.openAIFetch,
+        message: data[0].message,
+        result: {
+          text: data[0].response,
+        },
+        wordCount: data[0].words,
+      },
+    }));
+  };
+
+  useEffect(() => {
+    if (messageId && state.user && editor) {
+      fetchMessage();
+    }
+  }, [messageId, editor]);
+
+  if ((state && state.openAIFetch.isLoading) || !editor) {
+    return (
+      <div className="w-fit h-full items-center flex mx-auto">
+        <Spinner className="h-12 w-12" color="blue" />
+      </div>
+    );
   }
 
   const wordCount = editor.storage.characterCount.words();
@@ -45,6 +96,56 @@ const Tiptap = () => {
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
     );
   };
+
+  async function humanizeSampleUsage() {
+    try {
+      setState((prev) => ({
+        ...prev,
+        openAIFetch: {
+          ...prev.openAIFetch,
+          isLoading: true,
+        },
+      }));
+      const result = await humanizerAPI(content, "ver1");
+
+      if (result && result.text) {
+        console.log("result", result);
+        setState((prev) => ({
+          ...prev,
+          openAIFetch: {
+            ...prev.openAIFetch,
+            result: result,
+            message: content,
+            isLoading: false,
+            wordCount:
+              prev.openAIFetch.wordCount +
+              result.text.split(" ").filter((word) => word !== "").length,
+          },
+        }));
+        await fetch("/api/setHistory", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            result: result.text,
+            userId: state.user.id,
+            message: state.openAIFetch.message || content,
+            words: result.text.split(" ").filter((word) => word !== "").length,
+          }),
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      setState((prev) => ({
+        ...prev,
+        openAIFetch: {
+          ...prev.openAIFetch,
+          isLoading: true,
+        },
+      }));
+    }
+  }
 
   return (
     <div className="h-full relative group overflow-y-scroll flex flex-col">
@@ -158,9 +259,8 @@ const Tiptap = () => {
           <button
             type="button"
             className="text-white text-sm w-full lg:w-fit px-2 py-2 hover:bg-blue-300 transition-all duration-200 bg-blue-600 border-2 rounded-lg"
-            // disabled=""
-          >
-            <span>Humanize</span>
+            onClick={humanizeSampleUsage}>
+            Humanize
           </button>
         </div>
       </div>

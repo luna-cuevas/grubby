@@ -9,7 +9,7 @@ const page = (props: Props) => {
       <div className="mb-5 text-center text-6xl font-bold md:text-3xl">
         History
       </div>
-      <div className="flex flex-col gap-y-5 lg:gap-y-3">
+      <div className="flex flex-col gap-y-5 px-4 lg:gap-y-3 max-w-[1000px] mx-auto">
         <HistoryCards />
       </div>
     </div>
