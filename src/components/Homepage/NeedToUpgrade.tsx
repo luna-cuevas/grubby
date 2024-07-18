@@ -12,8 +12,8 @@ const NeedToUpgrade = (props: Props) => {
   const router = useRouter();
   return (
     <div
-      className={`h-full  w-full mx-auto fixed  z-[100000] bg-black bg-opacity-50 px-4 ${
-        state.limitReachPopup ? "flex  top-0 bottom-0" : "hidden"
+      className={`h-full  w-full mx-auto top-0 bottom-0  z-[1000000] bg-black bg-opacity-50 px-4 ${
+        state.limitReachPopup ? "fixed flex" : "hidden"
       }`}>
       <div className="m-auto max-w-[600px]  w-fit p-8 bg-gray-200 rounded-lg">
         <div className="flex flex-col items-center  text-center">
