@@ -3,6 +3,7 @@ import ModeSelect from "@/components/Homepage/ModeSelect";
 import Results from "@/components/Homepage/Results";
 import Tiptap from "@/components/Homepage/TipTapEditor";
 import Image from "next/image";
+import { humanizerAPI } from "../../utils/humanize";
 
 const FAQs = [
   {
@@ -38,7 +39,9 @@ const FAQs = [
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const shortTest = `Economically, globalization has enabled countries to tap into larger markets, leading to increased trade and investment. Companies can source materials and labor from wherever they are most cost-effective, which ultimately lowers prices and increases the variety of products available to consumers. For some nations, it has catalyzed growth and development, creating jobs and lifting millions out of poverty. On the other hand, it has also led to significant challenges, such as the erosion of local industries unable to compete with international corporations and the exploitation of labor in developing countries.`;
+
   const results = {
     text: "",
     mode: "Simple",
@@ -46,8 +49,8 @@ export default function Home() {
   const loading = false;
   return (
     <main className=" min-h-screen ">
-      <div className="absolute -z-10 top-0 w-screen h-screen bg-gradient-to-r from-[#48629b] to-[#622d91]"></div>
-      <div className="z-10 h-full text-white relative min-h-screen px-4 pb-[109px] pt-[128px] md:pb-16 md:pt-20 2xl:pt-[80px]">
+      <div className="absolute  -z-10 top-0 w-screen h-screen bg-gradient-to-r from-[#48629b] to-[#622d91]"></div>
+      <div className="z-10 h-full bg-gradient-to-r from-[#48629b] to-[#622d91] text-white relative min-h-screen px-4 pb-[109px] pt-[128px] md:pb-16 md:pt-20 2xl:pt-[80px]">
         <h2 className="text-4xl w-fit mx-auto font-extrabold text-center hero_gradient text-transparent">
           Grubby AI Detection
         </h2>
@@ -96,7 +99,7 @@ export default function Home() {
       </div>
       <div className="bg-white flex flex-col py-6 justify-center">
         <h2 className="font-bold text-2xl w-fit mx-auto">FAQs</h2>
-        <div className="w-1/2 mx-auto">
+        <div className="px-6 max-w-[800px] w-full mx-auto">
           <FAQAccordions faqs={FAQs} />
         </div>
       </div>

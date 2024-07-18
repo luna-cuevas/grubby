@@ -7,7 +7,7 @@ import Image from "next/image";
 import { globalStateAtom } from "@/context/atoms";
 import { useAtom } from "jotai";
 import { useSupabase } from "@/lib/supabase";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import NavList from "./NavList";
 
@@ -21,6 +21,7 @@ export const Navigation = (props: Props) => {
   const [state, setState] = useAtom(globalStateAtom);
   const supabase = useSupabase();
   const path = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -51,6 +52,7 @@ export const Navigation = (props: Props) => {
       setState({ ...state, user: session.user, session, isSignInOpen: false });
     } else if (event === "SIGNED_OUT") {
       setState({ ...state, user: null, session: null, isSignInOpen: false });
+      router.push("/");
       toast.success("Signed out");
     } else {
       setState({ ...state, user: null });
