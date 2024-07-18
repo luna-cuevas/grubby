@@ -31,8 +31,9 @@ const NeedToUpgrade = (props: Props) => {
             </svg>
           </span>
           <p className="pb-5 pt-4 lg:text-2xl text-lg">
-            Sorry, you've reached your plan's word limit. To get more words,
-            please <span className="text-blue-600">upgrade</span> your plan.
+            Sorry, you&lsquo;ve reached your plan&lsquo;s word limit. To get
+            more words, please <span className="text-blue-600">upgrade</span>{" "}
+            your plan.
           </p>
         </div>
         <div className="text-center mt-5 flex gap-4 justify-center">
