@@ -57,7 +57,6 @@ const Tiptap = () => {
     }
 
     const data = await response.json();
-    console.log(data.inputMax, data.wordsMax);
     setInputLimit(data.inputMax);
     setWordMax(data.wordsMax);
   };

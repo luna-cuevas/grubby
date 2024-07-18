@@ -1,12 +1,15 @@
 "use client";
 import { globalStateAtom } from "@/context/atoms";
 import { useAtom } from "jotai";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type Props = {};
 
 const NeedToUpgrade = (props: Props) => {
   const [state, setState] = useAtom(globalStateAtom);
+  const router = useRouter();
   return (
     <div
       className={`h-full  w-full mx-auto  z-[1000] bg-black bg-opacity-50  ${
@@ -17,7 +20,13 @@ const NeedToUpgrade = (props: Props) => {
           You need to upgrade to access this feature
         </div>
         <div className="text-center mt-5 flex gap-4 justify-center">
-          <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+          <button
+            type="button"
+            onClick={() => {
+              setState((prev) => ({ ...prev, wordLimitReached: false }));
+              router.push("/pricing");
+            }}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg">
             Upgrade
           </button>
           <button
