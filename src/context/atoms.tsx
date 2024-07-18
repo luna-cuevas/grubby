@@ -9,6 +9,7 @@ type State = {
   darkMode: boolean;
   firstVisit: boolean;
   wordLimitReached: boolean;
+  limitReachPopup: boolean;
   openAIFetch: {
     isLoading: boolean;
     message: string;
@@ -62,6 +63,7 @@ const initialState: State = {
   darkMode: false,
   firstVisit: true,
   wordLimitReached: false,
+  limitReachPopup: false,
   openAIFetch: {
     isLoading: false,
     message: "",
@@ -77,6 +79,6 @@ const initialState: State = {
 
 // Create an atom with local storage persistence for the entire application state
 export const globalStateAtom = atomWithLocalStorage(
-  "GrubbyAppGlobalState-v3",
+  "GrubbyAppGlobalState-v4",
   initialState
 );

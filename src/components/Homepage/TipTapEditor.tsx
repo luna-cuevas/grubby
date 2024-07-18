@@ -139,6 +139,13 @@ const Tiptap = () => {
       router.push("/sign-up");
       return;
     }
+    if (state.wordLimitReached) {
+      setState((prev) => ({
+        ...prev,
+        limitReachPopup: true,
+      }));
+      return;
+    }
 
     if (content.length === 0) {
       toast.error("Please write something before humanizing.");
@@ -192,6 +199,7 @@ const Tiptap = () => {
         ) {
           setState((prev) => ({
             ...prev,
+            limitReachPopup: true,
             wordLimitReached: true,
           }));
           console.error("Error setting history:", setHistoryJson.error);
