@@ -21,7 +21,7 @@ import {
 } from "@heroicons/react/24/solid";
 // import { trajanLight, trajanRegular } from "@/lib/fonts";
 import { useAtom } from "jotai";
-import { globalStateAtom } from "@/context/atoms";
+import { globalStateAtom, initialState } from "@/context/atoms";
 import { useSupabase } from "@/lib/supabase";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -65,16 +65,7 @@ function ProfileMenu() {
     await supabase.auth.signOut();
 
     // Clear session and user from global state
-    setState({
-      ...state,
-      session: null,
-      user: null,
-      openAIFetch: {
-        result: {},
-        isLoading: false,
-        message: "",
-      },
-    });
+    setState(initialState);
 
     console.log("Signed out successfully");
 

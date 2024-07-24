@@ -55,7 +55,7 @@ const atomWithLocalStorage = (key: string, initialValue: any) => {
 };
 
 // Define your initial state
-const initialState: State = {
+export const initialState: State = {
   isSignInOpen: false,
   isSubscribed: false,
   session: null,
