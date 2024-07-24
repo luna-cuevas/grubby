@@ -45,9 +45,9 @@ const LoginForm = (props: Props) => {
   const signUpWithGoogle = async () => {
     supabase.auth.signInWithOAuth({
       provider: "google",
-      // options: {
-      //   redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}`,
-      // },
+      options: {
+        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+      },
     });
   };
 
