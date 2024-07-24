@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
       const session = await stripe.billingPortal.sessions.create({
         customer: customerId,
-        return_url: origin + "/pricing",
+        return_url: cancelUrl,
 
         flow_data: {
           type: "subscription_update",
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
           after_completion: {
             type: "redirect",
             redirect: {
-              return_url: origin + "/pricing?updated=true",
+              return_url: successUrl,
             },
           },
         },

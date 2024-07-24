@@ -2,6 +2,7 @@ import { atom } from "jotai";
 
 type State = {
   isSignInOpen: boolean;
+  isSubscribed: boolean;
   session: null | string;
   user: null | string;
   showMobileMenu: boolean;
@@ -56,6 +57,7 @@ const atomWithLocalStorage = (key: string, initialValue: any) => {
 // Define your initial state
 const initialState: State = {
   isSignInOpen: false,
+  isSubscribed: false,
   session: null,
   user: null,
   showMobileMenu: false,
@@ -79,6 +81,6 @@ const initialState: State = {
 
 // Create an atom with local storage persistence for the entire application state
 export const globalStateAtom = atomWithLocalStorage(
-  "GrubbyAppGlobalState-v5",
+  "GrubbyAppGlobalState-v6",
   initialState
 );

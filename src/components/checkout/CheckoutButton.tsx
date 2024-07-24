@@ -5,6 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useAtom } from "jotai";
 import { globalStateAtom } from "@/context/atoms";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -17,6 +18,11 @@ const CheckoutButton: React.FC<{ priceId: string }> = ({ priceId }) => {
   const handleClick = async () => {
     if (!state.user) {
       router.push("/login");
+      return;
+    }
+    if (state.isSubscribed) {
+      router.push("/account");
+      toast.error("You are already subscribed.");
       return;
     }
     const response = await fetch("/api/createCheckout", {

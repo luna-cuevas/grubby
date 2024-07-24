@@ -23,6 +23,30 @@ export const Navigation = (props: Props) => {
   const path = usePathname();
   const router = useRouter();
 
+  const fetchSubscription = async () => {
+    try {
+      const response = await fetch("/api/isSubscribed", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: state.user?.id,
+        }),
+      });
+      const data = await response.json();
+      if (data.subscription_id != "") {
+        setState({ ...state, isSubscribed: true });
+      }
+    } catch (error) {
+      console.error("Error fetching subscription: ", error);
+    }
+  };
+  useEffect(() => {
+    if (state.user) {
+      fetchSubscription();
+    }
+  }, []);
   useEffect(() => {
     setIsLoaded(true);
   }, []);

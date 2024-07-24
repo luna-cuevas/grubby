@@ -141,7 +141,7 @@ const Tiptap = () => {
       router.push("/sign-up");
       return;
     }
-    if (wordCount > wordMax) {
+    if (state.wordLimitReached) {
       setState((prev) => ({
         ...prev,
         limitReachPopup: true,

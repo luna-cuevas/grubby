@@ -31,7 +31,6 @@ const SubscriptionPlans = (props: Props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
-  const updatedSub = searchParams.get("updated");
   const supabase = useSupabase();
 
   const [state, setState] = useAtom(globalStateAtom);
@@ -70,44 +69,6 @@ const SubscriptionPlans = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    if (updatedSub) {
-      const updateSubscription = async () => {
-        const retrieveSub = await stripe.subscriptions.search({
-          query: `status:"active" AND metadata["userId"]:"${state.user.id}"`,
-        });
-
-        const updateSub = retrieveSub.data[0];
-
-        const retrievePrice = await stripe.prices.retrieve(
-          updateSub.items.data[0].price.id,
-          {
-            expand: ["product"],
-          }
-        );
-        // @ts-ignore
-        const productName = retrievePrice.product.name;
-
-        const { data, error } = await supabase.from("profiles").update({
-          subscription_id: updateSub.id,
-          subscription_plan: productName,
-          // @ts-ignore
-          wordsMax: retrievePrice.product.metadata.wordsPerMonth,
-          // @ts-ignore
-          inputMax: retrievePrice.product.metadata.inputMax,
-          priceId: updateSub.items.data[0].price.id,
-        });
-
-        if (error) {
-          console.error("Error updating profile:", error.message);
-        } else {
-          console.log("Profile updated successfully:", data);
-        }
-      };
-      updateSubscription();
-    }
-  }, [updatedSub]);
-
-  useEffect(() => {
     if (sessionId) {
       const updateSubscription = async () => {
         const retrieveCheckout = await stripe.checkout.sessions.retrieve(
@@ -139,6 +100,7 @@ const SubscriptionPlans = (props: Props) => {
             inputMax: retrievePrice.product.metadata.inputMax,
             priceId,
             subscription_id: subscription,
+            stripe_customer_id: retrieveCheckout.customer as string,
           })
           .eq("id", state.user.id);
 

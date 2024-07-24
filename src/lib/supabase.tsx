@@ -1,12 +1,13 @@
 import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { createBrowserClient } from "@supabase/ssr";
 
 let supabaseClient: SupabaseClient | null = null;
 
 export const useSupabase = () => {
   if (!supabaseClient) {
-    supabaseClient = createClient(
+    supabaseClient = createBrowserClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL as string,
-      process.env.NEXT_PUBLIC_SUPABASE_PUBLIC_KEY as string,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
       {
         auth: {
           autoRefreshToken: true,
@@ -22,7 +23,7 @@ export const useSupabase = () => {
 };
 
 export const useSupabaseWithServiceRole = () => {
-  supabaseClient = createClient(
+  supabaseClient = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL as string,
     process.env.SUPABASE_SERVICE_ROLE as string,
     {

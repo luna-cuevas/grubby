@@ -3,7 +3,7 @@ import { globalStateAtom } from "@/context/atoms";
 import { useSupabase } from "@/lib/supabase";
 import { useAtom } from "jotai";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,7 @@ type Props = {};
 
 const SignUpForm = (props: Props) => {
   const [state, setState] = useAtom(globalStateAtom);
+  const searchParams = useSearchParams();
   const [loginWithEmail, setLoginWithEmail] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [otpCode, setOtpCode] = useState("");
@@ -21,6 +22,28 @@ const SignUpForm = (props: Props) => {
   const supabase = useSupabase();
 
   const sendOTP = async () => {
+    // Check if user is already registered
+    const { data: existingUser, error: checkError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (checkError && checkError.code !== "PGRST116") {
+      // Handle unexpected error
+      toast.error("An unexpected error occurred. Please try again.");
+      return;
+    }
+
+    if (existingUser) {
+      // User already registered
+      router.push("/login");
+
+      toast.error("User already registered. Please log in.");
+      return;
+    }
+
+    // Proceed to send OTP
     const { data, error } = await supabase.auth.signInWithOtp({
       email: email,
       options: {
@@ -101,7 +124,7 @@ const SignUpForm = (props: Props) => {
     supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: process.env.NEXT_PUBLIC_BASE_URL,
+        redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/auth/callback`,
       },
     });
   };
@@ -248,22 +271,22 @@ const SignUpForm = (props: Props) => {
                     <g transform="matrix(.727273 0 0 .727273 -.954545 -1.45455)">
                       <path
                         d="M0 37V11l17 13z"
-                        clip-path="url(#B)"
+                        clipPath="url(#B)"
                         fill="#fbbc05"
                       />
                       <path
                         d="M0 11l17 13 7-6.1L48 14V0H0z"
-                        clip-path="url(#B)"
+                        clipPath="url(#B)"
                         fill="#ea4335"
                       />
                       <path
                         d="M0 37l30-23 7.9 1L48 0v48H0z"
-                        clip-path="url(#B)"
+                        clipPath="url(#B)"
                         fill="#34a853"
                       />
                       <path
                         d="M48 48L17 24l-4-3 35-10z"
-                        clip-path="url(#B)"
+                        clipPath="url(#B)"
                         fill="#4285f4"
                       />
                     </g>
@@ -313,22 +336,22 @@ const SignUpForm = (props: Props) => {
                   <g transform="matrix(.727273 0 0 .727273 -.954545 -1.45455)">
                     <path
                       d="M0 37V11l17 13z"
-                      clip-path="url(#B)"
+                      clipPath="url(#B)"
                       fill="#fbbc05"
                     />
                     <path
                       d="M0 11l17 13 7-6.1L48 14V0H0z"
-                      clip-path="url(#B)"
+                      clipPath="url(#B)"
                       fill="#ea4335"
                     />
                     <path
                       d="M0 37l30-23 7.9 1L48 0v48H0z"
-                      clip-path="url(#B)"
+                      clipPath="url(#B)"
                       fill="#34a853"
                     />
                     <path
                       d="M48 48L17 24l-4-3 35-10z"
-                      clip-path="url(#B)"
+                      clipPath="url(#B)"
                       fill="#4285f4"
                     />
                   </g>

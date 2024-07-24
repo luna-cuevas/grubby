@@ -1,15 +1,28 @@
 "use client";
 import { globalStateAtom } from "@/context/atoms";
+import { loadStripe } from "@stripe/stripe-js";
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
 import React, { use, useEffect } from "react";
 
 type Props = {};
 
 const UpdateSubscription = (props: Props) => {
   const [state, setState] = useAtom(globalStateAtom);
+  const router = useRouter();
 
-  const createCheckoutSession = async () => {
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
+  );
+
+  const handleSubscription = async () => {
+    if (state.isSubscribed === false) {
+      router.push("/pricing");
+      return;
+    }
     try {
+      const stripe = await stripePromise;
+
       const response = await fetch("/api/createCheckout", {
         method: "POST",
         headers: {
@@ -17,11 +30,16 @@ const UpdateSubscription = (props: Props) => {
         },
         body: JSON.stringify({
           userId: state.user?.id,
+          cancelUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/account`,
+          successUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/account`,
         }),
       });
       const data = await response.json();
-      console.log("data", data);
-      window.location.href = data.url;
+      if (data.sessionId) {
+        stripe?.redirectToCheckout({ sessionId: data.sessionId });
+      } else if (data.url) {
+        router.push(data.url);
+      }
     } catch (error) {
       console.error("Error creating checkout session: ", error);
     }
@@ -35,7 +53,7 @@ const UpdateSubscription = (props: Props) => {
       </div>
       <button
         type="button"
-        onClick={createCheckoutSession}
+        onClick={handleSubscription}
         className="text-blue-600 hover:text-blue-400 text-sm">
         Choose your plan
       </button>
