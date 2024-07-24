@@ -23,7 +23,7 @@ export const Navigation = (props: Props) => {
   const path = usePathname();
   const router = useRouter();
 
-  const fetchSubscription = async () => {
+  const fetchSubscription = async (userId: string) => {
     try {
       const response = await fetch("/api/isSubscribed", {
         method: "POST",
@@ -31,22 +31,16 @@ export const Navigation = (props: Props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: state.user?.id,
+          id: userId,
         }),
       });
       const data = await response.json();
-      if (data.subscription_id != "") {
-        setState({ ...state, isSubscribed: true });
-      }
+      return data;
     } catch (error) {
       console.error("Error fetching subscription: ", error);
     }
   };
-  useEffect(() => {
-    if (state.user) {
-      fetchSubscription();
-    }
-  }, [state.session]);
+
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -73,7 +67,15 @@ export const Navigation = (props: Props) => {
         event === "USER_UPDATED") &&
       session
     ) {
-      setState({ ...state, user: session.user, session, isSignInOpen: false });
+      const data = await fetchSubscription(session.user.id);
+
+      setState({
+        ...state,
+        user: session.user,
+        session,
+        isSignInOpen: false,
+        isSubscribed: data.subscription_id != "",
+      });
     } else if (event === "SIGNED_OUT") {
       setState({ ...state, user: null, session: null, isSignInOpen: false });
       router.push("/");

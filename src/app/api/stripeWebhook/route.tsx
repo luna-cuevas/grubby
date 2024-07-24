@@ -1,15 +1,14 @@
 import Stripe from "stripe";
-import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
-import { useSupabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabaseServer";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const body = await req.text();
   const sig = req.headers.get("stripe-signature") as string;
   let event: Stripe.Event;
 
-  const supabase = useSupabase();
+  const supabase = createClient();
 
   try {
     event = stripe.webhooks.constructEvent(

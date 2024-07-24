@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { openSans } from "@/fonts/openSans";
 import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
+import { Provider } from "jotai";
 
 export const metadata: Metadata = {
   title: "Grubby.ai",
@@ -19,20 +20,22 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${openSans.className} relative`}>
-        <Navigation />
-        {children}
-        <ToastContainer
-          position="bottom-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={true}
-          closeOnClick={true}
-          rtl={false}
-          pauseOnFocusLoss={true}
-          draggable={true}
-          pauseOnHover={true}
-        />
-        <NeedToUpgrade />
+        <Provider>
+          <Navigation />
+          {children}
+          <ToastContainer
+            position="bottom-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick={true}
+            rtl={false}
+            pauseOnFocusLoss={true}
+            draggable={true}
+            pauseOnHover={true}
+          />
+          <NeedToUpgrade />
+        </Provider>
       </body>
     </html>
   );
