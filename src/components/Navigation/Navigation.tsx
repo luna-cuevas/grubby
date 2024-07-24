@@ -46,7 +46,7 @@ export const Navigation = (props: Props) => {
     if (state.user) {
       fetchSubscription();
     }
-  }, [state.user]);
+  }, [state.session]);
   useEffect(() => {
     setIsLoaded(true);
   }, []);

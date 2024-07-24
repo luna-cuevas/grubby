@@ -36,8 +36,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
           subscription_plan: "free",
           wordsMax: 100,
           inputMax: 100,
-          priceId: null,
-          subscriptionId: null,
+          priceId: "",
+          subscription_id: "",
+          stripe_customer_id: "",
         })
         .eq("stripe_customer_id", customerId);
 
@@ -60,19 +61,22 @@ export async function POST(req: NextRequest, res: NextResponse) {
       });
       const product = price.product as Stripe.Product;
       const plan = product.name;
-      const wordsLeft = parseInt(product.metadata.wordsPerMonth, 10);
+      const wordsMax = product.metadata.wordsPerMonth;
+      const inputMax = product.metadata.inputMax;
 
       // Find the customer in your database and update the subscription plan and wordsLeft
       const { data: profiles, error } = await supabase
         .from("profiles")
         .update({
           subscription_plan: plan,
-          wordsMax: wordsLeft,
-          priceId,
+          wordsMax,
+          inputMax,
+          priceId: price.id,
           subscription_id: subscription.id,
           stripe_customer_id: customerId,
         })
-        .eq("stripe_customer_id", customerId);
+        .eq("stripe_customer_id", customerId)
+        .select();
 
       if (error) {
         console.log("Supabase error:", error.message);
