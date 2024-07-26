@@ -5,10 +5,12 @@ export async function GET() {
   try {
     const products = await stripe.products.list({
       limit: 100,
+      active: true,
     });
 
     const prices = await stripe.prices.list({
       limit: 100,
+      active: true,
     });
 
     let plans = products.data.map((product) => {

@@ -64,7 +64,8 @@ export const Navigation = (props: Props) => {
     if (
       (event === "SIGNED_IN" ||
         event === "INITIAL_SESSION" ||
-        event === "USER_UPDATED") &&
+        event === "USER_UPDATED" ||
+        event === "TOKEN_REFRESHED") &&
       session
     ) {
       const data = await fetchSubscription(session.user.id);

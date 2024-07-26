@@ -47,10 +47,10 @@ export function FAQAccordions({ faqs }: Props) {
       <AccordionHeader
         onClick={() => handleOpen(index)}
         className="flex justify-between items-center py-4">
-        <h3 className="text-lg w-full font-semibold">{faq.question}</h3>
+        <h3 className="text-xl w-full font-semibold">{faq.question}</h3>
         <Icon id={index} open={open} />
       </AccordionHeader>
-      <AccordionBody className="py-4">{faq.answer}</AccordionBody>
+      <AccordionBody className="py-4 text-base">{faq.answer}</AccordionBody>
     </Accordion>
   ));
 }

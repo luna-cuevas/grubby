@@ -39,7 +39,7 @@ const WordsAvailable = (props: Props) => {
         The number of words available for use.
       </div>
       <div className="text-f-text capitalize text-sm font-semibold">
-        <span>{wordsMax - wordCount}</span>
+        <span>{wordsMax - wordCount} Words Remaining.</span>
       </div>
     </div>
   );

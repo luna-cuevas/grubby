@@ -3,17 +3,47 @@ import { globalStateAtom } from "@/context/atoms";
 import { loadStripe } from "@stripe/stripe-js";
 import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useState } from "react";
 
 type Props = {};
 
 const UpdateSubscription = (props: Props) => {
   const [state, setState] = useAtom(globalStateAtom);
+  const [subscriptionPlan, setSubscriptionPlan] = useState({});
   const router = useRouter();
 
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
   );
+
+  const fetchSubscription = async (userId: string) => {
+    try {
+      const response = await fetch("/api/getSubDetails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userId,
+        }),
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching subscription: ", error);
+    }
+  };
+
+  useEffect(() => {
+    const getSubscription = async () => {
+      const subscription = await fetchSubscription(state.user?.id);
+      if (subscription) {
+        console.log(subscription);
+        setSubscriptionPlan(subscription);
+      }
+    };
+    getSubscription();
+  }, []);
 
   const handleSubscription = async () => {
     if (state.isSubscribed === false) {

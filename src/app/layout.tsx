@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { openSans } from "@/fonts/openSans";
 import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
 import { Provider } from "jotai";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Grubby.ai",
@@ -35,6 +36,7 @@ export default function RootLayout({
             pauseOnHover={true}
           />
           <NeedToUpgrade />
+          <Footer />
         </Provider>
       </body>
     </html>

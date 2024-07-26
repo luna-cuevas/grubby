@@ -75,14 +75,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
           stripe_customer_id: customerId,
         })
         .eq("stripe_customer_id", customerId)
-        .select();
+        .select("*");
 
       if (error) {
         console.log("Supabase error:", error.message);
         return NextResponse.json({ error: error.message });
       }
-
-      console.log("Subscription updated successfully:", profiles);
 
       break;
     }
