@@ -5,11 +5,9 @@ import React from "react";
 
 type Props = {};
 
-const supabase = createClient();
-const userData = await supabase.auth.getUser();
+const fetchHistory = async (userData: any) => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-const fetchHistory = async () => {
   if (!userData.data.user) {
     return null;
   }
@@ -30,7 +28,9 @@ const fetchHistory = async () => {
 };
 
 const page = async (props: Props) => {
-  const historyData = await fetchHistory();
+  const supabase = createClient();
+  const userData = await supabase.auth.getUser();
+  const historyData = await fetchHistory(userData);
 
   return (
     <div className="mx-auto py-12 md:py-6 bg-gray-200 min-h-screen">

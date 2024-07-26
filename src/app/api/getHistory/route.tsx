@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { useSupabase } from "@/lib/supabase";
 import { createClient } from "@/lib/supabaseServer";
 
 export async function POST(request: Request) {
@@ -32,7 +31,6 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: error.message }, { status: 500 });
       }
 
-      console.log("history data api", data);
       return NextResponse.json(data);
     }
   } catch (error: any) {
