@@ -2,6 +2,10 @@ import { stripe } from "@/lib/stripe"; // Assuming you have a stripe instance in
 import { createClient } from "@/lib/supabaseServer";
 import { NextRequest, NextResponse } from "next/server";
 
+interface Product {
+  name: string;
+}
+
 export async function POST(request: NextRequest) {
   const { id } = await request.json();
   const supabase = createClient();
@@ -51,7 +55,7 @@ export async function POST(request: NextRequest) {
         expand: ["product"],
       }
     );
-    const product = price.product;
+    const product = price.product as Product;
 
     // Prepare the response data
     const responseData = {
