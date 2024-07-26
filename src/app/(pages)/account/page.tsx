@@ -5,10 +5,7 @@ import React from "react";
 
 type Props = {};
 
-const supabase = createClient();
-const userData = await supabase.auth.getUser();
-
-const getWordCount = async () => {
+const getWordCount = async (userData: any) => {
   if (!userData.data.user) {
     return null;
   }
@@ -34,7 +31,7 @@ const getWordCount = async () => {
   }
 };
 
-const fetchSubscription = async () => {
+const fetchSubscription = async (userData: any) => {
   if (!userData.data.user) {
     return null;
   }
@@ -59,9 +56,12 @@ const fetchSubscription = async () => {
 };
 
 const page = async () => {
-  const wordCount = await getWordCount();
+  const supabase = createClient();
+  const userData = await supabase.auth.getUser();
 
-  const subscription = await fetchSubscription();
+  const wordCount = await getWordCount(userData);
+
+  const subscription = await fetchSubscription(userData);
 
   return (
     <div className="text-f-text mx-auto max-w-[800px] py-12 md:px-4 md:py-6">
