@@ -1,49 +1,25 @@
 "use client";
 import { globalStateAtom } from "@/context/atoms";
+import { BoltIcon } from "@heroicons/react/24/solid";
 import { loadStripe } from "@stripe/stripe-js";
 import { useAtom } from "jotai";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
 
-type Props = {};
+type Props = {
+  subscription: any;
+};
 
 const UpdateSubscription = (props: Props) => {
+  const { subscriptionName, startDate, renewalDate, monthlyPrice } =
+    props.subscription;
   const [state, setState] = useAtom(globalStateAtom);
-  const [subscriptionPlan, setSubscriptionPlan] = useState({});
   const router = useRouter();
 
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
   );
-
-  const fetchSubscription = async (userId: string) => {
-    try {
-      const response = await fetch("/api/getSubDetails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: userId,
-        }),
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error("Error fetching subscription: ", error);
-    }
-  };
-
-  useEffect(() => {
-    const getSubscription = async () => {
-      const subscription = await fetchSubscription(state.user?.id);
-      if (subscription) {
-        console.log(subscription);
-        setSubscriptionPlan(subscription);
-      }
-    };
-    getSubscription();
-  }, []);
 
   const handleSubscription = async () => {
     if (state.isSubscribed === false) {
@@ -78,15 +54,87 @@ const UpdateSubscription = (props: Props) => {
   return (
     <div className=" overflow-hidden rounded-[8px] border bg-white p-8 md:px-6">
       <div className="mb-2 font-semibold">Your Subscription</div>
-      <div className="text-f-text-secondary mb-5 text-sm">
-        You have not subscribed to any AI Humanizer plan.
-      </div>
-      <button
-        type="button"
-        onClick={handleSubscription}
-        className="text-blue-600 hover:text-blue-400 text-sm">
-        Choose your plan
-      </button>
+      {subscriptionName && startDate && renewalDate && monthlyPrice ? (
+        <div>
+          <div className="mb-5 flex items-center justify-between">
+            <div className="text-display/[0.65] text-xs">
+              <div className="mb-1 ">Your Plan</div>
+              <div className="text-display/[0.85] flex items-center gap-x-1 text-sm font-semibold">
+                <div>{subscriptionName}</div>
+              </div>
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={handleSubscription}
+                className="bg-blue-600 text-white hover:bg-blue-400 flex h-[34px] min-w-[99px] items-center justify-center rounded-[4px] text-sm font-semibold">
+                <span className="inline-flex justify-center items-center h-4 w-4">
+                  <BoltIcon />
+                </span>
+                Upgrade
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <div className="text-display/[0.65] mb-1 text-xs">
+              Monthly Payment
+            </div>
+            <div className="text-display/[0.85] text-lg font-semibold">
+              ${monthlyPrice}
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <div className="text-display/[0.65] mb-[2px] text-xs">
+              Renewal Date
+            </div>
+            <div className="text-display/[0.85] flex items-center gap-x-1 text-sm font-semibold">
+              {renewalDate.split("T")[0]}
+            </div>
+          </div>
+
+          <div className="mb-5 flex justify-between">
+            <div>
+              <div className="text-display/[0.65] mb-[2px] text-xs">
+                Subscription started on
+              </div>
+              <div className="text-display/[0.85] text-sm font-semibold">
+                {startDate.split("T")[0]}
+              </div>
+            </div>
+          </div>
+
+          <div className="border-f-border mt-5 border-t pt-5">
+            <div className="pb-2 text-sm font-semibold">Payment method</div>
+            <div className="text-display/[0.85] mb-3 text-xs">
+              Cards will be charged either at the end of the month or whenever
+              your balance exceeds the usage threshold. All major credit / debit
+              cards accepted.
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handleSubscription}
+                className="bg-blue-600 text-white hover:bg-blue-400 h-[34px] min-w-[101px] rounded text-sm font-semibold">
+                <span>Changes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <div className="text-f-text-secondary mb-5 text-sm">
+            You have not subscribed to any AI Humanizer plan.
+          </div>
+          <Link
+            href="/pricing"
+            type="button"
+            className="text-blue-600 hover:text-blue-400 text-sm">
+            Choose your plan
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

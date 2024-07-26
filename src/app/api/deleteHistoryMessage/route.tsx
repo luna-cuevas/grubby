@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import { useSupabase, useSupabaseWithServiceRole } from "@/lib/supabase";
 
 export async function POST(request: Request) {
-  const { userId, messageId } = await request.json();
+  const formData = await request.formData();
+  const userId = formData.get("userId");
+  const messageId = formData.get("messageId");
   const supabase = useSupabaseWithServiceRole();
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-  console.log("userId", userId);
-  console.log("messageId", messageId);
   try {
     const { data, error } = await supabase
       .from("history")
@@ -18,7 +19,8 @@ export async function POST(request: Request) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    return NextResponse.json(data);
+
+    return NextResponse.redirect(`${baseUrl}/history`);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

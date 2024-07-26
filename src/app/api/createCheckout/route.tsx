@@ -34,7 +34,6 @@ export async function POST(request: Request) {
       const session = await stripe.billingPortal.sessions.create({
         customer: customerId,
         return_url: cancelUrl,
-
         flow_data: {
           type: "subscription_update",
           subscription_update: {
@@ -54,6 +53,7 @@ export async function POST(request: Request) {
       const session = await stripe.checkout.sessions.create({
         mode: "subscription",
         payment_method_types: ["card"],
+        allow_promotion_codes: true,
         line_items: [
           {
             price: priceId,

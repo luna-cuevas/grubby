@@ -40,7 +40,7 @@ const Tiptap = () => {
         toast.error(`Word limit exceeded! Limit: ${inputLimit} words.`);
         editor.commands.undo();
       } else {
-        setContent(editor.getHTML());
+        setContent(editor.getText());
       }
     },
   });

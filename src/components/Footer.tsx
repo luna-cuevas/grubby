@@ -64,13 +64,13 @@ const socialLinks = [
 export default function Footer() {
   return (
     <footer className="text-display-secondary border-t border-[#DBD9FB] pb-6 pt-9 md:pb-0 md:pt-6">
-      <div className="mx-auto grid max-w-[1232px] lg:grid-cols-[1fr_max(200px)_1fr_239px] items-start justify-between lg:gap-x-[160px] px-4  md:justify-center md:gap-5 grid-cols-2 gap-8">
+      <div className="mx-auto grid max-w-[1232px] xl:grid-cols-[1fr_max(200px)_1fr_239px] items-start justify-between xl:gap-x-[160px] px-4  md:justify-center md:gap-5 grid-cols-2 gap-8">
         {footerLinks.map((section) => (
           <div key={section.title} className="space-y-3">
             <p className="font-bold text-[#1B1746]">{section.title}</p>
             <ul className="space-y-3 text-sm">
-              {section.links.map((link) => (
-                <li key={link.href}>
+              {section.links.map((link, index) => (
+                <li key={index}>
                   <Link
                     className="hover:text-blue-600 text-[#555272]"
                     href={link.href}>
@@ -85,8 +85,8 @@ export default function Footer() {
           <div className=" md:mx-auto">
             <p className="pb-3 font-bold text-[#1B1746]">Follow us:</p>
             <ul className="flex flex-wrap gap-x-3 md:mx-auto">
-              {socialLinks.map((link) => (
-                <li key={link.href}>
+              {socialLinks.map((link, index) => (
+                <li key={index}>
                   <Link
                     rel="nofollow"
                     target="_blank"

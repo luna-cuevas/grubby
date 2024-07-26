@@ -1,36 +1,12 @@
-"use client";
-import { globalStateAtom } from "@/context/atoms";
-import { useAtom } from "jotai";
-import React, { useEffect, useState } from "react";
-
-type Props = {};
+type Props = {
+  wordCount: {
+    wordCount: number;
+    wordsMax: number;
+  };
+};
 
 const WordsAvailable = (props: Props) => {
-  const [state, setState] = useAtom(globalStateAtom);
-  const [wordCount, setWordCount] = useState(0);
-  const [wordsMax, setWordsMax] = useState(0);
-
-  useEffect(() => {
-    const getWordCount = async () => {
-      try {
-        const response = await fetch("/api/getWordCount", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id: state.user?.id,
-          }),
-        });
-        const data = await response.json();
-        setWordCount(Number(data.wordCount));
-        setWordsMax(Number(data.wordsMax));
-      } catch (error) {
-        console.error("Error fetching word count: ", error);
-      }
-    };
-    getWordCount();
-  }, []);
+  const { wordCount, wordsMax } = props.wordCount;
 
   return (
     <div className=" overflow-hidden rounded-[8px] border bg-white p-8 md:px-6 mt-5">

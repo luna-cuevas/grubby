@@ -61,17 +61,22 @@ const NavList = ({}: {}) => {
           className={`
             ${state.isScrolled ? "text-black" : "text-white"}
             ${path != "/" && "!text-black"}
-          relative hidden lg:block my-auto  text-xl`}>
-          {/* <Image
-            src="/cypress-logo-with-text.svg"
-            alt="Cypress Logo"
-            fill
-            loading="eager"
-            className={`${
-              path == "/" ? "invert" : "invert-0"
-            } w-full h-full !object-contain dark:invert group-hover:invert-0 dark:group-hover:invert pt-2`}
-          /> */}
-          Grubby.ai
+           hidden lg:block my-auto `}>
+          <div className="relative w-[120px] mx-auto h-[50px]">
+            <Image
+              src="/images/grubby-logo.png"
+              alt="Grubby Logo"
+              fill
+              className={`${path != "/" ? "invert-0" : "invert"}
+                ${
+                  state.showMobileMenu || state.isScrolled
+                    ? "invert-0"
+                    : "invert"
+                }
+                
+                w-full h-full !object-contain group-hover:invert-0  dark:invert dark:group-hover:invert pt-2`}
+            />
+          </div>
         </Link>
         <div className="lg:w-fit !z-[3000000] lg:items-center items-start py-4 lg:py-0   px-4 bg-white lg:bg-transparent w-full flex lg:gap-2 gap-6 lg:flex-row flex-col">
           {navListItems.map(({ label, url }, key) => (

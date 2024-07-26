@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { useSupabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabaseServer";
 
 export async function POST(request: Request) {
   const { userId, messageId } = await request.json();
-  const supabase = useSupabase();
+  const supabase = createClient();
 
   try {
     if (messageId) {
@@ -27,8 +28,11 @@ export async function POST(request: Request) {
         .order("created_at", { ascending: false });
 
       if (error) {
+        console.error("Error fetching history:", error.message);
         return NextResponse.json({ error: error.message }, { status: 500 });
       }
+
+      console.log("history data api", data);
       return NextResponse.json(data);
     }
   } catch (error: any) {

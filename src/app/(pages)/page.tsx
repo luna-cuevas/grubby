@@ -1,17 +1,18 @@
 import { FAQAccordions } from "@/components/FAQ/FAQAccordions";
-import ModeSelect from "@/components/Homepage/ModeSelect";
 import Results from "@/components/Homepage/Results";
 import Tiptap from "@/components/Homepage/TipTapEditor";
-import Image from "next/image";
-import { humanizerAPI } from "../../utils/humanize";
 import {
   ArrowRightIcon,
-  InformationCircleIcon,
+  CheckBadgeIcon,
+  FaceFrownIcon,
+  FaceSmileIcon,
   StarIcon,
 } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import Tooltips from "@/components/Homepage/Tooltips";
 import HomeCarousel from "@/components/Homepage/HomeCarousel";
+import ProgressBar from "@/components/ProgressBar";
+import DetectionSection from "@/components/Homepage/DetectionSection";
 
 const FAQs = [
   {
@@ -255,6 +256,53 @@ const Home = () => {
     },
   ];
 
+  const detectionResults = [
+    {
+      name: "GPTzero",
+      imgSrc: "/images/gptzero-logo.png",
+      statusClass: "i-cus--a-facesoso",
+      statusColor: "#3FB05D",
+    },
+    {
+      name: "Copyleaks",
+      imgSrc:
+        "https://cdn.bypassai.ai/web-cdn/bypass/public/apple/images/copyleaks.png",
+      statusClass: "i-cus--a-facehappy",
+      statusColor: "#3FB05D",
+    },
+    {
+      name: "ZeroGPT",
+      imgSrc:
+        "https://cdn.bypassai.ai/web-cdn/bypass/public/apple/images/zerogpt.png",
+      statusClass: "i-cus--a-facehappy",
+      statusColor: "#3FB05D",
+    },
+    {
+      name: "Crossplag",
+      imgSrc: "/images/crossplag-logo.webp",
+      statusClass: "i-cus--a-facehappy",
+      statusColor: "#3FB05D",
+    },
+    {
+      name: "Sapling",
+      imgSrc: "/images/sapling-logo.webp",
+      statusClass: "i-cus--a-facehappy",
+      statusColor: "#3FB05D",
+    },
+    {
+      name: "Writer",
+      imgSrc: "/images/writer-logo.webp",
+      statusClass: "i-cus--a-facehappy",
+      statusColor: "#3FB05D",
+    },
+    {
+      name: "Content at Scale",
+      imgSrc: "/images/content-at-scale-logo.webp",
+      statusClass: "i-cus--a-facehappy",
+      statusColor: "#3FB05D",
+    },
+  ];
+
   return (
     <main className="min-h-screen">
       <div className="absolute -z-10 top-0 w-screen h-screen bg-gradient-to-r from-[#48629b] to-[#622d91]"></div>
@@ -293,6 +341,8 @@ const Home = () => {
                 </div>
               </div>
             </div>
+
+            <DetectionSection detectionResults={detectionResults} />
           </div>
         </div>
       </div>
@@ -360,7 +410,7 @@ const Home = () => {
           className="mx-auto mb-8 mt-6 flex h-2  lg:w-[120px] w-full z-50 rounded-full"
           style={{
             background:
-              "linear-gradient(to right, rgb(201, 255, 66) 0.02%, rgb(46, 255, 255) 36.48%, rgb(255, 223, 108) 67.03%, rgb(217, 64, 255) 99.74%);",
+              "linear-gradient(to right, rgb(201, 255, 66) 0.02%, rgb(46, 255, 255) 36.48%, rgb(255, 223, 108) 67.03%, rgb(217, 64, 255) 99.74%)",
           }}></span>
         <div className="flex w-full items-center lg:gap-x-[58px] rounded-3xl bg-[#F4F5F9] lg:px-14 lg:py-10 lg:flex-row flex-col gap-6 lg:rounded-xl px-6 py-5">
           <div className="max-w-[400px] ">
