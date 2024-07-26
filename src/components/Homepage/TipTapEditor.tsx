@@ -323,13 +323,13 @@ const Tiptap = () => {
           words
         </div>
         <div className="flex items-center gap-x-4 self-end w-full lg:w-fit md:justify-between lg:gap-x-3">
-          <button
+          {/* <button
             type="button"
             className="text-black text-sm w-full lg:w-fit px-2 py-2 transition-all duration-200 hover:text-white hover:bg-blue-600 border-blue-600 border-2 rounded-lg"
             // disabled=""
           >
             <span>Detect AI Text</span>
-          </button>
+          </button> */}
           <button
             type="button"
             className="text-white text-sm w-full lg:w-fit px-2 py-2 hover:bg-blue-300 transition-all duration-200 bg-blue-600 border-2 rounded-lg"

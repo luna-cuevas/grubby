@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import { Navigation } from "@/components/Navigation/Navigation";
 import { ToastContainer } from "react-toastify";
@@ -14,6 +13,13 @@ export async function generateMetadata() {
   return {
     metadataBase: new URL(`${baseUrl}`),
     title: "GrubbyAI - AI Detection Remover & Humanizer",
+    icons: [
+      {
+        url: "/images/grubby-logo-no-text.webp",
+        rel: "icon",
+        href: "/images/grubby-logo-no-text.webp",
+      },
+    ],
     description:
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
     openGraph: {
@@ -25,7 +31,7 @@ export async function generateMetadata() {
       siteName: "GrubbyAI",
       images: [
         {
-          url: `${baseUrl}/images/grubby-logo.png`,
+          url: `${baseUrl}/images/grubby-logo-no-text.web`,
           width: 600,
           height: 162,
           alt: "GrubbyAI - AI Detection Remover & Humanizer",
