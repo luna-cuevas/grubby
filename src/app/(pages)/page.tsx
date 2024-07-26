@@ -610,8 +610,8 @@ const Home = () => {
           <p className="pt-3 text-[#555272]">
             Your content safety is our top priority. Our advanced anti AI
             detector technology produces undetectable text that surely contains
-            no copied or duplicated content. The humanized text you'll get will
-            pass not only AI detections, but also all plagiarism checks.
+            no copied or duplicated content. The humanized text you&apos;ll get
+            will pass not only AI detections, but also all plagiarism checks.
           </p>
           <button className="text-blue-600 border-blue-600 hover:bg-blue-600 mt-9 rounded border px-6 py-3 text-base lg:text-xl font-bold hover:text-white">
             Upgrade now
@@ -756,8 +756,9 @@ const Home = () => {
               Bypass AI Detectors Today with BypassAI
             </h2>
             <p className="xs:mt-2 mx-auto mt-3 max-w-[720px] text-base md:max-w-[460px] md:text-sm">
-              If you're looking for an AI detection remover that truly works,
-              BypassAI is the number one option. Click here to find out more.
+              If you&apos;re looking for an AI detection remover that truly
+              works, BypassAI is the number one option. Click here to find out
+              more.
             </p>
             <button className="text-blue-600 mx-auto mt-8 block w-fit rounded bg-white px-[38px] py-3 text-base lg:text-xl font-bold hover:bg-gray-200 hover:shadow-lg sm:mt-5 sm:px-6 sm:text-base">
               <Link href="/pricing">Upgrade now</Link>

@@ -31,8 +31,8 @@ const page = (props: Props) => {
           </h2>
           <p className="text-display-secondary pt-3 lg:text-xl text-sm">
             If you have any questions, require assistance, or wish to share
-            feedback, we are available to assist you. Don't hesitate to contact
-            us at{" "}
+            feedback, we are available to assist you. Don&apos;t hesitate to
+            contact us at{" "}
             <a
               href="mailto:contact@grubby.ai"
               className="text-blue-400 hover:underline">

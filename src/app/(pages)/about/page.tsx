@@ -118,7 +118,7 @@ const page = (props: Props) => {
                   text more humanized, balanced, or readable. Whether you
                   require highly authentic and engaging content, a perfect
                   balance between creativity and information, or improved
-                  readability, we've got you covered.
+                  readability, we&apos;ve got you covered.
                 </p>
               </li>
             </ul>
