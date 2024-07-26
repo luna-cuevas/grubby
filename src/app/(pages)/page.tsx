@@ -105,12 +105,12 @@ const Home = () => {
     {
       step: "1. Upload Your Content",
       description:
-        "Start by typing or pasting your AI-generated content into BypassAI's intuitive interface.",
+        "Start by typing or pasting your AI-generated content into GrubbyAI's intuitive interface.",
     },
     {
-      step: "2. Let BypassAI Do Its Magic",
+      step: "2. Let GrubbyAI Do Its Magic",
       description:
-        "With a single click, BypassAI will transform your content into undetectable, authentic content.",
+        "With a single click, GrubbyAI will transform your content into undetectable, authentic content.",
     },
     {
       step: "3. Get Undetectable Output",
@@ -258,7 +258,7 @@ const Home = () => {
   return (
     <main className="min-h-screen">
       <div className="absolute -z-10 top-0 w-screen h-screen bg-gradient-to-r from-[#48629b] to-[#622d91]"></div>
-      <div className="z-10 h-full bg-gradient-to-r from-[#48629b] to-[#622d91] text-white relative min-h-screen px-4 pb-[109px] pt-[128px] md:pb-16 md:pt-20 2xl:pt-[80px]">
+      <div className="z-10 h-full bg-gradient-to-r from-[#48629b] to-[#622d91] text-white relative min-h-screen px-4 lg:pb-[109px] lg:pt-[128px] py-16">
         <h2 className="text-4xl w-fit mx-auto font-extrabold text-center hero_gradient text-transparent">
           Grubby AI Detection
         </h2>
@@ -584,7 +584,7 @@ const Home = () => {
           <Link href="/pricing">Upgrade now</Link>
         </button>
         <img
-          alt="How Does BypassAI Stand Out?"
+          alt="How Does GrubbyAI Stand Out?"
           loading="lazy"
           decoding="async"
           className="absolute inset-0 object-cover w-full h-full"
@@ -753,11 +753,11 @@ const Home = () => {
           />
           <div className="relative z-[2] mx-auto max-w-[912px] px-4 text-center text-white sm:px-3 lg:pt-6">
             <h2 className="text-xl font-extrabold md:text-xl lg:text-2xl text-white">
-              Bypass AI Detectors Today with BypassAI
+              Bypass AI Detectors Today with GrubbyAI
             </h2>
             <p className="xs:mt-2 mx-auto mt-3 max-w-[720px] text-base md:max-w-[460px] md:text-sm">
               If you&apos;re looking for an AI detection remover that truly
-              works, BypassAI is the number one option. Click here to find out
+              works, GrubbyAI is the number one option. Click here to find out
               more.
             </p>
             <button className="text-blue-600 mx-auto mt-8 block w-fit rounded bg-white px-[38px] py-3 text-base lg:text-xl font-bold hover:bg-gray-200 hover:shadow-lg sm:mt-5 sm:px-6 sm:text-base">

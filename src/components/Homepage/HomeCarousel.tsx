@@ -86,7 +86,7 @@ export function HomeCarousel() {
             Beat All AI Detectors Effortlessly
           </h2>
           <p className="mx-auto mt-3 max-w-[860px] text-center text-[#ACAEC6] ">
-            Wondering how well BypassAI can make AI generated text undetectable?
+            Wondering how well GrubbyAI can make AI generated text undetectable?
             Our anti AI detector tool can help you get 99%+ human scores on
             advanced AI detectors, including:
           </p>

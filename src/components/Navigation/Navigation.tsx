@@ -142,16 +142,22 @@ export const Navigation = (props: Props) => {
             state.showMobileMenu || state.isScrolled ? "text-black" : ""
           } 
             ${path != "/" && "!text-black"}
-           z-[1000] items-center justify-center lg:hidden h-full sm:max-w-[250px] max-w-[180px] absolute left-10 font-bold  flex m-auto top-0 bottom-0`}>
-          {/* <Image
-            src="/cypress-logo-with-text.svg"
-            alt="Cypress Logo"
-            fill
-            className={`${
-              path != "/" ? "invert-0" : "invert"
-            } w-full h-full !object-contain group-hover:invert-0  dark:invert dark:group-hover:invert pt-2`}
-          /> */}
-          Grubby.ai
+           z-[1000] items-center  justify-center lg:hidden h-full sm:max-w-[250px] max-w-[180px] absolute left-10 font-bold  flex m-auto top-0 bottom-0`}>
+          <div className="relative w-[120px] mx-auto h-full">
+            <Image
+              src="/images/grubby-logo.png"
+              alt="Grubby Logo"
+              fill
+              className={`${path != "/" ? "invert-0" : "invert"}
+                ${
+                  state.showMobileMenu || state.isScrolled
+                    ? "invert-0"
+                    : "invert"
+                }
+                
+                w-full h-full !object-contain group-hover:invert-0  dark:invert dark:group-hover:invert pt-2`}
+            />
+          </div>
         </Link>
         <div className="relative my-auto w-full mx-auto h-full max-w-none flex items-center justify-between text-blue-gray-900">
           <div className="hidden w-full lg:flex">

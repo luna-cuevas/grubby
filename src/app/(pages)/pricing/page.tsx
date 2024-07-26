@@ -6,7 +6,7 @@ const FAQs = [
   {
     question: "Can I try GrubbyAI for free?",
     answer:
-      "Yes! BypassAI offers a free plan that allows you to try out its powerful humanization technology with no costs.",
+      "Yes! GrubbyAI offers a free plan that allows you to try out its powerful humanization technology with no costs.",
   },
   {
     question:

@@ -1,5 +1,6 @@
 import UpdateSubscription from "@/components/account/UpdateSubscription";
 import WordsAvailable from "@/components/account/WordsAvailable";
+import { useSupabase } from "@/lib/supabase";
 import React from "react";
 
 type Props = {};
