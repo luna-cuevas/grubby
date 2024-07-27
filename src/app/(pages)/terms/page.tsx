@@ -80,8 +80,9 @@ const page = (props: Props) => {
           <h2 className="text-xl font-bold">User Content</h2>
           <p>
             4.1. Ownership: You retain all rights and ownership of the content
-            you submit, create, or generate using the Services ("User Content").
-            Grubby.ai does not claim any ownership rights in your User Content.
+            you submit, create, or generate using the Services (&quot;User
+            Content&quot;). Grubby.ai does not claim any ownership rights in
+            your User Content.
           </p>
           <p>
             4.2. Responsibility: You are solely responsible for your User
