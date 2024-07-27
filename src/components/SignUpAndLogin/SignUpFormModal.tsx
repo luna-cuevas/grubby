@@ -4,7 +4,7 @@ import { useSupabase } from "@/lib/supabase";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useAtom } from "jotai";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -12,7 +12,6 @@ type Props = {};
 
 const SignUpFormModal = (props: Props) => {
   const [state, setState] = useAtom(globalStateAtom);
-  const searchParams = useSearchParams();
   const [loginWithEmail, setLoginWithEmail] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
   const [otpCode, setOtpCode] = useState("");
