@@ -6,6 +6,7 @@ import { openSans } from "@/fonts/openSans";
 import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
 import { Provider } from "jotai";
 import Footer from "@/components/Footer";
+import SignUpFormModal from "@/components/SignUpAndLogin/SignUpFormModal";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -67,9 +68,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${openSans.className} relative`}>
+      <body className={`${openSans.className} relative h-full w-full `}>
         <Provider>
           <Navigation />
+          <SignUpFormModal />
+
           {children}
           <ToastContainer
             position="bottom-right"

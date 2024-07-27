@@ -22,6 +22,7 @@ type State = {
     };
     wordCount: number;
   };
+  isSignUpModalOpen: boolean;
 };
 
 // A helper function to work with localStorage and JSON serialization for the entire application state
@@ -77,10 +78,11 @@ export const initialState: State = {
     },
     wordCount: 0,
   },
+  isSignUpModalOpen: false,
 };
 
 // Create an atom with local storage persistence for the entire application state
 export const globalStateAtom = atomWithLocalStorage(
-  "GrubbyAppGlobalState-v6",
+  "GrubbyAppGlobalState-v7",
   initialState
 );

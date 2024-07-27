@@ -10,6 +10,7 @@ import { useSupabase } from "@/lib/supabase";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import NavList from "./NavList";
+import SignUpFormModal from "../SignUpAndLogin/SignUpFormModal";
 
 type Props = {
   products?: any[];
@@ -46,7 +47,7 @@ export const Navigation = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    setState({ ...state, showMobileMenu: false });
+    setState({ ...state, showMobileMenu: false, isSignUpModalOpen: false });
   }, [path]);
 
   useEffect(() => {

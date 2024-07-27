@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 const Tiptap = () => {
   const [content, setContent] = useState("");
   const [state, setState] = useAtom(globalStateAtom);
-  const [inputLimit, setInputLimit] = useState(0);
+  const [inputLimit, setInputLimit] = useState(100);
   const [wordMax, setWordMax] = useState(0);
   const [totalWordCount, setTotalWordCount] = useState(0);
   const searchParams = useSearchParams();
@@ -37,8 +37,8 @@ const Tiptap = () => {
         .split(/\s+/)
         .filter((word) => word).length;
       if (words > inputLimit) {
-        toast.error(`Word limit exceeded! Limit: ${inputLimit} words.`);
-        editor.commands.undo();
+        // toast.error(`Word limit exceeded! Limit: ${inputLimit} words.`);
+        // editor.commands.undo();
       } else {
         setContent(editor.getText());
       }
@@ -138,7 +138,10 @@ const Tiptap = () => {
 
   async function humanizeSampleUsage() {
     if (!state.session) {
-      router.push("/sign-up");
+      setState({
+        ...state,
+        isSignUpModalOpen: true,
+      });
       return;
     }
     if (state.wordLimitReached) {
@@ -151,6 +154,11 @@ const Tiptap = () => {
 
     if (content.length === 0) {
       toast.error("Please write something before humanizing.");
+      return;
+    }
+
+    if (content.length < 50) {
+      toast.error("Please write at least 50 characters before humanizing.");
       return;
     }
     try {
@@ -296,11 +304,7 @@ const Tiptap = () => {
           wordCount == 0 ? "lg:justify-end" : "justify-between"
         }`}>
         <div
-          className={` items-center text-black my-2 gap-2 ${
-            editor.storage.characterCount.words() === inputLimit
-              ? "character-count--warning"
-              : ""
-          }
+          className={` items-center text-black my-2 gap-2 
             ${wordCount == 0 ? "hidden" : "flex"}
           `}>
           <svg height="15" width="15" viewBox="0 0 20 20">
@@ -317,10 +321,16 @@ const Tiptap = () => {
             />
             <circle r="6" cx="10" cy="10" fill="white" />
           </svg>
-          {`${editor.storage.characterCount.words()} / ${
-            inputLimit > 10000 ? "unlimited" : inputLimit
-          } `}{" "}
-          words
+          <span
+            className={`
+            ${
+              editor.storage.characterCount.words() > inputLimit
+                ? "text-red-600"
+                : ""
+            }`}>
+            {editor.storage.characterCount.words()}
+          </span>
+          / {inputLimit > 10000 ? "unlimited" : inputLimit} words
         </div>
         <div className="flex items-center gap-x-4 self-end w-full lg:w-fit md:justify-between lg:gap-x-3">
           {/* <button
