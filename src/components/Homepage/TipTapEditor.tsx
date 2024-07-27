@@ -152,15 +152,18 @@ const Tiptap = () => {
       return;
     }
 
+    console.log("content", editor && editor.storage.characterCount.words());
+
+    if (editor && editor.storage.characterCount.words() < 50) {
+      toast.error("Please write at least 50 characters before humanizing.");
+      return;
+    }
+
     if (content.length === 0) {
       toast.error("Please write something before humanizing.");
       return;
     }
 
-    if (content.length < 50) {
-      toast.error("Please write at least 50 characters before humanizing.");
-      return;
-    }
     try {
       setState((prev) => ({
         ...prev,

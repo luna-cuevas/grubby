@@ -307,7 +307,7 @@ const Home = () => {
     <main className="min-h-screen overflow-hidden w-screen">
       <div className="absolute -z-10 top-0 w-screen h-screen bg-gradient-to-r from-[#48629b] to-[#622d91]"></div>
 
-      <div className="z-10  bg-gradient-to-r from-[#48629b] to-[#622d91] text-white  mt-12 flex flex-col relative h-full pb-8 lg:pb-0 lg:h-[calc(100vh-70px)] px-4 ">
+      <div className="z-10  bg-gradient-to-r from-[#48629b] to-[#622d91] text-white  mt-12 flex flex-col relative h-full pb-8 lg:pb-0 lg:min-h-[calc(100vh-70px)] px-4 ">
         <div className="mx-auto w-full h-fit">
           <h1 className=" w-fit mx-auto font-extrabold flex-col flex gap-1 text-center  text-transparent">
             <span className="hero_gradient text-[40px] leading-9">
