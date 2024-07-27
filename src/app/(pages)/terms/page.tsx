@@ -59,8 +59,9 @@ const page = (props: Props) => {
             2.3. Termination: Grubby.ai may suspend or terminate your account
             and access to the Services if you violate these Terms, engage in any
             activities that are harmful to Grubby.ai or its users, or for any
-            other reason at Grubby.ai's sole discretion. You may also terminate
-            your account at any time by contacting Grubby.ai's customer support.
+            other reason at Grubby.ai&apos;s sole discretion. You may also
+            terminate your account at any time by contacting Grubby.ai&apos;s
+            customer support.
           </p>
           <h2 className="text-xl font-bold">Intellectual Property Rights</h2>
           <p>
@@ -114,7 +115,7 @@ const page = (props: Props) => {
             or written.
           </p>
           <p>
-            6.3. No Waiver: Grubby.ai's failure to enforce any provision of
+            6.3. No Waiver: Grubby.ai&apos;s failure to enforce any provision of
             these Terms shall not be deemed a waiver of such provision nor the
             right to enforce it.
           </p>
