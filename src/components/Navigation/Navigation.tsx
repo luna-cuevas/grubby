@@ -71,17 +71,18 @@ export const Navigation = (props: Props) => {
     ) {
       const data = await fetchSubscription(session.user.id);
 
-      setState({
-        ...state,
+      setState((prev) => ({
+        ...prev,
         user: session.user,
         session,
         isSignInOpen: false,
         isSubscribed: data.subscription_id != "",
-      });
+        isSignUpModalOpen: false,
+      }));
     } else if (event === "SIGNED_OUT") {
       setState({ ...state, user: null, session: null, isSignInOpen: false });
       router.push("/");
-      toast.success("Signed out");
+      // toast.success("Signed out");
     } else {
       setState({ ...state, user: null });
     }
@@ -136,7 +137,7 @@ export const Navigation = (props: Props) => {
             state.showMobileMenu || state.isScrolled
               ? "bg-white"
               : "bg-transparent"
-          }  backdrop-blur-0 z-50 h-16 lg:h-auto sticky top-0   transition-background-color duration-700   w-screen items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
+          }  backdrop-blur-0 z-50 h-16 lg:h-auto fixed top-0   transition-background-color duration-700   w-screen items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
         <Link
           href="/"
           className={`${

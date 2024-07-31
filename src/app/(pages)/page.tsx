@@ -13,6 +13,7 @@ import Tooltips from "@/components/Homepage/Tooltips";
 import HomeCarousel from "@/components/Homepage/HomeCarousel";
 import ProgressBar from "@/components/ProgressBar";
 import DetectionSection from "@/components/Homepage/DetectionSection";
+import ModeSelect from "@/components/Homepage/ModeSelect";
 
 const FAQs = [
   {
@@ -304,31 +305,56 @@ const Home = () => {
   ];
 
   return (
-    <main className="min-h-screen overflow-hidden w-screen">
-      <div className="absolute -z-10 top-0 w-screen h-screen bg-gradient-to-r from-[#48629b] to-[#622d91]"></div>
+    <main className="min-h-screen  w-screen ">
+      {/* <div className="absolute -z-10 -top-4 bottom-0 w-screen h-[1250px] lg:h-[102vh] ">
+        <img
+          src="https://cdn.bypassai.ai/web-cdn/bypass/public/apple/images/banner.jpg"
+          alt=""
+          className="h-full w-full object-cover"
+        />
+      </div> */}
 
-      <div className="z-10  bg-gradient-to-r from-[#48629b] to-[#622d91] text-white  mt-12 flex flex-col relative h-full pb-8 lg:pb-0 lg:min-h-[calc(100vh-70px)] px-4 ">
-        <div className="mx-auto w-full h-fit">
+      <div
+        style={{
+          backgroundImage:
+            "url('https://cdn.bypassai.ai/web-cdn/bypass/public/apple/images/banner.jpg')",
+          backgroundSize: "cover",
+          backgroundColor: "#00014b",
+          backgroundBlendMode: "saturation",
+        }}
+        className="z-10  text-white  pt-[70px] flex flex-col relative h-full pb-8 lg:pb-0 lg:min-h-screen px-4 ">
+        <div className="mx-auto w-full  h-full">
           <h1 className=" w-fit mx-auto font-extrabold flex-col flex gap-1 text-center  text-transparent">
-            <span className="hero_gradient text-[40px] leading-9">
+            {/* <span className="hero_gradient text-3xl lg:text-[40px] leading-9">
               Grubby AI Detection:
-            </span>
+            </span> */}
 
-            <span className="hero_gradient text-[30px]">
+            <img
+              alt="Grubby AI Detection"
+              className="mx-auto h-[50px] my-2 filter invert"
+              src="/images/grubby-logo-no-text.webp"
+            />
+
+            <span className="hero_gradient text-xl lg:text-[30px]">
               Humanize text & bypass AI detectors!
             </span>
           </h1>
-          <h2 className="mb-8 mt-3 text-sm text-center text-white ">
+          <h2 className="mb-8 mt-3 mx-auto  text-sm font-bold text-center text-white ">
             Better than every other AI detector and half the price. Trained on
             1,000+ custom human-written texts. Guaranteed to bypass AI detection
             or your money back.
           </h2>
-          <div className="mx-auto h-full w-full max-w-[1200px]">
-            <div className="flex w-full flex-col overflow-hidden rounded-lg">
-              <div className="relative flex flex-col lg:flex-row">
-                <div className="flex-1 h-fit w-full">
-                  <div className="flex min-h-[48px] items-center bg-blue-600 px-6 py-2 text-sm text-white "></div>
-                  <div className="relative flex h-[400px] lg:h-[500px] overflow-y-auto flex-col bg-white pb-4 md:rounded-b-none ">
+          <div className="mx-auto h-full w-full xl:max-w-[80%] lg:max-w-[90%] max-w-[95%]">
+            <div className="flex w-full h-full flex-col overflow-hidden rounded-lg">
+              <div className="relative h-full flex flex-col lg:flex-row">
+                <div className="flex-1 h-full w-full ">
+                  <div className="flex min-h-[48px] border-r relative border-blue-400 items-center bg-blue-600 px-6 py-2 text-sm text-white ">
+                    <div className="absolute left-3">
+                      <ModeSelect />
+                    </div>
+                    <h2 className="m-auto text-xl font-bold">AI Content</h2>
+                  </div>
+                  <div className="relative flex h-[400px] lg:h-[55vmin] overflow-y-auto flex-col bg-white pb-4 md:rounded-b-none ">
                     <div className="group relative flex-1 px-4 pt-4">
                       <div className="w-full h-full">
                         <Tiptap />
@@ -336,14 +362,15 @@ const Home = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="flex-1 h-fit">
                   <div className="flex min-h-[48px] items-center bg-blue-600 px-6 py-2 text-sm text-white justify-end lg:rounded-none">
-                    <div className="flex w-fit cursor-pointer items-center gap-x-1 text-[#DBD9FB] hover:text-[#c1bff4]">
-                      <span className="i-cus--a-facehappy h-4 w-4"></span>
-                      {/* <span className="text-sm">Usage guidelines</span> */}
-                    </div>
+                    <h2 className="m-auto text-xl font-bold">
+                      Humanized Content
+                    </h2>
                   </div>
-                  <div className="relative h-[400px] lg:h-[500px] bg-[#f4f5f9] md:rounded-none ">
+
+                  <div className="relative h-[400px] lg:h-[55vmin] bg-[#f4f5f9] md:rounded-none ">
                     <div className="h-full w-full">
                       <Results />
                     </div>

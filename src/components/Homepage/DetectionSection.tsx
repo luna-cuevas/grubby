@@ -4,7 +4,7 @@ import {
   FaceFrownIcon,
   FaceSmileIcon,
 } from "@heroicons/react/24/solid";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProgressBar from "../ProgressBar";
 import { useAtom } from "jotai";
 import { globalStateAtom } from "@/context/atoms";
@@ -22,15 +22,20 @@ type Props = {
 const DetectionSection = (props: Props) => {
   const { detectionResults } = props;
   const [state, setState] = useAtom(globalStateAtom);
+  const [resultPresent, setResultPresent] = useState(false);
+
+  useEffect(() => {
+    if (state.openAIFetch.result.text !== "") {
+      setResultPresent(true);
+    } else {
+      setResultPresent(false);
+    }
+  }, [state.openAIFetch]);
   return (
     <div
       className={`
-      ${
-        !state.openAIFetch.isLoading && state.openAIFetch?.result?.text == ""
-          ? "hidden"
-          : "block"
-      }
-    bg-[#EEEDFD] pb-6 `}
+      ${!resultPresent ? "hidden" : "block"}
+    bg-[#EEEDFD] mb-12 pb-4 `}
       id="detectionResultView">
       <ProgressBar />
 

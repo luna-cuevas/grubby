@@ -46,21 +46,21 @@ const CheckoutCard = (props: Props) => {
   return (
     <div
       className={`relative flex ${
-        plan.name === "Unlimited" && "mt-16 lg:mt-auto"
+        plan.name === "Business" && "mt-16 lg:mt-auto"
       }`}>
-      {plan.name === "Unlimited" && (
+      {plan.name === "Business" && (
         <div className="absolute left-0 bottom-[98%] z-0 border-2 border-purple-600 w-full h-[60px] rounded-t-xl items-center flex justify-center text-center text-xl font-bold text-white bg-gradient-to-r from-purple-600 to-pink-500">
           Most Popular
         </div>
       )}
-      {plan.name === "Unlimited" && plan.prices[0].frequency === "year" && (
+      {plan.name === "Business" && plan.prices[0].frequency === "year" && (
         <div className="absolute -right-[5%]  w-fit bottom-[103%] z-[100] rotate-[40deg] bg-[#FFD600] px-4 text-sm font-semibold text-[#1B1746] ">
           SAVE 50%
         </div>
       )}
       <div
         className={`
-        ${plan.name === "Unlimited" && "border-2 border-purple-600"}
+        ${plan.name === "Business" && "border-2 border-purple-600"}
         relative flex flex-col z-20  rounded-xl bg-white px-9 pb-9 pt-6 text-left transition-all duration-100 w-full md:w-fit lg:w-fit lg:px-9 border  lg:mt-0`}>
         <div className="border-b border-gray-200 pb-4 ">
           <h2 className="text-2xl font-semibold">{plan.name}</h2>

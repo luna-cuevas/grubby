@@ -1,21 +1,30 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Select, Option } from "@material-tailwind/react";
+import { useAtom } from "jotai";
+import { globalStateAtom } from "@/context/atoms";
 
 type Props = {};
 
 const ModeSelect = (props: Props) => {
-  const [value, setValue] = useState<string | undefined>("Simple");
+  const [value, setValue] = useState<any>("ver1");
+  const [state, setState] = useAtom(globalStateAtom);
+
+  useEffect(() => {
+    setState((prev) => ({
+      ...prev,
+      humanizerVersion: value,
+    }));
+  }, [value]);
 
   return (
     <div className="w-fit">
       <select
-        className="bg-transparent outline-none border-none text-white"
+        className="bg-transparent text-center outline-none border-none text-white"
         value={value}
         onChange={(e) => setValue(e.target.value)}>
-        <option value="Simple">Simple</option>
-        <option value="Standard">Standard</option>
-        <option value="Advanced">Advanced</option>
+        <option value="ver1">Simple</option>
+        <option value="ver2">Advanced</option>
       </select>
     </div>
   );

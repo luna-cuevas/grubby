@@ -37,28 +37,6 @@ export async function POST(request: Request) {
         );
       }
 
-      const { error: wordCountError, data: wordCountData } = await supabase
-        .from("profiles")
-        .select("wordCount")
-        .eq("id", userId)
-        .single();
-
-      if (wordCountError) {
-        return NextResponse.json(
-          { error: `Cannot get word count: ${wordCountError.message}` },
-          { status: 500 }
-        );
-      }
-
-      if (wordCountData.wordCount > wordMax) {
-        return NextResponse.json(
-          {
-            error: "You have exceeded your word limit!",
-          },
-          { status: 402 }
-        );
-      }
-
       return NextResponse.json({ data });
     }
   } catch (error: any) {

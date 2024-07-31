@@ -36,10 +36,10 @@ export async function GET() {
     // Assign order based on plan name
     plans = plans.map((plan) => {
       switch (plan.name) {
-        case "Basic":
+        case "Essential":
           plan.order = 1;
           break;
-        case "Unlimited":
+        case "Business":
           plan.order = 2;
           break;
         case "Pro":

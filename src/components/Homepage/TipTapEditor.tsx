@@ -11,6 +11,7 @@ import { globalStateAtom } from "@/context/atoms";
 import { Spinner } from "@material-tailwind/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
+import { useSupabaseWithServiceRole } from "@/lib/supabase";
 
 const Tiptap = () => {
   const [content, setContent] = useState("");
@@ -19,7 +20,9 @@ const Tiptap = () => {
   const [wordMax, setWordMax] = useState(0);
   const [totalWordCount, setTotalWordCount] = useState(0);
   const searchParams = useSearchParams();
+  const [messageCountError, setMessageCountError] = useState("");
   const messageId = searchParams.get("id");
+  const supabase = useSupabaseWithServiceRole();
   const router = useRouter();
   const editor = useEditor({
     extensions: [
@@ -83,6 +86,7 @@ const Tiptap = () => {
     }
 
     const data = await response.json();
+
     editor && editor.commands.setContent(data[0].message);
 
     setState((prev) => ({
@@ -104,7 +108,7 @@ const Tiptap = () => {
     }
   }, [messageId, editor]);
 
-  if ((state && state.openAIFetch.isLoading) || !editor) {
+  if (!editor) {
     return (
       <div className="w-fit h-full items-center flex mx-auto">
         <Spinner className="h-12 w-12" color="blue" />
@@ -152,15 +156,48 @@ const Tiptap = () => {
       return;
     }
 
-    console.log("content", editor && editor.storage.characterCount.words());
-
     if (editor && editor.storage.characterCount.words() < 50) {
-      toast.error("Please write at least 50 characters before humanizing.");
+      setMessageCountError(
+        "Please write at least 50 characters before humanizing."
+      );
+      // toast.error("Please write at least 50 characters before humanizing.");
       return;
     }
 
     if (content.length === 0) {
       toast.error("Please write something before humanizing.");
+      return;
+    }
+
+    if (wordCount > inputLimit) {
+      // toast.error(`Word limit exceeded! Limit: ${inputLimit} words.`);
+      setMessageCountError(`Word limit exceeded! Limit: ${inputLimit} words.`);
+      return;
+    } else {
+      setMessageCountError("");
+    }
+
+    const { error: wordCountError, data: wordCountData } = await supabase
+      .from("profiles")
+      .select("wordCount")
+      .eq("id", state.user.id)
+      .single();
+
+    if (wordCountError) {
+      console.error("Error fetching word count:", wordCountError);
+      return;
+    }
+
+    if (
+      wordCountData.wordCount +
+        content.split(" ").filter((word) => word !== "").length >
+      wordMax
+    ) {
+      setState((prev) => ({
+        ...prev,
+        limitReachPopup: true,
+        wordLimitReached: true,
+      }));
       return;
     }
 
@@ -172,7 +209,7 @@ const Tiptap = () => {
           isLoading: true,
         },
       }));
-      const result = await humanizerAPI(content, "ver1");
+      const result = await humanizerAPI(content, state.humanizerVersion);
 
       if (result && result.text) {
         console.log("result", result);
@@ -197,7 +234,7 @@ const Tiptap = () => {
             result: result.text,
             userId: state.user.id,
             message: state.openAIFetch.message || content,
-            words: result.text.split(" ").filter((word) => word !== "").length,
+            words: content.split(" ").filter((word) => word !== "").length,
             wordMax: wordMax,
           }),
         });
@@ -205,18 +242,6 @@ const Tiptap = () => {
         const setHistoryJson = await setHistory.json();
 
         console.log("setHistoryJson", setHistoryJson);
-
-        if (
-          setHistoryJson.status === 402 ||
-          setHistoryJson.error === "You have exceeded your word limit!"
-        ) {
-          setState((prev) => ({
-            ...prev,
-            limitReachPopup: true,
-            wordLimitReached: true,
-          }));
-          console.error("Error setting history:", setHistoryJson.error);
-        }
       }
     } catch (e) {
       console.error(e);
@@ -238,6 +263,17 @@ const Tiptap = () => {
         } top-4 lg:top-0 right-4 lg:right-0 text-black cursor-pointer z-10`}
         onClick={() => {
           editor.commands.clearContent();
+          setState((prev) => ({
+            ...prev,
+            openAIFetch: {
+              ...prev.openAIFetch,
+              message: "",
+              result: {
+                text: "",
+              },
+              wordCount: 0,
+            },
+          }));
         }}
         type="button">
         <svg
@@ -254,7 +290,7 @@ const Tiptap = () => {
       </button>
       <EditorContent
         key="1"
-        className="text-black h-full focus:outline-none overflow-y-scroll"
+        className="text-black h-full focus-visible:outline-0 overflow-y-scroll"
         editor={editor}
       />
 
@@ -333,8 +369,13 @@ const Tiptap = () => {
             }`}>
             {editor.storage.characterCount.words()}
           </span>
-          / {inputLimit > 10000 ? "unlimited" : inputLimit} words
+          / {inputLimit > 10000 ? "unlimited" : inputLimit}
         </div>
+        {messageCountError && (
+          <span className="text-red-600 text-[12px] w-1/2 text-center items-center h-fit m-auto">
+            {messageCountError}
+          </span>
+        )}
         <div className="flex items-center gap-x-4 self-end w-full lg:w-fit md:justify-between lg:gap-x-3">
           {/* <button
             type="button"
@@ -343,9 +384,10 @@ const Tiptap = () => {
           >
             <span>Detect AI Text</span>
           </button> */}
+
           <button
             type="button"
-            className="text-white text-sm w-full lg:w-fit px-2 py-2 hover:bg-blue-300 transition-all duration-200 bg-blue-600 border-2 rounded-lg"
+            className="text-white text-sm w-1/4 mb-8 lg:mb-0 mx-auto lg:w-fit px-2 py-2 hover:bg-blue-600 transition-all duration-200 bg-blue-400 border-2 rounded-lg"
             onClick={humanizeSampleUsage}>
             Humanize
           </button>

@@ -32,7 +32,7 @@ const navListItems = [
   //   shopCategories,
   // },
   {
-    label: "Anti AI Detector",
+    label: "AI Humanizer",
     url: "/",
   },
   {

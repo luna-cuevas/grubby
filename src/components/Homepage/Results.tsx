@@ -36,6 +36,8 @@ const Results = (props: Props) => {
   useEffect(() => {
     if (ResultsEditor && state.openAIFetch.result.text) {
       ResultsEditor.commands.setContent(state.openAIFetch.result.text);
+    } else if (ResultsEditor) {
+      ResultsEditor.commands.setContent("");
     }
   }, [state.openAIFetch]);
 
