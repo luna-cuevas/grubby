@@ -2,12 +2,10 @@ import resetMonthlyLimits from "@/utils/resetMonthlyLimits";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request, response: Response) {
-  const authHeader = request.headers.get("authorization");
-  console.log("authHeader", authHeader);
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new NextResponse("Unauthorized", {
-      status: 401,
-    });
+  const apiKey = request.headers.get("x-api-key");
+
+  if (!apiKey || apiKey !== process.env.API_KEY) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   try {
     const result = await resetMonthlyLimits();
