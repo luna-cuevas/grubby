@@ -40,7 +40,7 @@ const NavItem = ({ label, url }: { label: string; url?: string }) => {
 
   if (label === "AI Humanizer" && path === "/") {
     return (
-      <button
+      <div
         key={label}
         onClick={() => {
           setState((prev) => ({ ...prev, showMobileMenu: false }));
@@ -58,7 +58,7 @@ const NavItem = ({ label, url }: { label: string; url?: string }) => {
             {label}
           </li>
         </MenuItem>
-      </button>
+      </div>
     );
   }
 
