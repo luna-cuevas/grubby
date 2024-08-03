@@ -14,7 +14,7 @@ const page = (props: Props) => {
           </h1>
           <div className="bg-[#1b1746] before:md:bg-blue-400 after:md:bg-blue-400  relative mt-9 rounded-full px-8 py-[18px] before:absolute before:left-8 before:top-1/2 before:h-[14px] before:w-[14px] before:-translate-y-1/2 before:rounded-full after:absolute after:right-8 after:top-1/2 after:h-[14px] after:w-[14px] after:-translate-y-1/2 after:rounded-full ">
             <p>
-              Bypass AI, the ultimate solution for creating undetectable and
+              Grubby.ai, the ultimate solution for creating undetectable and
               humanized AI-generated text
             </p>
           </div>
@@ -28,10 +28,10 @@ const page = (props: Props) => {
                 What We Do
               </h2>
               <p>
-                Bypass AI is the leading provider of undetectable AI writing
+                Grubby.ai is the leading provider of undetectable AI writing
                 solutions. Our cutting-edge text humanization technology
                 empowers users to make AI-generated text 100% undetectable,
-                allowing you to bypass AI detection effortlessly.
+                allowing you to Grubby.ai detection effortlessly.
               </p>
               <p>
                 Our advanced algorithms and machine learning models ensure that
@@ -45,7 +45,7 @@ const page = (props: Props) => {
                 Our Mission
               </h2>
               <p>
-                Our mission at Bypass AI is to revolutionize the way
+                Our mission at Grubby.ai is to revolutionize the way
                 AI-generated text is perceived and utilized. We believe that AI
                 has the potential to enhance various aspects of our lives,
                 including content creation, customer support, and more.
@@ -90,7 +90,7 @@ const page = (props: Props) => {
                   State-of-the-Art Text Humanization Technology
                 </h3>
                 <p className="lg:text-lg text-sm">
-                  Bypass AI harnesses the cutting-edge power of text
+                  Grubby.ai harnesses the cutting-edge power of text
                   humanization technology. Our algorithms go beyond simple word
                   replacements and utilize sophisticated techniques to ensure
                   that the rewritten text is virtually indistinguishable from
@@ -104,7 +104,7 @@ const page = (props: Props) => {
                 <p className="lg:text-lg text-sm">
                   Our technology has been rigorously tested and proven to bypass
                   almost all AI detectors currently available. By choosing
-                  Bypass AI, you gain a competitive edge by utilizing
+                  Grubby.ai, you gain a competitive edge by utilizing
                   AI-generated text that remains undetected, giving you the
                   freedom to leverage the power of AI without any limitations.
                 </p>
