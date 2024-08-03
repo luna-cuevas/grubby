@@ -34,15 +34,15 @@ const page = (props: Props) => {
             feedback, we are available to assist you. Don&apos;t hesitate to
             contact us at{" "}
             <a
-              href="mailto:contact@grubby.ai"
+              href="mailto:hello@grubby.ai"
               className="text-blue-400 hover:underline">
-              contact@grubby.ai
+              hello@grubby.ai
             </a>
             . Our team is committed to offering you timely and valuable support.
             We are eager to engage with you!
           </p>
           <a
-            href="mailto:contact@grubby.ai"
+            href="mailto:hello@grubby.ai"
             className="bg-blue-600 hover:bg-blue-400 mt-6 block w-full rounded-full px-6 py-3 text-center text-xl font-bold text-white lg:mt-3">
             Contact Us
           </a>

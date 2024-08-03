@@ -184,8 +184,8 @@ const page = (props: Props) => {
             If you have any questions or concerns regarding these Terms or the
             Services, please contact us through the provided contact information
             on our website or by email at{" "}
-            <a rel="nofollow" href="mailto:contact@grubby.ai">
-              contact@grubby.ai.
+            <a rel="nofollow" href="mailto:hello@grubby.ai">
+              hello@grubby.ai.
             </a>
             . We will make every effort to address your inquiries in a timely
             and efficient manner.

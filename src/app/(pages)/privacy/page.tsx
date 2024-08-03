@@ -93,8 +93,8 @@ const PrivacyPolicy = () => {
           <p>
             If you have any questions about these privacy policy or our website,
             please contact us at
-            <a rel="nofollow" href="mailto:contact@grubby.ai">
-              contact@grubby.ai.
+            <a rel="nofollow" href="mailto:hello@grubby.ai">
+              hello@grubby.ai.
             </a>
             .
           </p>

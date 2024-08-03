@@ -45,8 +45,8 @@ const page = (props: Props) => {
           <h2 className="text-xl font-bold">Refund Process</h2>
           <p>
             To initiate a refund, you must contact our customer support team at{" "}
-            <a rel="nofollow" href="mailto:contact@grubby.ai">
-              contact@grubby.ai
+            <a rel="nofollow" href="mailto:hello@grubby.ai">
+              hello@grubby.ai
             </a>{" "}
             with the order details and reason for the refund request. Refunds
             will be processed and issued within 3 business days from the date we
