@@ -71,12 +71,17 @@ export const Navigation = (props: Props) => {
     ) {
       const data = await fetchSubscription(session.user.id);
 
+      console.log("data", data);
+
       setState((prev) => ({
         ...prev,
         user: session.user,
         session,
         isSignInOpen: false,
-        isSubscribed: data.subscription_id != "",
+        isSubscribed: {
+          status: data.subscription_id != "",
+          planName: data.plan_name,
+        },
         isSignUpModalOpen: false,
       }));
     } else if (event === "SIGNED_OUT") {
@@ -137,7 +142,7 @@ export const Navigation = (props: Props) => {
             state.showMobileMenu || state.isScrolled
               ? "bg-white"
               : "bg-transparent"
-          }  backdrop-blur-0 z-50 h-16 lg:h-auto fixed top-0   transition-background-color duration-700   w-screen items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
+          }  backdrop-blur-0 z-50 h-16 lg:h-auto fixed top-0 w-screen  transition-background-color duration-700 items-center rounded-none shadow-none  drop-shadow-none max-w-none  py-4 p-0`}>
         <Link
           href="/"
           className={`${
@@ -185,7 +190,7 @@ export const Navigation = (props: Props) => {
         </div>
         <Collapse
           open={state.showMobileMenu}
-          className="w-full z-10 bg-white justify-end ml-auto">
+          className="w-full  z-50 bg-white justify-end ml-auto">
           <NavList />
         </Collapse>
       </Navbar>

@@ -38,14 +38,29 @@ const NavItem = ({ label, url }: { label: string; url?: string }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleCartClick = () => {
-    setState({ ...state, cartOpen: true });
-  };
-
-  const handleMenuToggle = () => {
-    setIsMenuOpen((prev) => !prev);
-    console.log("isMenuOpen", isMenuOpen);
-  };
+  if (label === "AI Humanizer" && path === "/") {
+    return (
+      <button
+        key={label}
+        onClick={() => {
+          setState((prev) => ({ ...prev, showMobileMenu: false }));
+        }}
+        className="justify-center h-fit w-full lg:w-fit lg:mx-auto lg:m-0 border-b border-gray-200 lg:border-none">
+        <MenuItem className="flex px-2  rounded-none hover:bg-transparent hover:text-light-blue-600 hover:bg-opacity-80  lg:justify-center items-center gap-2">
+          <li
+            className={` underline-animation ${
+              state.showMobileMenu || state.isScrolled
+                ? "text-black font-bold"
+                : "text-white"
+            }  
+              ${path != "/" && "!text-black"}
+            relative flex `}>
+            {label}
+          </li>
+        </MenuItem>
+      </button>
+    );
+  }
 
   return (
     <Link

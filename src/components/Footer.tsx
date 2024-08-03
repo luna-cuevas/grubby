@@ -63,7 +63,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="text-display-secondary border-t border-[#DBD9FB] pb-6 pt-9 md:pb-0 md:pt-6">
+    <footer className="w-screen border-t border-[#DBD9FB] pb-6 pt-9 md:pb-0 md:pt-6">
       <div className="mx-auto grid max-w-[1232px] xl:grid-cols-[1fr_max(200px)_1fr_239px] items-start justify-between xl:gap-x-[160px] px-4  md:justify-center md:gap-5 grid-cols-2 gap-8">
         {footerLinks.map((section) => (
           <div key={section.title} className="space-y-3">
@@ -106,7 +106,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="mx-auto mt-9 flex w-full max-w-[1200px] items-center justify-center gap-8 lg:rounded-full bg-[#EEEDFD] py-[10px] text-[#1B1746] md:flex-col md:gap-2 lg:gap-4 lg:px-4">
+      <div className="mx-auto mt-9 flex w-full md:max-w-[1200px] items-center justify-center gap-8 lg:rounded-full bg-[#EEEDFD] py-[10px] text-[#1B1746] flex-col md:gap-2 lg:gap-4 lg:px-4">
         <a className="text-[22px] leading-tight" href="/">
           <img className="w-[120px]" src="/images/grubby-logo.png" alt="" />
         </a>

@@ -1,4 +1,5 @@
 import "./globals.css";
+import "./textAnimation.scss";
 import { Navigation } from "@/components/Navigation/Navigation";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -68,7 +69,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${openSans.className} relative h-full w-full `}>
+      <body className={`${openSans.className} relative h-full w-screen`}>
         <Provider>
           <Navigation />
           <SignUpFormModal />

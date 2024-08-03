@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from("profiles")
-      .select("priceId, subscription_id, stripe_customer_id")
+      .select("priceId, subscription_id, stripe_customer_id, subscription_plan")
       .eq("id", id);
 
     if (error) {
@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       priceId: data[0].priceId,
+      plan_name: data[0].subscription_plan,
       subscription_id: data[0].subscription_id,
       stripe_customer_id: data[0].stripe_customer_id,
     });

@@ -20,7 +20,7 @@ const CheckoutButton: React.FC<{ priceId: string }> = ({ priceId }) => {
       router.push("/login");
       return;
     }
-    if (state.isSubscribed) {
+    if (state.isSubscribed.status && state.isSubscribed.planName !== "free") {
       router.push("/account");
       toast.error("You are already subscribed.");
       return;

@@ -27,24 +27,47 @@ const DetectionSection = (props: Props) => {
   useEffect(() => {
     if (state.openAIFetch.result.text !== "") {
       setResultPresent(true);
+      // scroll down to the detection result view
     } else {
       setResultPresent(false);
     }
-  }, [state.openAIFetch]);
+  }, [state.openAIFetch.result.text]);
+
+  useEffect(() => {
+    if (!state.openAIFetch.isLoading && state.openAIFetch.result.text !== "") {
+      const detectionResultView = document.getElementById(
+        "detectionResultView"
+      );
+      detectionResultView?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [state.openAIFetch.isLoading]);
   return (
     <div
       className={`
-      ${!resultPresent ? "hidden" : "block"}
-    bg-[#EEEDFD] mb-12 pb-4 `}
+      
+    bg-[#EEEDFD]  `}
       id="detectionResultView">
       <ProgressBar />
 
       {state.openAIFetch.isLoading ? (
-        <div className="flex items-center justify-center h-[300px]">
-          <Spinner className="h-12 w-12" color="blue" />
+        <div className="w-fit h-full gap-4 py-8 justify-center flex-col items-center flex mx-auto">
+          <section>
+            <div className="loading loading01">
+              {["T", "E", "S", "T", "I", "N", "G", ".", ".", "."].map(
+                (letter, i) => (
+                  <span key={i} className={`char${i + 1} mx-[2px] text-xl`}>
+                    {letter}
+                  </span>
+                )
+              )}
+            </div>
+          </section>
         </div>
       ) : (
-        <div>
+        <div className={`${!resultPresent ? "hidden" : "block"} mb-12 pb-4`}>
           <div className="flex flex-col items-center justify-center px-4 pt-[30px] text-center">
             <CheckBadgeIcon className="h-8 w-8 text-[#3FB05D]" />
             <div className="mt-3 font-bold text-[#3FB05D]">
@@ -53,7 +76,7 @@ const DetectionSection = (props: Props) => {
           </div>
           <div className="mx-auto mt-5 max-w-[800px] px-4">
             <div className="flex justify-center">
-              <div className="grid w-full grid-cols-4 gap-2 md:grid-cols-2 lg:grid-cols-3">
+              <div className="md:grid flex flex-wrap justify-center w-full grid-cols-4 gap-2 md:grid-cols-2 lg:grid-cols-3">
                 {detectionResults.map((result, index) => (
                   <div
                     key={index}

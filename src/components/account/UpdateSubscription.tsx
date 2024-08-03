@@ -22,7 +22,7 @@ const UpdateSubscription = (props: Props) => {
   );
 
   const handleSubscription = async () => {
-    if (state.isSubscribed === false) {
+    if (state.isSubscribed.status === false) {
       router.push("/pricing");
       return;
     }

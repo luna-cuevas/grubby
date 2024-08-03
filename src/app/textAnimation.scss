@@ -1,0 +1,31 @@
+/* common */
+.loading {
+  font-size: "30px";
+  color: #1e88e5;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  text-align: center;
+  span {
+    display: inline-block;
+  }
+}
+
+/* code #1 */
+.loading01 {
+  span {
+    animation: loading01 2.4s infinite alternate;
+    @for $i from 0 through 12 {
+      &:nth-child(#{$i + 1}) {
+        animation-delay: #{$i * 0.1}s;
+      }
+    }
+  }
+}
+@keyframes loading01 {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

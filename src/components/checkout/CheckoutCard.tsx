@@ -22,6 +22,11 @@ type Props = {
 const CheckoutCard = (props: Props) => {
   const plan = props.plan;
 
+  const formattedWordsPerMonth = plan.words.replace(
+    /(\d)(?=(\d{3})+(?!\d))/g,
+    "$1,"
+  );
+
   const descriptionParts = plan.description.split(".");
 
   const formattedDescription = descriptionParts.map((line) => (
@@ -65,7 +70,7 @@ const CheckoutCard = (props: Props) => {
         <div className="border-b border-gray-200 pb-4 ">
           <h2 className="text-2xl font-semibold">{plan.name}</h2>
           <p className="my-2 text-blue-600 capitalize">
-            {plan.words} per month
+            {formattedWordsPerMonth} words / month
           </p>
           <p className="text-lg">
             <span className="font-bold text-2xl mr-1">$</span>

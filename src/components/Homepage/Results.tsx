@@ -11,6 +11,7 @@ import { globalStateAtom } from "@/context/atoms";
 import { humanizerAPI } from "@/utils/humanize";
 import { Spinner } from "@material-tailwind/react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Props = {};
 
@@ -103,8 +104,19 @@ const Results = (props: Props) => {
 
   if (state.openAIFetch.isLoading) {
     return (
-      <div className="w-fit h-full items-center flex mx-auto">
+      <div className="w-fit h-full gap-4 justify-center flex-col items-center flex mx-auto">
         <Spinner className="h-12 w-12" color="blue" />
+        <section>
+          <div className="loading loading01">
+            {["A", "N", "A", "L", "Y", "Z", "I", "N", "G", ".", ".", "."].map(
+              (letter, i) => (
+                <span key={i} className={`char${i + 1} mx-[2px] text-xl`}>
+                  {letter}
+                </span>
+              )
+            )}
+          </div>
+        </section>
       </div>
     );
   }
@@ -113,15 +125,22 @@ const Results = (props: Props) => {
     <div className="h-full flex flex-col p-4">
       <EditorContent
         key="2"
-        className="text-gray-800 h-full focus:outline-none"
+        className="text-gray-800 h-full overflow-y-scroll focus:outline-none"
         editor={ResultsEditor}
       />
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col  md:flex-row items-center justify-between">
         <div
-          className={`character-count flex items-center text-black my-2 gap-2`}>
+          className={`character-count py-1 flex items-center text-black my-2 gap-2`}>
           {`${ResultsEditor.storage.characterCount.words()}`} words
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex  items-center gap-2">
+          <CopyToClipboard text={ResultsEditor.getText()} onCopy={handleCopy}>
+            <Link
+              href="https://gptzero.me/"
+              className="text-white text-sm   lg:w-fit px-2 py-2 hover:bg-blue-600 transition-all duration-200 bg-blue-400 border-2 rounded-lg">
+              Copy & Verify
+            </Link>
+          </CopyToClipboard>
           <ToolTip content={<div className="w-fit text-black">Retry</div>}>
             <button
               type="button"

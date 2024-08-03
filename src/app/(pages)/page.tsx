@@ -344,7 +344,7 @@ const Home = () => {
             1,000+ custom human-written texts. Guaranteed to bypass AI detection
             or your money back.
           </h2>
-          <div className="mx-auto h-full w-full xl:max-w-[80%] lg:max-w-[90%] max-w-[95%]">
+          <div className="mx-auto h-full py-4 w-full xl:max-w-[80%] lg:max-w-[90%] max-w-[95%]">
             <div className="flex w-full h-full flex-col overflow-hidden rounded-lg">
               <div className="relative h-full flex flex-col lg:flex-row">
                 <div className="flex-1 h-full w-full ">

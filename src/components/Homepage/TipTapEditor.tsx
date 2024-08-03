@@ -8,10 +8,18 @@ import { useEffect, useState } from "react";
 import { humanizerAPI } from "@/utils/humanize";
 import { useAtom } from "jotai";
 import { globalStateAtom } from "@/context/atoms";
-import { Spinner } from "@material-tailwind/react";
+import {
+  Button,
+  Dialog,
+  DialogBody,
+  DialogFooter,
+  DialogHeader,
+  Spinner,
+} from "@material-tailwind/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { useSupabaseWithServiceRole } from "@/lib/supabase";
+import Link from "next/link";
 
 const Tiptap = () => {
   const [content, setContent] = useState("");
@@ -21,9 +29,10 @@ const Tiptap = () => {
   const [totalWordCount, setTotalWordCount] = useState(0);
   const searchParams = useSearchParams();
   const [messageCountError, setMessageCountError] = useState("");
+  const [wordLimitExceededPopup, setWordLimitExceededPopup] = useState(false);
+
   const messageId = searchParams.get("id");
   const supabase = useSupabaseWithServiceRole();
-  const router = useRouter();
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -131,15 +140,6 @@ const Tiptap = () => {
     }
   };
 
-  const handleSampleText = () => {
-    editor.commands.setContent(
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-    );
-    setContent(
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-    );
-  };
-
   async function humanizeSampleUsage() {
     if (!state.session) {
       setState({
@@ -171,10 +171,12 @@ const Tiptap = () => {
 
     if (wordCount > inputLimit) {
       // toast.error(`Word limit exceeded! Limit: ${inputLimit} words.`);
-      setMessageCountError(`Word limit exceeded! Limit: ${inputLimit} words.`);
+      setMessageCountError(`Plan word limit exceeded: ${inputLimit} words.`);
+      setWordLimitExceededPopup(true);
       return;
     } else {
       setMessageCountError("");
+      setWordLimitExceededPopup(false);
     }
 
     const { error: wordCountError, data: wordCountData } = await supabase
@@ -299,23 +301,6 @@ const Tiptap = () => {
       ${wordCount > 0 ? "hidden" : "block"}
         absolute left-0 right-0 m-auto top-0 bottom-0 z-[3] w-[300px] h-fit  space-y-3 font-semibold md:w-[250px]`}>
         <div
-          onClick={handleSampleText}
-          className="text-blue-600 hover:bg-blue-600 flex items-center justify-center gap-2 rounded-lg bg-[#F4F5F9] px-4 py-3 transition-all hover:cursor-pointer hover:text-white">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            className="size-6">
-            <path
-              fillRule="evenodd"
-              d="M5.625 1.5c-1.036 0-1.875.84-1.875 1.875v17.25c0 1.035.84 1.875 1.875 1.875h12.75c1.035 0 1.875-.84 1.875-1.875V12.75A3.75 3.75 0 0 0 16.5 9h-1.875a1.875 1.875 0 0 1-1.875-1.875V5.25A3.75 3.75 0 0 0 9 1.5H5.625ZM7.5 15a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 7.5 15Zm.75 2.25a.75.75 0 0 0 0 1.5H12a.75.75 0 0 0 0-1.5H8.25Z"
-              clipRule="evenodd"
-            />
-            <path d="M12.971 1.816A5.23 5.23 0 0 1 14.25 5.25v1.875c0 .207.168.375.375.375H16.5a5.23 5.23 0 0 1 3.434 1.279 9.768 9.768 0 0 0-6.963-6.963Z" />
-          </svg>
-          <span>Try A Sample</span>
-        </div>
-        <div
           onClick={handlePasteText}
           className="text-blue-600 hover:bg-blue-600 flex items-center justify-center gap-2 rounded-lg bg-[#F4F5F9] px-4 py-3 transition-all hover:cursor-pointer hover:text-white">
           <svg
@@ -339,11 +324,11 @@ const Tiptap = () => {
       </div>
 
       <div
-        className={`flex flex-col lg:flex-row ${
+        className={`flex flex-col md:flex-row ${
           wordCount == 0 ? "lg:justify-end" : "justify-between"
         }`}>
         <div
-          className={` items-center text-black my-2 gap-2 
+          className={` items-center justify-center md:justify-start w-full text-black my-2 gap-2 
             ${wordCount == 0 ? "hidden" : "flex"}
           `}>
           <svg height="15" width="15" viewBox="0 0 20 20">
@@ -376,7 +361,7 @@ const Tiptap = () => {
             {messageCountError}
           </span>
         )}
-        <div className="flex items-center gap-x-4 self-end w-full lg:w-fit md:justify-between lg:gap-x-3">
+        <div className="flex items-center md:justify-end gap-x-4 self-end w-full lg:w-fit lg:gap-x-3">
           {/* <button
             type="button"
             className="text-black text-sm w-full lg:w-fit px-2 py-2 transition-all duration-200 hover:text-white hover:bg-blue-600 border-blue-600 border-2 rounded-lg"
@@ -387,11 +372,44 @@ const Tiptap = () => {
 
           <button
             type="button"
-            className="text-white text-sm w-1/4 mb-8 lg:mb-0 mx-auto lg:w-fit px-2 py-2 hover:bg-blue-600 transition-all duration-200 bg-blue-400 border-2 rounded-lg"
+            className="text-white text-sm w-fit my-2 lg:my-0 mx-auto md:mx-0 md:mr-0  px-2 py-2 hover:bg-blue-600 transition-all duration-200 bg-blue-400 border-2 rounded-lg"
             onClick={humanizeSampleUsage}>
             Humanize
           </button>
         </div>
+      </div>
+      <div>
+        <Dialog
+          open={wordLimitExceededPopup}
+          handler={() => setWordLimitExceededPopup(!wordLimitExceededPopup)}
+          animate={{
+            mount: { scale: 1, y: 0 },
+            unmount: { scale: 0.9, y: -100 },
+          }}>
+          <DialogHeader>Notification</DialogHeader>
+          <DialogBody className="text-base font-bold">
+            Unfortunately, your account can currently only handle up to{" "}
+            {wordMax} words of input. To unlock a higher word limit, please
+            consider upgrading your account.
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              variant="text"
+              color="red"
+              onClick={() => setWordLimitExceededPopup(false)}
+              className="mr-1">
+              <span>Cancel</span>
+            </Button>
+            <Button variant="gradient" color="light-blue">
+              <Link
+                href="/pricing"
+                className="text-white"
+                onClick={() => setWordLimitExceededPopup(false)}>
+                Upgrade
+              </Link>
+            </Button>
+          </DialogFooter>
+        </Dialog>
       </div>
     </div>
   );
