@@ -75,6 +75,7 @@ export default function RootLayout({
           <SignUpFormModal />
 
           {children}
+
           <ToastContainer
             position="bottom-right"
             autoClose={3000}

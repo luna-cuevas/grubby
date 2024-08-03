@@ -33,8 +33,8 @@ const page = async (props: Props) => {
   const historyData = await fetchHistory(userData);
 
   return (
-    <div className="mx-auto py-12 md:py-6 bg-gray-200 min-h-screen">
-      <div className="mb-5 text-center text-6xl font-bold md:text-3xl">
+    <div className="mx-auto pt-20 bg-gray-200 min-h-screen">
+      <div className="mb-5 text-center text-2xl font-bold md:text-3xl">
         History
       </div>
       <div className="flex flex-col gap-y-5 px-4 lg:gap-y-3 max-w-[1000px] mx-auto">
