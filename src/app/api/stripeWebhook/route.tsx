@@ -26,7 +26,7 @@ const updateUserProfile = async (
     .from("profiles")
     .update({
       subscription_plan: plan,
-      wordsMax: interval === "month" ? wordsMax : Number(wordsMax) * 12,
+      wordsMax: interval === "year" ? Number(wordsMax) * 12 : wordsMax,
       inputMax,
       priceId: price.id,
       subscription_id: subscription.id,
