@@ -56,14 +56,17 @@ export async function POST(request: NextRequest) {
       }
     );
     const product = price.product as Product;
+    // @ts-ignore
+    const subInterval = price.recurring.interval;
 
     // Prepare the response data
     const responseData = {
       subscriptionName: product.name || "",
-      monthlyPrice: price.unit_amount ? price.unit_amount / 100 : null, // Stripe prices are in cents
+      price: price.unit_amount ? price.unit_amount / 100 : null, // Stripe prices are in cents
       renewalDate: new Date(
         subscription.current_period_end * 1000
       ).toISOString(), // Convert from Unix timestamp
+      interval: subInterval,
       startDate: new Date(subscription.start_date * 1000).toISOString(), // Convert from Unix timestamp
     };
 

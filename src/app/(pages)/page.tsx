@@ -348,11 +348,13 @@ const Home = () => {
             <div className="flex w-full h-full flex-col overflow-hidden rounded-lg">
               <div className="relative h-full flex flex-col lg:flex-row">
                 <div className="flex-1 h-full w-full ">
-                  <div className="flex min-h-[48px] border-r relative border-blue-400 items-center bg-blue-600 px-6 py-2 text-sm text-white ">
-                    <div className="absolute left-3">
+                  <div className="flex min-h-[48px] border-r justify-between flex-col lg:flex-row  relative border-blue-400 items-center bg-blue-600 px-6 py-2 text-sm text-white ">
+                    <div className="lg:absolute order-2 lg:order-1 left-3">
                       <ModeSelect />
                     </div>
-                    <h2 className="m-auto text-xl font-bold">AI Content</h2>
+                    <h2 className=" text-xl order-1 lg:m-auto lg:order-2 w-fit font-bold">
+                      AI Content
+                    </h2>
                   </div>
                   <div className="relative flex h-[400px] lg:h-[55vmin] overflow-y-auto flex-col bg-white pb-4 md:rounded-b-none ">
                     <div className="group relative flex-1 px-4 pt-4">

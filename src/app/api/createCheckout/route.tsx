@@ -42,7 +42,7 @@ export async function POST(request: Request) {
           after_completion: {
             type: "redirect",
             redirect: {
-              return_url: successUrl,
+              return_url: successUrl + "?customer_id=" + customerId,
             },
           },
         },

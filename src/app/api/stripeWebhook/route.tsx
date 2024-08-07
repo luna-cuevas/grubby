@@ -18,17 +18,21 @@ const updateUserProfile = async (
   const plan = product.name;
   const wordsMax = product.metadata.wordsPerMonth;
   const inputMax = product.metadata.inputMax;
+  // @ts-ignore
+  const interval = price.recurring.interval;
 
   // Find the customer in your database and update the subscription plan and states
   const { data: profiles, error } = await supabase
     .from("profiles")
     .update({
       subscription_plan: plan,
-      wordsMax,
+      wordsMax: interval === "month" ? wordsMax : Number(wordsMax) * 12,
       inputMax,
       priceId: price.id,
       subscription_id: subscription.id,
       stripe_customer_id: customerId,
+      // @ts-ignore
+      interval: price.recurring.interval,
     })
     .eq("stripe_customer_id", customerId)
     .select("*");
@@ -75,6 +79,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           inputMax: 100,
           priceId: "",
           subscription_id: "",
+          interval: "",
           stripe_customer_id: "",
         })
         .eq("stripe_customer_id", customerId);

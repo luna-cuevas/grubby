@@ -164,11 +164,6 @@ const Tiptap = () => {
       return;
     }
 
-    if (content.length === 0) {
-      toast.error("Please write something before humanizing.");
-      return;
-    }
-
     if (wordCount > inputLimit) {
       // toast.error(`Word limit exceeded! Limit: ${inputLimit} words.`);
       setMessageCountError(`Plan word limit exceeded: ${inputLimit} words.`);
@@ -193,7 +188,8 @@ const Tiptap = () => {
     if (
       wordCountData.wordCount +
         content.split(" ").filter((word) => word !== "").length >
-      wordMax
+        wordMax ||
+      state.openAIFetch.message !== ""
     ) {
       setState((prev) => ({
         ...prev,
@@ -328,7 +324,7 @@ const Tiptap = () => {
           wordCount == 0 ? "lg:justify-end" : "justify-between"
         }`}>
         <div
-          className={` items-center justify-center md:justify-start w-full text-black my-2 gap-2 
+          className={` items-center justify-center md:justify-start w-full lg:w-fit text-black my-2 gap-2 
             ${wordCount == 0 ? "hidden" : "flex"}
           `}>
           <svg height="15" width="15" viewBox="0 0 20 20">

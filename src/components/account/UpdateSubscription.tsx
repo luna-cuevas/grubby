@@ -4,18 +4,23 @@ import { BoltIcon } from "@heroicons/react/24/solid";
 import { loadStripe } from "@stripe/stripe-js";
 import { useAtom } from "jotai";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
+import { stripe } from "@/lib/stripe";
+import { useSupabase } from "@/lib/supabase";
 
 type Props = {
   subscription: any;
 };
 
 const UpdateSubscription = (props: Props) => {
-  const { subscriptionName, startDate, renewalDate, monthlyPrice } =
+  const { subscriptionName, startDate, renewalDate, price, interval } =
     props.subscription;
   const [state, setState] = useAtom(globalStateAtom);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const customerId = searchParams.get("customer_id");
+  const supabase = useSupabase();
 
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
@@ -51,16 +56,81 @@ const UpdateSubscription = (props: Props) => {
     }
   };
 
+  // useEffect(() => {
+  //   if (customerId) {
+  //     const updateSubscription = async () => {
+  //       const retrieveCheckout = await stripe.checkout.sessions.retrieve(
+  //         customerId
+  //       );
+
+  //       const subscription = retrieveCheckout.subscription;
+
+  //       const retrieveSubscription = await stripe.subscriptions.retrieve(
+  //         subscription as string
+  //       );
+
+  //       const priceId = retrieveSubscription.items.data[0].price.id;
+
+  //       const retrievePrice = await stripe.prices.retrieve(priceId, {
+  //         expand: ["product"],
+  //       });
+
+  //       // @ts-ignore
+  //       const productName = retrievePrice.product.name;
+  //       // @ts-ignore
+  //       const subInterval = retrievePrice.recurring.interval;
+
+  //       const { data, error } = await supabase
+  //         .from("profiles")
+  //         .update({
+  //           subscription_plan: productName,
+  //           wordsMax:
+  //             subInterval === "month"
+  //               ? // @ts-ignore
+  //                 retrievePrice.product.metadata.wordsPerMonth
+  //               : // @ts-ignore
+  //                 retrievePrice.product.metadata.wordsPerMonth * 12,
+  //           // @ts-ignore
+  //           inputMax: retrievePrice.product.metadata.inputMax,
+  //           priceId,
+  //           interval: subInterval,
+  //           subscription_id: subscription,
+  //           stripe_customer_id: retrieveCheckout.customer as string,
+  //         })
+  //         .eq("id", state.user.id);
+
+  //       if (error) {
+  //         console.error("Error updating profile:", error.message);
+  //       } else {
+  //         setState((prev) => ({
+  //           ...prev,
+  //           isSubscribed: {
+  //             status: true,
+  //             interval: subInterval,
+  //             planName: productName,
+  //           },
+  //         }));
+  //         console.log("Profile updated successfully:", data);
+  //       }
+  //     };
+
+  //     updateSubscription();
+  //   }
+  // }, [customerId]);
+
   return (
     <div className=" overflow-hidden rounded-[8px] border bg-white p-8 md:px-6">
       <div className="mb-2 font-semibold">Your Subscription</div>
-      {subscriptionName && startDate && renewalDate && monthlyPrice ? (
+      {subscriptionName && startDate && renewalDate && price && interval ? (
         <div>
           <div className="mb-5 flex items-center justify-between">
             <div className="text-display/[0.65] text-xs">
               <div className="mb-1 ">Your Plan</div>
               <div className="text-display/[0.85] flex items-center gap-x-1 text-sm font-semibold">
-                <div>{subscriptionName}</div>
+                <div className="capitalize">
+                  {subscriptionName} -{" "}
+                  {interval === "month" ? "Monthly" : "Yearly"}
+                </div>
               </div>
             </div>
             <div>
@@ -78,10 +148,10 @@ const UpdateSubscription = (props: Props) => {
 
           <div className="mb-5">
             <div className="text-display/[0.65] mb-1 text-xs">
-              Monthly Payment
+              {interval == "month" ? "Monthly" : "Yearly"} Payment
             </div>
             <div className="text-display/[0.85] text-lg font-semibold">
-              ${monthlyPrice}
+              ${price}
             </div>
           </div>
 

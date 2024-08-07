@@ -4,6 +4,7 @@ type State = {
   isSignInOpen: boolean;
   isSubscribed: {
     status: boolean;
+    interval: string;
     planName: string;
   };
   session: null | string;
@@ -64,6 +65,7 @@ export const initialState: State = {
   isSignInOpen: false,
   isSubscribed: {
     status: false,
+    interval: "",
     planName: "",
   },
   session: null,

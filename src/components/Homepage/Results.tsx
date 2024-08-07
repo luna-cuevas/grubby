@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Placeholder from "@tiptap/extension-placeholder";
 import CharacterCount from "@tiptap/extension-character-count";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { ToolTip } from "./ToolTip";
@@ -20,7 +19,7 @@ const Results = (props: Props) => {
   const [state, setState] = useAtom(globalStateAtom);
   const searchParams = useSearchParams();
   const router = useRouter();
-  const messageId = searchParams.get("id");
+  const [retryCount, setRetryCount] = useState(0);
 
   const ResultsEditor = useEditor({
     extensions: [StarterKit, CharacterCount.configure()],
@@ -47,6 +46,15 @@ const Results = (props: Props) => {
   }
 
   const handleRetry = async () => {
+    setRetryCount((prev) => prev + 1);
+
+    if (retryCount >= 2 && state.isSubscribed.planName === "free") {
+      setState((prev) => ({
+        ...prev,
+        limitReachPopup: true,
+      }));
+      return;
+    }
     try {
       // Clear the search parameter
       const newSearchParams = new URLSearchParams(searchParams.toString());
@@ -62,7 +70,10 @@ const Results = (props: Props) => {
         },
       }));
 
-      const result = await humanizerAPI(state.openAIFetch.message, "ver1");
+      const result = await humanizerAPI(
+        state.openAIFetch.message,
+        state.humanizerVersion
+      );
 
       if (result && result.text) {
         setState((prev) => ({
@@ -77,7 +88,7 @@ const Results = (props: Props) => {
           },
         }));
 
-        await fetch("/api/setHistory", {
+        const setHistory = await fetch("/api/setHistory", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -89,6 +100,10 @@ const Results = (props: Props) => {
             words: result.text.split(" ").filter((word) => word !== "").length,
           }),
         });
+
+        const setHistoryJson = await setHistory.json();
+
+        console.log(setHistoryJson);
       }
     } catch (e) {
       console.error(e);
@@ -136,6 +151,7 @@ const Results = (props: Props) => {
         <div className="flex  items-center gap-2">
           <CopyToClipboard text={ResultsEditor.getText()} onCopy={handleCopy}>
             <Link
+              target="_blank"
               href="https://gptzero.me/"
               className="text-white text-sm   lg:w-fit px-2 py-2 hover:bg-blue-600 transition-all duration-200 bg-blue-400 border-2 rounded-lg">
               Copy & Verify

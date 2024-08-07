@@ -220,6 +220,7 @@ function ProfileMenu() {
                       className="flex px-2 rounded-none hover:bg-opacity-80  active:bg-cypress-green-light focus:bg-cypress-green-light hover:bg-cypress-green-light justify-left lg:justify-left items-center ">
                       {label == "Sign Out" ? (
                         <li
+                          onClick={handleSignOut}
                           className={`${
                             path == "/"
                               ? "lg:text-white text-black"
