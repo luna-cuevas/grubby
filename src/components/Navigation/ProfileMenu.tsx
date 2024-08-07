@@ -43,11 +43,6 @@ const profileMenuItems = [
     url: "/history",
   },
   {
-    label: "Help",
-    icon: LifebuoyIcon,
-    url: "/help",
-  },
-  {
     label: "Sign Out",
     icon: PowerIcon,
   },
@@ -176,7 +171,7 @@ function ProfileMenu() {
       ) : (
         <Accordion
           className="lg:hidden w-full  justify-center items-center gap-2 border-b border-gray-200"
-          open={isProfileMenuOpen}
+          open={true}
           animate={{
             unmount: {
               height: "0px",
@@ -211,26 +206,25 @@ function ProfileMenu() {
             </li>
           </AccordionHeader>
           <AccordionBody className="w-full pt-[9px] pb-2">
-            <ul className={`flex flex-col  w-full gap-2 px-auto my-1 `}>
+            <ul className={`flex flex-col  w-full gap-1 px-auto my-1 `}>
               {profileMenuItems &&
                 profileMenuItems.map(
-                  ({ label, url }: { label: string; url?: string }) => (
+                  ({
+                    label,
+                    url,
+                    icon,
+                  }: {
+                    label: string;
+                    url?: string;
+                    icon: any;
+                  }) => (
                     <MenuItem
                       key={label}
                       className="flex px-2 rounded-none hover:bg-opacity-80  active:bg-cypress-green-light focus:bg-cypress-green-light hover:bg-cypress-green-light justify-left lg:justify-left items-center ">
                       {label == "Sign Out" ? (
-                        <li
-                          onClick={handleSignOut}
-                          className={`${
-                            path == "/"
-                              ? "lg:text-white text-black"
-                              : "text-black"
-                          }  underline-animation relative group-hover:text-black dark:group-hover:text-white dark:text-gray-200 flex uppercase text-xs box-content`}>
-                          {label}
-                        </li>
-                      ) : (
-                        <Link href={url || ""}>
+                        <div className="flex gap-2">
                           <li
+                            onClick={handleSignOut}
                             className={`${
                               path == "/"
                                 ? "lg:text-white text-black"
@@ -238,7 +232,32 @@ function ProfileMenu() {
                             }  underline-animation relative group-hover:text-black dark:group-hover:text-white dark:text-gray-200 flex uppercase text-xs box-content`}>
                             {label}
                           </li>
-                        </Link>
+                          {React.createElement(icon, {
+                            className: `h-4 w-4 ${
+                              state.darkMode ? "text-white" : "text-black"
+                            }`,
+                            strokeWidth: 2,
+                          })}
+                        </div>
+                      ) : (
+                        <div className="flex gap-2">
+                          <Link href={url || ""}>
+                            <li
+                              className={`${
+                                path == "/"
+                                  ? "lg:text-white text-black"
+                                  : "text-black"
+                              }  underline-animation relative group-hover:text-black dark:group-hover:text-white dark:text-gray-200 flex uppercase text-xs box-content`}>
+                              {label}
+                            </li>
+                          </Link>
+                          {React.createElement(icon, {
+                            className: `h-4 w-4 ${
+                              state.darkMode ? "text-white" : "text-black"
+                            }`,
+                            strokeWidth: 2,
+                          })}
+                        </div>
                       )}
                     </MenuItem>
                   )

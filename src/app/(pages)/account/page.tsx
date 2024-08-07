@@ -64,7 +64,7 @@ const page = async () => {
   const subscription = await fetchSubscription(userData);
 
   return (
-    <div className="text-f-text mx-auto pt-20 max-w-[800px] pb-12 md:px-4 md:py-6">
+    <div className="text-f-text mx-auto pt-20 max-w-[800px] pb-12 md:px-4 ">
       <div className="mx-auto mb-5 text-center text-3xl font-semibold">
         Account
       </div>

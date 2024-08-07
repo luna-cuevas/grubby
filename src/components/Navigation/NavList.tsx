@@ -84,6 +84,14 @@ const NavList = ({}: {}) => {
           ))}
           <ProfileMenu />
 
+          {state.isSubscribed.planName === "free" && (
+            <Link
+              href="/pricing"
+              className="bg-blue-600 lg:hidden hover:bg-blue-800 w-full rounded px-5 py-[10px] text-center text-white">
+              Upgrade Now For $4.99
+            </Link>
+          )}
+
           {/* <div className="flex gap-3 lg:py-[0.45rem] pt-[9px] pb-2 px-2 items-center lg:mx-0 mx-auto">
             <SunIcon
               opacity={state.darkMode ? "0.5" : "1"}

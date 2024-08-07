@@ -5,7 +5,7 @@ import { useSupabase } from "@/lib/supabase";
 export async function POST(request: Request) {
   const supabase = useSupabase();
   const origin = request.headers.get("origin");
-  const { priceId, successUrl, cancelUrl, userId } = await request.json();
+  const { priceId, successUrl, cancelUrl, userId, type } = await request.json();
   try {
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
@@ -18,37 +18,65 @@ export async function POST(request: Request) {
       return;
     }
 
-    console.log("profile", profile);
-
     if (profile?.subscription_id) {
       const subscription = await stripe.subscriptions.retrieve(
         profile.subscription_id
       );
 
-      console.log("subscription", subscription);
-
       const customerId = subscription.customer as string;
 
-      console.log("customerId", customerId);
-
-      const session = await stripe.billingPortal.sessions.create({
-        customer: customerId,
-        return_url: cancelUrl,
-        flow_data: {
-          type: "subscription_update",
-          subscription_update: {
-            subscription: profile.subscription_id,
-          },
-          after_completion: {
-            type: "redirect",
-            redirect: {
-              return_url: successUrl + "?customer_id=" + customerId,
+      if (type === "update") {
+        const session = await stripe.billingPortal.sessions.create({
+          customer: customerId,
+          return_url: cancelUrl,
+          flow_data: {
+            type: "subscription_update",
+            after_completion: {
+              type: "redirect",
+              redirect: {
+                return_url: successUrl,
+              },
+            },
+            subscription_update: {
+              subscription: subscription.id,
             },
           },
-        },
-      });
-
-      return NextResponse.json({ url: session.url });
+        });
+        return NextResponse.json({ url: session.url });
+      } else if (type === "cancel") {
+        const session = await stripe.billingPortal.sessions.create({
+          customer: customerId,
+          return_url: cancelUrl,
+          flow_data: {
+            type: "subscription_cancel",
+            after_completion: {
+              type: "redirect",
+              redirect: {
+                return_url: successUrl,
+              },
+            },
+            subscription_cancel: {
+              subscription: subscription.id,
+            },
+          },
+        });
+        return NextResponse.json({ url: session.url });
+      } else if (type === "payment_method_update") {
+        const session = await stripe.billingPortal.sessions.create({
+          customer: customerId,
+          return_url: cancelUrl,
+          flow_data: {
+            type: "payment_method_update",
+            after_completion: {
+              type: "redirect",
+              redirect: {
+                return_url: successUrl,
+              },
+            },
+          },
+        });
+        return NextResponse.json({ url: session.url });
+      }
     } else {
       const session = await stripe.checkout.sessions.create({
         mode: "subscription",

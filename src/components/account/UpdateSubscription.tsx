@@ -26,7 +26,7 @@ const UpdateSubscription = (props: Props) => {
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
   );
 
-  const handleSubscription = async () => {
+  const handleSubscription = async (type: string) => {
     if (state.isSubscribed.status === false) {
       router.push("/pricing");
       return;
@@ -43,6 +43,7 @@ const UpdateSubscription = (props: Props) => {
           userId: state.user?.id,
           cancelUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/account`,
           successUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/account`,
+          type,
         }),
       });
       const data = await response.json();
@@ -55,68 +56,6 @@ const UpdateSubscription = (props: Props) => {
       console.error("Error creating checkout session: ", error);
     }
   };
-
-  // useEffect(() => {
-  //   if (customerId) {
-  //     const updateSubscription = async () => {
-  //       const retrieveCheckout = await stripe.checkout.sessions.retrieve(
-  //         customerId
-  //       );
-
-  //       const subscription = retrieveCheckout.subscription;
-
-  //       const retrieveSubscription = await stripe.subscriptions.retrieve(
-  //         subscription as string
-  //       );
-
-  //       const priceId = retrieveSubscription.items.data[0].price.id;
-
-  //       const retrievePrice = await stripe.prices.retrieve(priceId, {
-  //         expand: ["product"],
-  //       });
-
-  //       // @ts-ignore
-  //       const productName = retrievePrice.product.name;
-  //       // @ts-ignore
-  //       const subInterval = retrievePrice.recurring.interval;
-
-  //       const { data, error } = await supabase
-  //         .from("profiles")
-  //         .update({
-  //           subscription_plan: productName,
-  //           wordsMax:
-  //             subInterval === "month"
-  //               ? // @ts-ignore
-  //                 retrievePrice.product.metadata.wordsPerMonth
-  //               : // @ts-ignore
-  //                 retrievePrice.product.metadata.wordsPerMonth * 12,
-  //           // @ts-ignore
-  //           inputMax: retrievePrice.product.metadata.inputMax,
-  //           priceId,
-  //           interval: subInterval,
-  //           subscription_id: subscription,
-  //           stripe_customer_id: retrieveCheckout.customer as string,
-  //         })
-  //         .eq("id", state.user.id);
-
-  //       if (error) {
-  //         console.error("Error updating profile:", error.message);
-  //       } else {
-  //         setState((prev) => ({
-  //           ...prev,
-  //           isSubscribed: {
-  //             status: true,
-  //             interval: subInterval,
-  //             planName: productName,
-  //           },
-  //         }));
-  //         console.log("Profile updated successfully:", data);
-  //       }
-  //     };
-
-  //     updateSubscription();
-  //   }
-  // }, [customerId]);
 
   return (
     <div className=" overflow-hidden rounded-[8px] border bg-white p-8 md:px-6">
@@ -136,7 +75,7 @@ const UpdateSubscription = (props: Props) => {
             <div>
               <button
                 type="button"
-                onClick={handleSubscription}
+                onClick={() => handleSubscription("update")}
                 className="bg-blue-600 text-white hover:bg-blue-400 flex h-[34px] min-w-[99px] items-center justify-center rounded-[4px] text-sm font-semibold">
                 <span className="inline-flex justify-center items-center h-4 w-4">
                   <BoltIcon />
@@ -185,9 +124,15 @@ const UpdateSubscription = (props: Props) => {
             <div className="flex justify-end">
               <button
                 type="button"
-                onClick={handleSubscription}
+                onClick={() => handleSubscription("payment_method_update")}
                 className="bg-blue-600 text-white hover:bg-blue-400 h-[34px] min-w-[101px] rounded text-sm font-semibold">
                 <span>Changes</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSubscription("cancel")}
+                className="bg-red-600 text-white hover:bg-red-400 h-[34px] min-w-[101px] rounded ml-2 text-sm font-semibold">
+                <span>Cancel</span>
               </button>
             </div>
           </div>

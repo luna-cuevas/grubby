@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import CheckoutCard from "./CheckoutCard";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { stripe } from "@/lib/stripe";
 import { useAtom } from "jotai";
 import { globalStateAtom } from "@/context/atoms";
@@ -32,7 +32,7 @@ const SubscriptionPlans = (props: Props) => {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
   const supabase = useSupabase();
-
+  const router = useRouter();
   const [state, setState] = useAtom(globalStateAtom);
   const [isMonthly, setIsMonthly] = useState(true);
   const filteredPlans =
@@ -123,6 +123,7 @@ const SubscriptionPlans = (props: Props) => {
             },
           }));
           console.log("Profile updated successfully:", data);
+          router.push("/account");
         }
       };
 
