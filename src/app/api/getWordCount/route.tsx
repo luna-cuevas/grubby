@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from("profiles")
-      .select("wordCount, wordsMax, inputMax")
+      .select("wordCount, wordsMax, inputMax, interval")
       .eq("id", id);
 
     if (error) {
@@ -17,10 +17,14 @@ export async function POST(request: NextRequest) {
       return;
     }
 
+    const subInterval = data[0].interval;
+
     return NextResponse.json({
-      wordsMax: data[0].wordsMax,
+      wordsMax:
+        subInterval === "year" ? data[0].wordsMax / 12 : data[0].wordsMax,
       wordCount: data[0].wordCount,
       inputMax: data[0].inputMax,
+      interval: data[0].interval,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

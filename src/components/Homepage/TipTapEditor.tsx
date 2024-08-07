@@ -70,8 +70,10 @@ const Tiptap = () => {
     }
 
     const data = await response.json();
+    console.log("data", data);
+
     setInputLimit(data.inputMax);
-    setWordMax(data.interval === "month" ? data.wordMax : data.wordMax / 12);
+    setWordMax(data.wordMax);
     setTotalWordCount(data.wordCount);
   };
 

@@ -68,67 +68,67 @@ const SubscriptionPlans = (props: Props) => {
       });
   }, []);
 
-  // useEffect(() => {
-  //   if (sessionId) {
-  //     const updateSubscription = async () => {
-  //       const retrieveCheckout = await stripe.checkout.sessions.retrieve(
-  //         sessionId
-  //       );
+  useEffect(() => {
+    if (sessionId) {
+      const updateSubscription = async () => {
+        const retrieveCheckout = await stripe.checkout.sessions.retrieve(
+          sessionId
+        );
 
-  //       const subscription = retrieveCheckout.subscription;
+        const subscription = retrieveCheckout.subscription;
 
-  //       const retrieveSubscription = await stripe.subscriptions.retrieve(
-  //         subscription as string
-  //       );
+        const retrieveSubscription = await stripe.subscriptions.retrieve(
+          subscription as string
+        );
 
-  //       const priceId = retrieveSubscription.items.data[0].price.id;
+        const priceId = retrieveSubscription.items.data[0].price.id;
 
-  //       const retrievePrice = await stripe.prices.retrieve(priceId, {
-  //         expand: ["product"],
-  //       });
+        const retrievePrice = await stripe.prices.retrieve(priceId, {
+          expand: ["product"],
+        });
 
-  //       // @ts-ignore
-  //       const productName = retrievePrice.product.name;
-  //       // @ts-ignore
-  //       const subInterval = retrievePrice.recurring.interval;
+        // @ts-ignore
+        const productName = retrievePrice.product.name;
+        // @ts-ignore
+        const subInterval = retrievePrice.recurring.interval;
 
-  //       const { data, error } = await supabase
-  //         .from("profiles")
-  //         .update({
-  //           subscription_plan: productName,
-  //           wordsMax:
-  //             subInterval === "month"
-  //               ? // @ts-ignore
-  //                 retrievePrice.product.metadata.wordsPerMonth
-  //               : // @ts-ignore
-  //                 retrievePrice.product.metadata.wordsPerMonth * 12,
-  //           // @ts-ignore
-  //           inputMax: retrievePrice.product.metadata.inputMax,
-  //           priceId,
-  //           interval: subInterval,
-  //           subscription_id: subscription,
-  //           stripe_customer_id: retrieveCheckout.customer as string,
-  //         })
-  //         .eq("id", state.user.id);
+        const { data, error } = await supabase
+          .from("profiles")
+          .update({
+            subscription_plan: productName,
+            wordsMax:
+              subInterval === "month"
+                ? // @ts-ignore
+                  retrievePrice.product.metadata.wordsPerMonth
+                : // @ts-ignore
+                  retrievePrice.product.metadata.wordsPerMonth * 12,
+            // @ts-ignore
+            inputMax: retrievePrice.product.metadata.inputMax,
+            priceId,
+            interval: subInterval,
+            subscription_id: subscription,
+            stripe_customer_id: retrieveCheckout.customer as string,
+          })
+          .eq("id", state.user.id);
 
-  //       if (error) {
-  //         console.error("Error updating profile:", error.message);
-  //       } else {
-  //         setState((prev) => ({
-  //           ...prev,
-  //           isSubscribed: {
-  //             status: true,
-  //             interval: subInterval,
-  //             planName: productName,
-  //           },
-  //         }));
-  //         console.log("Profile updated successfully:", data);
-  //       }
-  //     };
+        if (error) {
+          console.error("Error updating profile:", error.message);
+        } else {
+          setState((prev) => ({
+            ...prev,
+            isSubscribed: {
+              status: true,
+              interval: subInterval,
+              planName: productName,
+            },
+          }));
+          console.log("Profile updated successfully:", data);
+        }
+      };
 
-  //     updateSubscription();
-  //   }
-  // }, [sessionId]);
+      updateSubscription();
+    }
+  }, [sessionId]);
 
   if (!isLoaded) {
     return (
