@@ -80,6 +80,7 @@ export const Navigation = (props: Props) => {
         isSignInOpen: false,
         isSubscribed: {
           status: data.subscription_id != "",
+          interval: data.interval || "",
           planName: data.plan_name,
         },
         isSignUpModalOpen: false,
