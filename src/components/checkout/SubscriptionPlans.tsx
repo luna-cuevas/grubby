@@ -121,6 +121,7 @@ const SubscriptionPlans = (props: Props) => {
               interval: subInterval,
               planName: productName,
             },
+            wordLimitReached: false,
           }));
           console.log("Profile updated successfully:", data);
           router.push("/account");

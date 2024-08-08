@@ -1,10 +1,11 @@
+"use server";
 import {
   ChatCompletion,
-  ChatCompletionCreateParamsNonStreaming,
   ChatCompletionMessageParam,
   ChatModel,
 } from "openai/resources/index";
 import { FTModelMap, FTModelShort } from "./FTModelTypes";
+import { ChatCompletionCreateParamsNonStreaming } from "openai/src/resources/index.js";
 
 export interface AiStepBase {
   frequencyPenalty?: number;
@@ -43,17 +44,20 @@ function isAiStepFineTuned(step: AiStepBase): step is AiStepFineTuned {
 async function processWithVerificationRaw(
   request: ChatCompletionCreateParamsNonStreaming,
   verificationCallback: (data: ChatCompletion) => boolean,
-  retriesVerification: number,
-  delay = 2000 // 2 seconds
+  retriesVerification = 2,
+  delay = 20000
 ): Promise<ChatCompletion | null> {
   for (let i = 0; i < retriesVerification; i++) {
-    const response = await fetch("/api/openAI", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(request),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/openAI`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+      }
+    );
     const responseJson = await response.json();
     if (response && verificationCallback(responseJson)) return responseJson;
 

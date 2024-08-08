@@ -340,7 +340,7 @@ const Home = () => {
             </span>
           </h1>
           <h2 className="mb-8 mt-3 mx-auto  text-sm font-bold text-center text-white ">
-            Better than every other AI detector and half the price. Trained on
+            Better than every other AI humanizer and half the price. Trained on
             1,000+ custom human-written texts. Guaranteed to bypass AI detection
             or your money back.
           </h2>

@@ -16,18 +16,20 @@ const HistoryCards = async (props: Props) => {
 
   return (
     <div className="shadow-card w-full rounded-lg text-f-text group cursor-pointer bg-white px-8 py-6 text-base md:p-4">
+      <h2 className="text-lg font-bold text-blue-600">AI Response:</h2>
       <Link
         className="group-hover:text-blue-400 block"
         href={`${baseURL}?id=${item.id}`}>
-        {item.response}
+        {item.response.slice(0, 225)}...
       </Link>
-      <div className="text-gray-600 mt-3 flex items-center justify-between">
-        <div className="flex items-center gap-x-6 md:text-sm">
-          {new Date(item.created_at).toLocaleString("en-US", {
-            timeZone: "UTC",
-          })}
+      <div className="text-gray-600 mt-3 flex items-end justify-between">
+        <div className="flex  md:text-sm flex-col">
+          <h3 className="text-base font-bold text-blue-600">Prompt:</h3>
           {item.message.slice(0, 100)}
         </div>
+        {new Date(item.created_at).toLocaleString("en-US", {
+          timeZone: "UTC",
+        })}
         <form method="POST" action="/api/deleteHistoryMessage">
           <input type="hidden" name="userId" value={userData.data.user.id} />
           <input type="hidden" name="messageId" value={item.id} />

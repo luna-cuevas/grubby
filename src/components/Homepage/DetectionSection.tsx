@@ -9,6 +9,7 @@ import ProgressBar from "../ProgressBar";
 import { useAtom } from "jotai";
 import { globalStateAtom } from "@/context/atoms";
 import { Spinner } from "@material-tailwind/react";
+import { openAIFetchStateAtom } from "@/context/humanizerAtoms";
 
 type Props = {
   detectionResults: {
@@ -21,20 +22,20 @@ type Props = {
 
 const DetectionSection = (props: Props) => {
   const { detectionResults } = props;
-  const [state, setState] = useAtom(globalStateAtom);
+  const [openAIFetchState, setOpenAIFetchState] = useAtom(openAIFetchStateAtom);
   const [resultPresent, setResultPresent] = useState(false);
 
   useEffect(() => {
-    if (state.openAIFetch.result.text !== "") {
+    if (openAIFetchState.result.text !== "") {
       setResultPresent(true);
       // scroll down to the detection result view
     } else {
       setResultPresent(false);
     }
-  }, [state.openAIFetch.result.text]);
+  }, [openAIFetchState]);
 
   useEffect(() => {
-    if (!state.openAIFetch.isLoading && state.openAIFetch.result.text !== "") {
+    if (!openAIFetchState.isLoading && openAIFetchState.result.text !== "") {
       const detectionResultView = document.getElementById(
         "detectionResultView"
       );
@@ -43,7 +44,7 @@ const DetectionSection = (props: Props) => {
         block: "center",
       });
     }
-  }, [state.openAIFetch.isLoading]);
+  }, [openAIFetchState.isLoading]);
   return (
     <div
       className={`
@@ -52,7 +53,7 @@ const DetectionSection = (props: Props) => {
       id="detectionResultView">
       <ProgressBar />
 
-      {state.openAIFetch.isLoading ? (
+      {openAIFetchState.isLoading ? (
         <div className="w-fit h-full gap-4 py-8 justify-center flex-col items-center flex mx-auto">
           <section>
             <div className="loading loading01">

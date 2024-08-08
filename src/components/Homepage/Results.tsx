@@ -11,19 +11,21 @@ import { humanizerAPI } from "@/utils/humanize";
 import { Spinner } from "@material-tailwind/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { openAIFetchStateAtom } from "@/context/humanizerAtoms";
 
 type Props = {};
 
 const Results = (props: Props) => {
   const [copied, setCopied] = useState(false);
   const [state, setState] = useAtom(globalStateAtom);
+  const [openAIFetchState, setOpenAIFetchState] = useAtom(openAIFetchStateAtom);
   const searchParams = useSearchParams();
   const router = useRouter();
   const [retryCount, setRetryCount] = useState(0);
 
   const ResultsEditor = useEditor({
     extensions: [StarterKit, CharacterCount.configure()],
-    content: state.openAIFetch.result ? state.openAIFetch.result.text : "",
+    content: openAIFetchState.result ? openAIFetchState.result : "",
     autofocus: false,
     editable: false,
   });
@@ -34,12 +36,12 @@ const Results = (props: Props) => {
   };
 
   useEffect(() => {
-    if (ResultsEditor && state.openAIFetch.result.text) {
-      ResultsEditor.commands.setContent(state.openAIFetch.result.text);
+    if (ResultsEditor && openAIFetchState.result) {
+      ResultsEditor.commands.setContent(openAIFetchState.result.text);
     } else if (ResultsEditor) {
       ResultsEditor.commands.setContent("");
     }
-  }, [state.openAIFetch]);
+  }, [openAIFetchState.result.text]);
 
   if (!ResultsEditor) {
     return null;
@@ -48,7 +50,7 @@ const Results = (props: Props) => {
   const handleRetry = async () => {
     setRetryCount((prev) => prev + 1);
 
-    if (retryCount >= 2 && state.isSubscribed.planName === "free") {
+    if (retryCount >= 1 && state.isSubscribed.planName === "free") {
       setState((prev) => ({
         ...prev,
         limitReachPopup: true,
@@ -62,30 +64,29 @@ const Results = (props: Props) => {
       router.replace(`?${newSearchParams.toString()}`);
 
       // Set loading state
-      setState((prev) => ({
+      setOpenAIFetchState((prev) => ({
         ...prev,
-        openAIFetch: {
-          ...prev.openAIFetch,
-          isLoading: true,
-        },
+        isLoading: true,
       }));
 
       const result = await humanizerAPI(
-        state.openAIFetch.message,
+        openAIFetchState.message,
         state.humanizerVersion
       );
 
       if (result && result.text) {
-        setState((prev) => ({
+        setOpenAIFetchState((prev) => ({
           ...prev,
-          openAIFetch: {
-            ...prev.openAIFetch,
-            isLoading: false,
-            result: result,
-            wordCount:
-              prev.openAIFetch.wordCount +
-              result.text.split(" ").filter((word) => word !== "").length,
+          isLoading: false,
+          result: {
+            text: result.text,
+            priceInput: result.priceInput,
+            priceOutput: result.priceOutput,
+            priceTotal: result.priceTotal,
           },
+          wordCount:
+            prev.wordCount +
+            result.text.split(" ").filter((word) => word !== "").length,
         }));
 
         const setHistory = await fetch("/api/setHistory", {
@@ -96,28 +97,23 @@ const Results = (props: Props) => {
           body: JSON.stringify({
             result: result.text,
             userId: state.user.id,
-            message: state.openAIFetch.message,
+            message: openAIFetchState.message,
             words: result.text.split(" ").filter((word) => word !== "").length,
           }),
         });
 
         const setHistoryJson = await setHistory.json();
-
-        console.log(setHistoryJson);
       }
     } catch (e) {
       console.error(e);
-      setState((prev) => ({
+      setOpenAIFetchState((prev) => ({
         ...prev,
-        openAIFetch: {
-          ...prev.openAIFetch,
-          isLoading: false,
-        },
+        isLoading: false,
       }));
     }
   };
 
-  if (state.openAIFetch.isLoading) {
+  if (openAIFetchState.isLoading) {
     return (
       <div className="w-fit h-full gap-4 justify-center flex-col items-center flex mx-auto">
         <Spinner className="h-12 w-12" color="blue" />

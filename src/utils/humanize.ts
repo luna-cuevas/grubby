@@ -27,6 +27,8 @@ interface HumanizeStep extends AiStepFineTuned {
   useTextBefore?: boolean;
 }
 
+type LoadingStateCallback = (isLoading: boolean) => void;
+
 const stepsVer1: HumanizeStep[] = [
   {
     ftModel: "ed-rand-mix-kelly",
@@ -127,13 +129,12 @@ async function humanizePart(
     if (step.useTextBefore && textBeforePart.length > 10) {
       systemPrompt += `\n\n Please ensure your version connects with the text before, so it has different intro words and you're not talking about same thing again.
 
-                      PART OF THE TEXT BEFORE CURRENT PART:
+PART OF THE TEXT BEFORE CURRENT PART:
 
-                      ${textBeforePart}
+${textBeforePart}
 
-                      PLEASE DON'T INCLUDE PREVIOUS PARTS IN YOUR RESPONSE.`;
+PLEASE DON'T INCLUDE PREVIOUS PARTS IN YOUR RESPONSE.`;
     }
-
     const messages: ChatCompletionMessageParam[] = [
       { role: "system", content: systemPrompt },
       { role: "user", content: currentText },
@@ -236,7 +237,18 @@ async function humanizeText(
  */
 export async function humanizerAPI(
   text: string,
-  model: HumanizerModel
+  model: HumanizerModel,
+  onLoadingStateChange?: LoadingStateCallback // Optional callback for loading state
 ): Promise<HumanizeResponse> {
-  return humanizeText(text, modelStepsMap[model]);
+  try {
+    if (onLoadingStateChange) {
+      onLoadingStateChange(true); // Set loading state to true
+    }
+    const response = await humanizeText(text, modelStepsMap[model]);
+    return response;
+  } finally {
+    if (onLoadingStateChange) {
+      onLoadingStateChange(false); // Set loading state to false
+    }
+  }
 }
