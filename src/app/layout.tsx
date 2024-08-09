@@ -46,7 +46,7 @@ export const metadata: Metadata = {
       },
     ],
     type: "website",
-    url: "https://www.grubby.ai",
+    url: "https://grubby.ai",
     title: "GrubbyAI - AI Detection Remover & Humanizer",
     description:
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     title: "GrubbyAI - AI Detection Remover & Humanizer",
-    site: "https://www.grubby.ai",
+    site: "https://grubby.ai",
     card: "summary_large_image",
     description:
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
       },
     ],
   },
-  metadataBase: new URL("https://www.grubby.ai"),
+  metadataBase: new URL("https://grubby.ai"),
 };
 
 export default function RootLayout({
