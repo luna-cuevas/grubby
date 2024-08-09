@@ -8,27 +8,30 @@ import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
 import { Provider } from "jotai";
 import Footer from "@/components/Footer";
 import SignUpFormModal from "@/components/SignUpAndLogin/SignUpFormModal";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
-  title: "GrubbyAI - AI Detection Remover & Humanizer",
+  title: "SWOM - Swap your home.",
   description:
-    "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
+    "BE PART OF A HARMONIOUS COOPERATIVE GLOBAL COMMUNITY. Opening your home to others fosters your capacity for trust and generosity.",
   icons: [
     {
-      url: "https://grubby.ai/images/grubby-logo-no-text.png",
+      url: "/logo-icons.png",
       rel: "icon",
-      href: "https://grubby.ai/images/grubby-logo-no-text.png",
+      href: "/logo-icons.png",
     },
   ],
   keywords: [
-    "AI detection remover",
-    "AI humanizer",
-    "bypass AI detection",
-    "GrubbyAI",
-    "undetectable AI text",
-    "plagiarism-free AI content",
+    "swom",
+    "swap",
+    "home",
+    "travel",
+    "community",
+    "cooperative",
+    "global",
+    "trust",
+    "generosity",
   ].join(", "),
   robots: {
     index: true,
@@ -38,38 +41,37 @@ export const metadata: Metadata = {
       follow: true,
     },
   },
-  category: "Technology",
+  category: "Travel",
   openGraph: {
     images: [
       {
-        url: `https://grubby.ai/images/grubby-logo-no-text.png`,
-        alt: "GrubbyAI - AI Detection Remover & Humanizer",
-        width: 400,
-        height: 400,
+        url: "/logo-icons.png",
+        alt: `Image for SWOM's logo.`,
       },
     ],
-    type: "website",
-    url: "https://grubby.ai",
-    title: "GrubbyAI - AI Detection Remover & Humanizer",
+    title: "SWOM - Swap your home.",
     description:
-      "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
-    siteName: "GrubbyAI",
+      "BE PART OF A HARMONIOUS COOPERATIVE GLOBAL COMMUNITY. Opening your home to others fosters your capacity for trust and generosity.",
+    url: `https://swom.travel/`,
+    type: "website",
     locale: "en_US",
+    siteName: "SWOM - Swap your home.",
   },
   twitter: {
-    title: "GrubbyAI - AI Detection Remover & Humanizer",
-    site: "https://grubby.ai",
+    title: "SWOM - Swap your home.",
+    site: "https://swom.travel/",
     card: "summary_large_image",
     description:
-      "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
+      "BE PART OF A HARMONIOUS COOPERATIVE GLOBAL COMMUNITY. Opening your home to others fosters your capacity for trust and generosity.",
     images: [
       {
-        url: `images/grubby-logo-no-text.png`,
-        alt: "GrubbyAI - AI Detection Remover & Humanizer",
+        url: "/logo-icons.png",
+        alt: `Image for SWOM's logo.`,
       },
     ],
   },
-  metadataBase: new URL("https://grubby.ai"),
+
+  metadataBase: new URL("https://swom.travel/"),
 };
 
 export default function RootLayout({
