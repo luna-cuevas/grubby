@@ -8,8 +8,8 @@ import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
 import { Provider } from "jotai";
 import Footer from "@/components/Footer";
 import SignUpFormModal from "@/components/SignUpAndLogin/SignUpFormModal";
-import { Metadata } from "next";
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://grubby.ai";
+import type { Metadata } from "next";
+const baseUrl = "https://grubby.ai";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -80,9 +80,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className={`${openSans.className} relative h-full w-screen`}>
