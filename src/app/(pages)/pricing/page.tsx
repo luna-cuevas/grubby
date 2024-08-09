@@ -36,7 +36,7 @@ const CheckoutPage = async () => {
 
       <div className="bg-white flex flex-col py-6 justify-center">
         <h2 className="font-bold text-2xl w-fit mx-auto">FAQs</h2>
-        <div className="w-1/2 mx-auto">
+        <div className="w-full max-w-[1000px] px-8 mx-auto">
           <FAQAccordions faqs={FAQs} />
         </div>
       </div>

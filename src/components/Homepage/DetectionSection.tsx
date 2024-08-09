@@ -23,16 +23,6 @@ type Props = {
 const DetectionSection = (props: Props) => {
   const { detectionResults } = props;
   const [openAIFetchState, setOpenAIFetchState] = useAtom(openAIFetchStateAtom);
-  const [resultPresent, setResultPresent] = useState(false);
-
-  useEffect(() => {
-    if (openAIFetchState.result.text !== "") {
-      setResultPresent(true);
-      // scroll down to the detection result view
-    } else {
-      setResultPresent(false);
-    }
-  }, [openAIFetchState]);
 
   useEffect(() => {
     if (!openAIFetchState.isLoading && openAIFetchState.result.text !== "") {
@@ -68,7 +58,10 @@ const DetectionSection = (props: Props) => {
           </section>
         </div>
       ) : (
-        <div className={`${!resultPresent ? "hidden" : "block"} mb-12 pb-4`}>
+        <div
+          className={`${
+            openAIFetchState.result.text == "" ? "hidden" : "block"
+          } mb-12 pb-4`}>
           <div className="flex flex-col items-center justify-center px-4 pt-[30px] text-center">
             <CheckBadgeIcon className="h-8 w-8 text-[#3FB05D]" />
             <div className="mt-3 font-bold text-[#3FB05D]">

@@ -18,8 +18,6 @@ export async function generateMetadata() {
     icons: [
       {
         url: "/images/grubby-logo-no-text.webp",
-        rel: "icon",
-        href: "/images/grubby-logo-no-text.webp",
       },
     ],
     description:
@@ -33,7 +31,7 @@ export async function generateMetadata() {
       siteName: "GrubbyAI",
       images: [
         {
-          url: `${baseUrl}/images/grubby-logo-no-text.web`,
+          url: `${baseUrl}/images/grubby-logo-no-text.webp`, // Ensure extension and URL are correct
           width: 600,
           height: 162,
           alt: "GrubbyAI - AI Detection Remover & Humanizer",

@@ -60,8 +60,6 @@ export const Navigation = (props: Props) => {
   }, []);
 
   const handleAuthChange = async (event: any, session: any) => {
-    console.log("event", event);
-
     if (
       (event === "SIGNED_IN" ||
         event === "INITIAL_SESSION" ||
@@ -70,8 +68,6 @@ export const Navigation = (props: Props) => {
       session
     ) {
       const data = await fetchSubscription(session.user.id);
-
-      console.log("data", data);
 
       setState((prev) => ({
         ...prev,

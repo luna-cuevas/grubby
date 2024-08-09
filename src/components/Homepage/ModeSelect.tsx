@@ -60,7 +60,7 @@ const ModeSelect = (props: Props) => {
         className="bg-transparent text-sm w-fit max-w-none text-center outline-none border-none text-white"
         value={value}
         onChange={(e) => setValue(e.target.value)}>
-        <option value="ver1">Simple V1</option>
+        <option value="ver1">Simple V1 </option>
         <option value="ver2">Advanced V2</option>
       </select>
     </div>
