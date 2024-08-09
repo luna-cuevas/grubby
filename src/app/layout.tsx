@@ -17,9 +17,9 @@ export const metadata: Metadata = {
     "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
   icons: [
     {
-      url: "/images/grubby-logo-no-text.png",
+      url: "/grubby-logo-no-text.png",
       rel: "icon",
-      href: "/images/grubby-logo-no-text.png",
+      href: "/grubby-logo-no-text.png",
     },
   ],
   keywords: [
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: "/images/grubby-logo-no-text.png",
+        url: "/grubby-logo-no-text.png",
         alt: `Image for Grubby's logo.`,
       },
     ],
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
     images: [
       {
-        url: "/images/grubby-logo-no-text.png",
+        url: "/grubby-logo-no-text.png",
         alt: `Image for Grubby's logo.`,
       },
     ],
