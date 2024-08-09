@@ -8,9 +8,7 @@ import { globalStateAtom } from "@/context/atoms";
 import { useAtom } from "jotai";
 import { useSupabase } from "@/lib/supabase";
 import { usePathname, useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import NavList from "./NavList";
-import SignUpFormModal from "../SignUpAndLogin/SignUpFormModal";
 
 type Props = {
   products?: any[];
@@ -23,6 +21,27 @@ export const Navigation = (props: Props) => {
   const supabase = useSupabase();
   const path = usePathname();
   const router = useRouter();
+
+  const yearSubMonthlyReset = async (userId: string) => {
+    try {
+      const subData = await fetchSubscription(userId);
+
+      const response = await fetch("/api/resetMonthlyLimits", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId,
+          stripe_customer_id: subData.stripe_customer_id,
+        }),
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Error fetching subscription: ", error);
+    }
+  };
 
   const fetchSubscription = async (userId: string) => {
     try {
@@ -81,6 +100,8 @@ export const Navigation = (props: Props) => {
         },
         isSignUpModalOpen: false,
       }));
+
+      await yearSubMonthlyReset(session.user.id);
     } else if (event === "SIGNED_OUT") {
       setState({ ...state, user: null, session: null, isSignInOpen: false });
       router.push("/");

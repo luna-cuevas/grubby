@@ -1,20 +1,14 @@
 import resetMonthlyLimits from "@/utils/resetMonthlyLimits";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(request: Request, response: Response) {
-  const authHeader = request.headers.get("authorization");
-  console.log("authHeader", authHeader);
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new NextResponse("Unauthorized", {
-      status: 401,
-    });
-  }
+export async function POST(request: NextRequest) {
+  const { userId, stripe_customer_id } = await request.json();
   try {
-    const result = await resetMonthlyLimits();
+    const result = await resetMonthlyLimits(userId, stripe_customer_id);
     if (!result.success) {
-      return NextResponse.json({ error: result.error }, { status: 500 });
+      return NextResponse.json({ error: result }, { status: 500 });
     }
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, message: result.message });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
