@@ -8,17 +8,17 @@ import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
 import { Provider } from "jotai";
 import Footer from "@/components/Footer";
 import SignUpFormModal from "@/components/SignUpAndLogin/SignUpFormModal";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.grubby.ai"),
   title: "GrubbyAI - AI Detection Remover & Humanizer",
   description:
     "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
   icons: [
     {
       url: "/images/grubby-logo-no-text.webp",
-      rel: "icon", // Optional, included for consistency
+      rel: "icon",
+      href: "/images/grubby-logo-no-text.webp",
     },
   ],
   keywords: [
@@ -36,13 +36,15 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
     },
-    noarchive: true,
-    nosnippet: true,
-    noimageindex: true,
-    nocache: true,
   },
   category: "Technology",
   openGraph: {
+    images: [
+      {
+        url: `/images/grubby-logo-no-text.webp`,
+        alt: "GrubbyAI - AI Detection Remover & Humanizer",
+      },
+    ],
     type: "website",
     url: "https://www.grubby.ai",
     title: "GrubbyAI - AI Detection Remover & Humanizer",
@@ -50,12 +52,6 @@ export const metadata: Metadata = {
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
     siteName: "GrubbyAI",
     locale: "en_US",
-    // images: [
-    //   {
-    //     url: `/images/grubby-logo-no-text.webp`,
-    //     alt: "GrubbyAI - AI Detection Remover & Humanizer",
-    //   },
-    // ],
   },
   twitter: {
     title: "GrubbyAI - AI Detection Remover & Humanizer",
@@ -63,16 +59,14 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     description:
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
-    // images: [
-    //   {
-    //     url: `images/grubby-logo-no-text.webp`,
-    //     alt: "GrubbyAI - AI Detection Remover & Humanizer",
-    //   },
-    // ],
+    images: [
+      {
+        url: `images/grubby-logo-no-text.webp`,
+        alt: "GrubbyAI - AI Detection Remover & Humanizer",
+      },
+    ],
   },
-  authors: [{ name: "GrubbyAI Team", url: "https://www.grubby.ai" }],
-  generator: "Next.js",
-  referrer: "origin-when-cross-origin",
+  metadataBase: new URL("https://www.grubby.ai"),
 };
 
 export default function RootLayout({
