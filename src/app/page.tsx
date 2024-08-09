@@ -332,7 +332,7 @@ const Home = () => {
             <img
               alt="Grubby AI Detection"
               className="mx-auto h-[50px] my-2 filter invert"
-              src="/images/grubby-logo-no-text.webp"
+              src="/images/grubby-logo-no-text.png"
             />
 
             <span className="hero_gradient text-xl lg:text-[30px]">
