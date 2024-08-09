@@ -8,7 +8,7 @@ import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
 import { Provider } from "jotai";
 import Footer from "@/components/Footer";
 import SignUpFormModal from "@/components/SignUpAndLogin/SignUpFormModal";
-import type { Metadata } from "next";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.grubby.ai"),
@@ -50,12 +50,12 @@ export const metadata: Metadata = {
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
     siteName: "GrubbyAI",
     locale: "en_US",
-    images: [
-      {
-        url: `/images/grubby-logo-no-text.webp`,
-        alt: "GrubbyAI - AI Detection Remover & Humanizer",
-      },
-    ],
+    // images: [
+    //   {
+    //     url: `/images/grubby-logo-no-text.webp`,
+    //     alt: "GrubbyAI - AI Detection Remover & Humanizer",
+    //   },
+    // ],
   },
   twitter: {
     title: "GrubbyAI - AI Detection Remover & Humanizer",
@@ -63,12 +63,12 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     description:
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
-    images: [
-      {
-        url: `images/grubby-logo-no-text.webp`,
-        alt: "GrubbyAI - AI Detection Remover & Humanizer",
-      },
-    ],
+    // images: [
+    //   {
+    //     url: `images/grubby-logo-no-text.webp`,
+    //     alt: "GrubbyAI - AI Detection Remover & Humanizer",
+    //   },
+    // ],
   },
   authors: [{ name: "GrubbyAI Team", url: "https://www.grubby.ai" }],
   generator: "Next.js",
