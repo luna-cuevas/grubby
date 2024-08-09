@@ -9,10 +9,9 @@ import { Provider } from "jotai";
 import Footer from "@/components/Footer";
 import SignUpFormModal from "@/components/SignUpAndLogin/SignUpFormModal";
 import type { Metadata } from "next";
-const baseUrl = "https://www.grubby.ai";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(baseUrl),
+  metadataBase: new URL("https://www.grubby.ai"),
   title: "GrubbyAI - AI Detection Remover & Humanizer",
   description:
     "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
@@ -45,7 +44,7 @@ export const metadata: Metadata = {
   category: "Technology",
   openGraph: {
     type: "website",
-    url: baseUrl,
+    url: "https://www.grubby.ai",
     title: "GrubbyAI - AI Detection Remover & Humanizer",
     description:
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
@@ -53,27 +52,25 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: `${baseUrl}/images/grubby-logo-no-text.webp`,
-        width: 600,
-        height: 162,
+        url: `/images/grubby-logo-no-text.webp`,
         alt: "GrubbyAI - AI Detection Remover & Humanizer",
       },
     ],
   },
   twitter: {
     title: "GrubbyAI - AI Detection Remover & Humanizer",
-    site: baseUrl,
+    site: "https://www.grubby.ai",
     card: "summary_large_image",
     description:
       "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
     images: [
       {
-        url: `${baseUrl}/images/grubby-logo-no-text.webp`,
+        url: `images/grubby-logo-no-text.webp`,
         alt: "GrubbyAI - AI Detection Remover & Humanizer",
       },
     ],
   },
-  authors: [{ name: "GrubbyAI Team", url: baseUrl }],
+  authors: [{ name: "GrubbyAI Team", url: "https://www.grubby.ai" }],
   generator: "Next.js",
   referrer: "origin-when-cross-origin",
 };
