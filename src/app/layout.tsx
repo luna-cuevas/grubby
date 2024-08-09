@@ -9,7 +9,7 @@ import { Provider } from "jotai";
 import Footer from "@/components/Footer";
 import SignUpFormModal from "@/components/SignUpAndLogin/SignUpFormModal";
 import type { Metadata } from "next";
-const baseUrl = "https://grubby.ai";
+const baseUrl = "https://www.grubby.ai";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
