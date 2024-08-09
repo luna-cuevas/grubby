@@ -8,7 +8,8 @@ import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
 import { Provider } from "jotai";
 import Footer from "@/components/Footer";
 import SignUpFormModal from "@/components/SignUpAndLogin/SignUpFormModal";
-import type { Metadata } from "next";
+import { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export const metadata: Metadata = {
   title: "GrubbyAI - AI Detection Remover & Humanizer",
@@ -16,9 +17,9 @@ export const metadata: Metadata = {
     "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
   icons: [
     {
-      url: "/images/grubby-logo-no-text.webp",
+      url: "https://grubby.ai/images/grubby-logo-no-text.webp",
       rel: "icon",
-      href: "/images/grubby-logo-no-text.webp",
+      href: "https://grubby.ai/images/grubby-logo-no-text.webp",
     },
   ],
   keywords: [
@@ -41,8 +42,10 @@ export const metadata: Metadata = {
   openGraph: {
     images: [
       {
-        url: `/images/grubby-logo-no-text.webp`,
+        url: `https://grubby.ai/images/grubby-logo-no-text.webp`,
         alt: "GrubbyAI - AI Detection Remover & Humanizer",
+        width: 400,
+        height: 400,
       },
     ],
     type: "website",
@@ -77,6 +80,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${openSans.className} relative h-full w-screen`}>
+        <GoogleAnalytics gaId="G-Z8J7ZSD74X" />
+
         <Provider>
           <Navigation />
           <SignUpFormModal />
