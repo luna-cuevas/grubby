@@ -8,47 +8,22 @@ import NeedToUpgrade from "@/components/Homepage/NeedToUpgrade";
 import { Provider } from "jotai";
 import Footer from "@/components/Footer";
 import SignUpFormModal from "@/components/SignUpAndLogin/SignUpFormModal";
+import { Metadata } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://grubby.ai";
 
-export async function generateMetadata() {
   return {
-    metadataBase: new URL(`${baseUrl}`),
+    metadataBase: new URL(baseUrl),
     title: "GrubbyAI - AI Detection Remover & Humanizer",
+    description:
+      "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
     icons: [
       {
         url: "/images/grubby-logo-no-text.webp",
+        rel: "icon", // Optional, included for consistency
       },
     ],
-    description:
-      "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
-    openGraph: {
-      type: "website",
-      url: `${baseUrl}`,
-      title: "GrubbyAI - AI Detection Remover & Humanizer",
-      description:
-        "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
-      siteName: "GrubbyAI",
-      images: [
-        {
-          url: `${baseUrl}/images/grubby-logo-no-text.webp`, // Ensure extension and URL are correct
-          width: 600,
-          height: 162,
-          alt: "GrubbyAI - AI Detection Remover & Humanizer",
-        },
-      ],
-    },
-    robots: {
-      index: true,
-      follow: true,
-      noarchive: true,
-      nosnippet: true,
-      noimageindex: true,
-      nocache: true,
-    },
-    authors: [{ name: "GrubbyAI Team", url: `${baseUrl}` }],
-    generator: "Next.js",
-    referrer: "origin-when-cross-origin",
     keywords: [
       "AI detection remover",
       "AI humanizer",
@@ -56,7 +31,53 @@ export async function generateMetadata() {
       "GrubbyAI",
       "undetectable AI text",
       "plagiarism-free AI content",
-    ],
+    ].join(", "),
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+      noarchive: true,
+      nosnippet: true,
+      noimageindex: true,
+      nocache: true,
+    },
+    category: "Technology",
+    openGraph: {
+      type: "website",
+      url: baseUrl,
+      title: "GrubbyAI - AI Detection Remover & Humanizer",
+      description:
+        "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
+      siteName: "GrubbyAI",
+      locale: "en_US",
+      images: [
+        {
+          url: `${baseUrl}/images/grubby-logo-no-text.webp`,
+          width: 600,
+          height: 162,
+          alt: "GrubbyAI - AI Detection Remover & Humanizer",
+        },
+      ],
+    },
+    twitter: {
+      title: "GrubbyAI - AI Detection Remover & Humanizer",
+      site: baseUrl,
+      card: "summary_large_image",
+      description:
+        "Make your AI text 100% undetectable with GrubbyAI - your trusted AI detection remover to create plagiarism-free, human-like text.",
+      images: [
+        {
+          url: `${baseUrl}/images/grubby-logo-no-text.webp`,
+          alt: "GrubbyAI - AI Detection Remover & Humanizer",
+        },
+      ],
+    },
+    authors: [{ name: "GrubbyAI Team", url: baseUrl }],
+    generator: "Next.js",
+    referrer: "origin-when-cross-origin",
   };
 }
 
